@@ -56,4 +56,9 @@ router.post("/login", async (req, res) => {
   res.header("auth_token", token).send(token);
 });
 
+router.get("/userpost", async (req, res) => {
+  const users = await Users.find({}).populate("products");
+  res.send(users);
+});
+
 module.exports = router;

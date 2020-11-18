@@ -1,10 +1,11 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true); // fixeds error:  DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 const dotenv = require("dotenv"); // Hides my DB passw login
 dotenv.config();
-
+app.use(cors());
 //start server
 const dbUrl = process.env.DB_CONNECT;
 mongoose
@@ -20,13 +21,12 @@ mongoose
 //Middleware
 app.use(express.json()); //Gledai tova da e predi routes shtot ne bachka
 
-// import Models
-const Products = require("./models/ProductModel");
-
 //import ROuters
 const userRoute = require("./routes/userRoutes");
 
 const testRoute = require("./routes/testRoute");
+const productsRoute = require("./routes/productRoutes");
 // Use Routes
 app.use("/api/user", userRoute);
 app.use("/api/test", testRoute);
+app.use("/api/products", productsRoute);
