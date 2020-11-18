@@ -57,7 +57,10 @@ router.post("/login", async (req, res) => {
 });
 
 router.get("/userpost", async (req, res) => {
-  const users = await Users.find({}).populate("products");
+  const users = await Users.find({}).populate("products", {
+    name: 1,
+    price: 1,
+  });
   res.send(users);
 });
 
