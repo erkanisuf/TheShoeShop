@@ -5,17 +5,19 @@ export const MyContext = createContext();
 
 export const Context = (props) => {
   const [state, dispatch] = useReducer(shopReducer, {
-    cart: ["banna"],
+    cart: [],
     token: localStorage.getItem("UserToken"),
+    user: localStorage.getItem("User"),
   });
 
-  useEffect(() => {
-    axios
-      .get(`https://customerrest.herokuapp.com/api/trainings`)
-      .then((res) => {
-        dispatch({ type: FETCH_PRODUCT, product: res.data.content });
-      });
-  }, []);
+  // useEffect(() => {
+  //   // axios
+  //   //   .get(`https://customerrest.herokuapp.com/api/trainings`)
+  //   //   .then((res) => {
+  //   //     dispatch({ type: FETCH_PRODUCT, product: res.data.content });
+  //   //   });
+  //   dispatch({ type: FETCH_PRODUCT });
+  // }, []);
   return (
     <MyContext.Provider value={{ state, dispatch }}>
       {props.children}

@@ -1,12 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../Context/Context";
-import { USER_LOGIN, USER_LOGOUT } from "../../Context/reducers";
+import { USER_LOGIN, USER_LOGOUT, ADD_PRODUCT } from "../../Context/reducers";
 import axios from "axios";
 
 export const UserLogin = () => {
   const { state, dispatch } = useContext(MyContext);
-  console.log("state from Userlog", state);
+
   const [user, setUser] = useState({ name: "", password: "" });
+
   //   useEffect(() => {
   //     const getitemfromLocalStorage = localStorage.getItem("UserToken");
   //     if (getitemfromLocalStorage) {
@@ -26,10 +27,17 @@ export const UserLogin = () => {
   const LogIn = () => {
     axios.post(`http://localhost:4000/api/user/login`, user).then((res) => {
       console.log(res);
-      window.localStorage.setItem("UserToken", res.data);
-      dispatch({ type: USER_LOGIN, token: res.data });
+      window.localStorage.setItem("UserToken", res.data.token);
+      window.localStorage.setItem("User", res.data.user);
+      dispatch({
+        type: USER_LOGIN,
+        token: res.data.token,
+        user: res.data.user,
+      });
     });
   };
+
+  //// Basket Test
   return (
     <div className="App">
       <h1>Login</h1>

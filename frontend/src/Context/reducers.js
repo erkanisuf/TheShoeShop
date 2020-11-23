@@ -1,21 +1,65 @@
 const addProduct = (dispatch, state) => {
-  console.log("add");
+  const newProduct = dispatch.product;
+  const copyState = [...state.cart];
+  const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
+  if (findIndex < 0) {
+    copyState.push({ ...newProduct, quantity: 1 });
+  } else {
+    const update = { ...copyState[findIndex] };
+    update.quantity = 1;
+    copyState[findIndex] = update;
+  }
+
+  return { ...state, cart: copyState };
 };
 const removeProduct = (dispatch, state) => {
-  return { ...state, cart: [] };
+  const newProduct = dispatch.product;
+  const copyState = [...state.cart];
+  const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
+  console.log(findIndex);
+
+  copyState.splice(findIndex, 1);
+
+  return { ...state, cart: copyState };
 };
 
 const fetchProduct = (dispatch, state) => {
-  return { ...state, cart: dispatch.product };
+  // return { ...state, cart: dispatch.product };
 };
 
 const userLogin = (dispatch, state) => {
   console.log("logged", dispatch);
-  return { ...state, token: dispatch.token };
+  return { ...state, token: dispatch.token, user: dispatch.user };
 };
 const userLoout = (dispatch, state) => {
   window.localStorage.removeItem("UserToken");
   return { ...state, token: null };
+};
+
+const increment = (dispatch, state) => {
+  const newProduct = dispatch.product;
+  const copyState = [...state.cart];
+  const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
+
+  const update = { ...copyState[findIndex] };
+  update.quantity++;
+  copyState[findIndex] = update;
+
+  return { ...state, cart: copyState };
+};
+const decrement = (dispatch, state) => {
+  const newProduct = dispatch.product;
+  const copyState = [...state.cart];
+  const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
+
+  const update = { ...copyState[findIndex] };
+  if (update.quantity > 1) {
+    update.quantity--;
+  }
+
+  copyState[findIndex] = update;
+
+  return { ...state, cart: copyState };
 };
 
 export const ADD_PRODUCT = "ADD_PRODUCT";
@@ -23,6 +67,8 @@ export const REMOVE_PRODUCT = "REMOVE_PRODUCT";
 export const FETCH_PRODUCT = "FETCH_PRODUCT";
 export const USER_LOGIN = "USER_LOGIN";
 export const USER_LOGOUT = "USER_LOGOUT";
+export const INCREMENT_QUANT = "INCREMENT_QUANT";
+export const DECREMENT_QUANT = "DECREMENT_QUANT";
 export const shopReducer = (state, action) => {
   switch (action.type) {
     case ADD_PRODUCT:
@@ -35,6 +81,10 @@ export const shopReducer = (state, action) => {
       return userLogin(action, state);
     case USER_LOGOUT:
       return userLoout(action, state);
+    case INCREMENT_QUANT:
+      return increment(action, state);
+    case DECREMENT_QUANT:
+      return decrement(action, state);
     default:
       return state;
   }
