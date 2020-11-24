@@ -1,12 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/Context";
-
+import Login from "../components/User/Login";
+import Register from "../components/User/Register";
+////////////
 import {
-  ADD_PRODUCT,
+  USER_LOGOUT,
   REMOVE_PRODUCT,
   INCREMENT_QUANT,
   DECREMENT_QUANT,
 } from "../Context/reducers";
+/////////////
 import {
   fade,
   makeStyles,
@@ -18,8 +21,7 @@ import {
   Badge,
   MenuItem,
   Menu,
-} from "@material-ui/core/";
-import {
+  Button,
   List,
   ListItem,
   Divider,
@@ -28,6 +30,7 @@ import {
   Avatar,
   ListItemSecondaryAction,
 } from "@material-ui/core/";
+/////////////
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -37,6 +40,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClearIcon from "@material-ui/icons/Clear";
+////////////////
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -139,6 +143,12 @@ const useStyles = makeStyles((theme) => ({
       color: "white",
     },
   },
+  login: {
+    cursor: "Pointer",
+    "&:hover": {
+      color: "#ffc107",
+    },
+  },
 }));
 
 export default function Layout(props) {
@@ -151,6 +161,21 @@ export default function Layout(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isCartOpen = Boolean(anchorElCart);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [totalpricevalue, setTotalPrice] = useState(null);
+
+  //Open Login Dialog
+  const [openLogin, setopenLogin] = useState(false);
+  const [openRegister, setopenRegister] = useState(false);
+
+  ///
+  useEffect(() => {
+    const totalPrice = () => {
+      const copyArr = [...state.cart];
+      const sum = copyArr.reduce((a, b) => a + b.price * b.quantity, 0);
+      setTotalPrice(sum);
+    };
+    totalPrice();
+  }, [state.cart]);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -175,6 +200,12 @@ export default function Layout(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const signOut = () => {
+    dispatch({ type: USER_LOGOUT });
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
   const menuId = "primary-search-account-menu";
   const cartID = "primary-search-account-menu";
   const renderMenu = (
@@ -189,6 +220,7 @@ export default function Layout(props) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={signOut}>Sign Out</MenuItem>
     </Menu>
   );
   const renderCart = (
@@ -211,11 +243,11 @@ export default function Layout(props) {
                 </ListItemAvatar>
                 <ListItemText
                   className={classes.inline}
-                  primary={item.name}
-                  secondary={item.price}
+                  primary={<b>{item.name}</b>}
+                  secondary={item.price * item.quantity + "€"}
                 />
                 <ListItemText
-                  primary={"Quantity"}
+                  primary={<b>Quantity</b>}
                   secondary={
                     <>
                       {item.quantity}
@@ -260,7 +292,26 @@ export default function Layout(props) {
           );
         })}
       </List>
-      <button>Checkout</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          margin: "5px",
+          padding: "10px",
+        }}
+      >
+        <Button
+          startIcon={<ShoppingCartIcon />}
+          variant="contained"
+          color="primary"
+        >
+          Check Out
+        </Button>
+
+        <Typography variant="button">
+          Total Price:<b>{totalpricevalue}</b>€
+        </Typography>
+      </div>
     </Menu>
   );
 
@@ -354,7 +405,20 @@ export default function Layout(props) {
                   </span>
                 </IconButton>
               ) : (
-                <span className={classes.spanUser}>Login / Sign up</span>
+                <div className={classes.spanUser}>
+                  <span
+                    className={classes.login}
+                    onClick={() => setopenLogin(true)}
+                  >
+                    Login{" "}
+                  </span>
+                  <span
+                    className={classes.login}
+                    onClick={() => setopenRegister(true)}
+                  >
+                    / Sign up
+                  </span>
+                </div>
               )}
             </div>
             <div className={classes.sectionMobile}>
@@ -373,7 +437,13 @@ export default function Layout(props) {
         {renderMobileMenu}
         {renderMenu}
         {state.cart.length !== 0 && <Paper>{renderCart}</Paper>}
+        <Login openLogin={openLogin} handleClose={() => setopenLogin(false)} />
+        <Register
+          openRegister={openRegister}
+          handleCloseRegister={() => setopenRegister(false)}
+        />
       </div>
+
       {props.children}
     </div>
   );

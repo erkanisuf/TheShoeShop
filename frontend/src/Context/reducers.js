@@ -1,3 +1,12 @@
+export const ADD_PRODUCT = "ADD_PRODUCT";
+export const REMOVE_PRODUCT = "REMOVE_PRODUCT";
+export const FETCH_PRODUCT = "FETCH_PRODUCT";
+export const USER_LOGIN = "USER_LOGIN";
+export const USER_LOGOUT = "USER_LOGOUT";
+export const INCREMENT_QUANT = "INCREMENT_QUANT";
+export const DECREMENT_QUANT = "DECREMENT_QUANT";
+export const TOTAL_PRICE = "TOTAL_PRICE";
+////////////////////////////////
 const addProduct = (dispatch, state) => {
   const newProduct = dispatch.product;
   const copyState = [...state.cart];
@@ -31,9 +40,10 @@ const userLogin = (dispatch, state) => {
   console.log("logged", dispatch);
   return { ...state, token: dispatch.token, user: dispatch.user };
 };
-const userLoout = (dispatch, state) => {
+const userLogout = (dispatch, state) => {
   window.localStorage.removeItem("UserToken");
-  return { ...state, token: null };
+  window.localStorage.removeItem("User");
+  return { ...state, token: null, user: null };
 };
 
 const increment = (dispatch, state) => {
@@ -62,13 +72,7 @@ const decrement = (dispatch, state) => {
   return { ...state, cart: copyState };
 };
 
-export const ADD_PRODUCT = "ADD_PRODUCT";
-export const REMOVE_PRODUCT = "REMOVE_PRODUCT";
-export const FETCH_PRODUCT = "FETCH_PRODUCT";
-export const USER_LOGIN = "USER_LOGIN";
-export const USER_LOGOUT = "USER_LOGOUT";
-export const INCREMENT_QUANT = "INCREMENT_QUANT";
-export const DECREMENT_QUANT = "DECREMENT_QUANT";
+//////////////////////
 export const shopReducer = (state, action) => {
   switch (action.type) {
     case ADD_PRODUCT:
@@ -80,11 +84,12 @@ export const shopReducer = (state, action) => {
     case USER_LOGIN:
       return userLogin(action, state);
     case USER_LOGOUT:
-      return userLoout(action, state);
+      return userLogout(action, state);
     case INCREMENT_QUANT:
       return increment(action, state);
     case DECREMENT_QUANT:
       return decrement(action, state);
+
     default:
       return state;
   }
