@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Users = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const verify = require("./privateRoute");
 //Validate
 const Joi = require("@hapi/joi"); //Validation package (it needs own Joi.object({} schema))
 
@@ -29,9 +30,20 @@ router.post("/register", async (req, res) => {
     email: req.body.email,
     password: hashPassword,
   });
+
   try {
     const saveUser = await user.save();
-    res.send({ user: user.email });
+    // res.send({ user: user.email });
+
+    const userFind = await Users.findOne({ name: req.body.name });
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      userFind.password
+    );
+    const token = jwt.sign({ _id: userFind._id }, process.env.TOKEN_USER);
+    res
+      .header("auth_token", token)
+      .send({ token: token, user: userFind.name, userID: userFind.id });
   } catch (err) {
     res.status(400).status(err);
   }
@@ -54,7 +66,37 @@ router.post("/login", async (req, res) => {
   //Make Tokens
   const token = jwt.sign({ _id: user._id }, process.env.TOKEN_USER);
 
-  res.header("auth_token", token).send({ token: token, user: user.name });
+  res
+    .header("auth_token", token)
+    .send({ token: token, user: user.name, userID: user.id });
+});
+
+router.put("/update/:id", (request, response, next) => {
+  const body = request.body;
+
+  const newUpdate = {
+    adress: body.adress,
+  };
+  let token = request.header("auth_token");
+  if (!token)
+    return response
+      .status(401)
+      .send({ auth: false, message: "No token provided" });
+  jwt.verify(token, process.env.TOKEN_USER, function (err, decoded) {
+    if (err)
+      return response
+        .status(500)
+        .send({ auth: false, message: "failed to auth token" });
+    Users.findByIdAndUpdate(
+      { _id: decoded._id },
+      newUpdate,
+      { new: true },
+      function (err, user) {
+        if (err) response.send(err);
+        response.json(user);
+      }
+    );
+  });
 });
 
 router.get("/userpost", async (req, res) => {

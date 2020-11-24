@@ -31,17 +31,45 @@ const Register = ({ openRegister, handleCloseRegister }) => {
   const [user, setUser] = useState({
     name: "",
     password: "",
-    passwordTwo: "",
     email: "",
   });
+  const [passwordTwo, setPasswordTwo] = useState("");
+  const [error, setError] = useState(null);
   const handleOnChange = (e) => {
     console.log({ ...user, [e.target.name]: e.target.value });
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
+  const confirmPassword = (e) => {
+    setPasswordTwo(e.target.value);
+  };
   const addNewUser = () => {
-    console.log("ádded");
-    handleCloseRegister();
+    if (user.password !== passwordTwo) {
+      setError("Passwords does not match!");
+    } else {
+      axios
+        .post(`http://localhost:4000/api/user/register`, user)
+
+        .then((res) => {
+          if (res.status === 400) {
+            console.log("err");
+          } else {
+            window.localStorage.setItem("UserToken", res.data.token);
+            window.localStorage.setItem("User", res.data.user);
+            window.localStorage.setItem("UserID", res.data.userID);
+            dispatch({
+              type: USER_LOGIN,
+              token: res.data.token,
+              user: { name: res.data.user, id: res.data.userID },
+            });
+            setError(null);
+            handleCloseRegister();
+          }
+        })
+        .catch((error) => {
+          setError(error.response.request.response);
+        });
+    }
   };
   return (
     <Dialog
@@ -81,7 +109,7 @@ const Register = ({ openRegister, handleCloseRegister }) => {
           label="Confirm password"
           type="passwordTwo"
           fullWidth
-          onChange={handleOnChange}
+          onChange={confirmPassword}
         />
         <TextField
           autoFocus
@@ -102,6 +130,13 @@ const Register = ({ openRegister, handleCloseRegister }) => {
           Sign Up
         </Button>
       </DialogActions>
+      {error && (
+        <div>
+          <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
+            {error}
+          </p>
+        </div>
+      )}
     </Dialog>
   );
 };

@@ -7,7 +7,10 @@ export const Context = (props) => {
   const [state, dispatch] = useReducer(shopReducer, {
     cart: [],
     token: localStorage.getItem("UserToken"),
-    user: localStorage.getItem("User"),
+    user: {
+      name: localStorage.getItem("User"),
+      id: localStorage.getItem("UserID"),
+    },
   });
 
   // useEffect(() => {

@@ -8,6 +8,7 @@ import {
   REMOVE_PRODUCT,
   INCREMENT_QUANT,
   DECREMENT_QUANT,
+  REMOVE_ALL_CART,
 } from "../Context/reducers";
 /////////////
 import {
@@ -295,7 +296,7 @@ export default function Layout(props) {
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent: "space-evenly",
           margin: "5px",
           padding: "10px",
         }}
@@ -306,6 +307,12 @@ export default function Layout(props) {
           color="primary"
         >
           Check Out
+        </Button>
+        <Button
+          onClick={() => dispatch({ type: REMOVE_ALL_CART })}
+          variant="outlined"
+        >
+          Clear All
         </Button>
 
         <Typography variant="button">
@@ -401,7 +408,7 @@ export default function Layout(props) {
                   color="inherit"
                 >
                   <span className={classes.spanUser}>
-                    Welcome {state.user} <AccountCircle />
+                    Welcome {state.user.name} <AccountCircle />
                   </span>
                 </IconButton>
               ) : (

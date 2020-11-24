@@ -5,6 +5,7 @@ import "./App.css";
 import UserLogin from "./components/User/UserLogin";
 import Products from "./components/Products/Products";
 import Layout from "./Layout/Layout";
+import UpdateAdress from "./components/User/UpdateAdress";
 function App() {
   const { state, dispatch } = useContext(MyContext);
 
@@ -27,6 +28,7 @@ function App() {
         </button>
         <UserLogin />
         <Products />
+        <UpdateAdress />
       </div>
     </Layout>
   );

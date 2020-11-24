@@ -46,18 +46,20 @@ const Login = ({ openLogin, handleClose }) => {
         } else {
           window.localStorage.setItem("UserToken", res.data.token);
           window.localStorage.setItem("User", res.data.user);
+          window.localStorage.setItem("UserID", res.data.userID);
+          console.log(res.data);
           dispatch({
             type: USER_LOGIN,
             token: res.data.token,
-            user: res.data.user,
+            user: { name: res.data.user, id: res.data.userID },
           });
           setError(null);
           handleClose();
         }
       })
       .catch((error) => {
-        console.log(error.response.request.response);
-        setError(error.response.request.response);
+        // console.log(error.response.request.response);
+        // setError(error.response.request.response);
       });
   };
 
@@ -77,7 +79,7 @@ const Login = ({ openLogin, handleClose }) => {
           margin="dense"
           id="name"
           name="name"
-          label="Username"
+          label="Name"
           type="name"
           fullWidth
           onChange={handleOnChange}
@@ -103,7 +105,9 @@ const Login = ({ openLogin, handleClose }) => {
       </DialogActions>
       {error && (
         <div>
-          <p>{error}</p>
+          <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
+            {error}
+          </p>
         </div>
       )}
     </Dialog>

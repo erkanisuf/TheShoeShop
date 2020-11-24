@@ -6,6 +6,14 @@ const usersSchema = new Schema(
     name: { type: String, required: true, min: 6, max: 200 },
     email: { type: String, required: true, min: 6, max: 200 },
     password: { type: String, required: true, min: 6, max: 1500 },
+    adress: {
+      type: {
+        street: { type: String, required: false, min: 6, max: 1500 },
+        city: { type: String, required: false, min: 6, max: 1500 },
+        postcode: { type: String, required: false, min: 6, max: 1500 },
+        phone: { type: String, required: false, min: 6, max: 1500 },
+      },
+    },
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,

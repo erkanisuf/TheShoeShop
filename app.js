@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 mongoose.set("useCreateIndex", true);
-mongoose.set("useFindAndModify", true); // fixeds error:  DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+mongoose.set("useFindAndModify", false); // fixeds error:  DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 const dotenv = require("dotenv"); // Hides my DB passw login
 const cookieParser = require("cookie-parser");
 dotenv.config();
