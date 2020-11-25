@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 
 import {
   Card,
@@ -49,33 +50,35 @@ export default function Product({ product }) {
   return (
     <Paper elevation={1} className={classes.root}>
       <Card>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={product.image}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {product.name}
-            </Typography>
-
-            <Rating
-              name="simple-controlled"
-              value={product.rating}
-              onChange={console.log("change")}
+        <Link to={`/product/${product.id}`}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={product.image}
+              title="Contemplative Reptile"
             />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {product.name}
+              </Typography>
 
-            <Typography
-              gutterBottom
-              variant="h6"
-              component="h2"
-              className={classes.price}
-            >
-              {product.price}€
-            </Typography>
-          </CardContent>
-        </CardActionArea>
+              <Rating
+                name="simple-controlled"
+                value={product.rating}
+                onChange={console.log("change")}
+              />
+
+              <Typography
+                gutterBottom
+                variant="h6"
+                component="h2"
+                className={classes.price}
+              >
+                {product.price}€
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Link>
         <CardActions>
           <Button
             startIcon={<AddShoppingCartIcon />}

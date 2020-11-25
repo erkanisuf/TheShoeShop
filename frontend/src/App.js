@@ -5,7 +5,10 @@ import "./App.css";
 import UserLogin from "./components/User/UserLogin";
 import Products from "./components/Products/Products";
 import Layout from "./Layout/Layout";
-import UpdateAdress from "./components/User/UpdateAdress";
+import Profile from "./components/User/Profile";
+import { Switch, Route } from "react-router-dom";
+import ProductID from "./components/Products/ProductID";
+
 function App() {
   const { state, dispatch } = useContext(MyContext);
 
@@ -27,8 +30,19 @@ function App() {
           removeee
         </button>
         <UserLogin />
-        <Products />
-        <UpdateAdress />
+
+        <Switch>
+          <Route exact path="/">
+            <Products />
+          </Route>
+
+          <Route path="/product/:id">
+            <ProductID />
+          </Route>
+          <Route path="/userprofile">
+            <Profile />
+          </Route>
+        </Switch>
       </div>
     </Layout>
   );

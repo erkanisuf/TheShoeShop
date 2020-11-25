@@ -3,11 +3,16 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import Context from "./Context/Context";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import UpdateAdress from "./components/User/UpdateAdress";
 
 ReactDOM.render(
-  <Context>
-    <App />
-  </Context>,
+  <Router>
+    <Context>
+      <App />
+    </Context>
+  </Router>,
+
   document.getElementById("root")
 );
 

@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
     .header("auth_token", token)
     .send({ token: token, user: user.name, userID: user.id });
 });
-
+// UPDATE User Adress
 router.put("/update/:id", (request, response, next) => {
   const body = request.body;
 
@@ -97,6 +97,17 @@ router.put("/update/:id", (request, response, next) => {
       }
     );
   });
+});
+router.get("/useradress", verify, async (req, res) => {
+  let token = req.header("auth_token");
+  if (!token)
+    return response
+      .status(401)
+      .send({ auth: false, message: "No token provided" });
+  const tokenID = jwt.verify(token, process.env.TOKEN_USER);
+
+  const users = await Users.find({ _id: tokenID }).select("adress");
+  res.send(users);
 });
 
 router.get("/userpost", async (req, res) => {
