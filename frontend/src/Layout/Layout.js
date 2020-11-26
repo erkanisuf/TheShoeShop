@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../Context/Context";
 import Login from "../components/User/Login";
 import Register from "../components/User/Register";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 ////////////
 import {
   USER_LOGOUT,
@@ -202,10 +202,13 @@ export default function Layout(props) {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const history = useHistory();
   const signOut = () => {
     dispatch({ type: USER_LOGOUT });
     setAnchorEl(null);
     handleMobileMenuClose();
+    history.push("/");
+    history.replace("/");
   };
 
   const menuId = "primary-search-account-menu";
@@ -220,10 +223,13 @@ export default function Layout(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <Link to="/userprofile">
+      <Link
+        to="/userprofile"
+        style={{ color: "black", textDecoration: "none" }}
+      >
         <MenuItem onClick={handleMenuClose}>UserProfile</MenuItem>
       </Link>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+
       <MenuItem onClick={signOut}>Sign Out</MenuItem>
     </Menu>
   );

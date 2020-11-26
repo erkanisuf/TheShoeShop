@@ -50,13 +50,14 @@ export default function Product({ product }) {
   return (
     <Paper elevation={1} className={classes.root}>
       <Card>
-        <Link to={`/product/${product.id}`}>
-          <CardActionArea>
+        <CardActionArea>
+          <Link to={`/products/${product.id}`}>
             <CardMedia
               className={classes.media}
               image={product.image}
               title="Contemplative Reptile"
             />
+
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {product.name}
@@ -66,6 +67,7 @@ export default function Product({ product }) {
                 name="simple-controlled"
                 value={product.rating}
                 onChange={console.log("change")}
+                readOnly
               />
 
               <Typography
@@ -77,8 +79,9 @@ export default function Product({ product }) {
                 {product.price}€
               </Typography>
             </CardContent>
-          </CardActionArea>
-        </Link>
+          </Link>
+        </CardActionArea>
+
         <CardActions>
           <Button
             startIcon={<AddShoppingCartIcon />}

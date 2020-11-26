@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { MyContext } from "./Context/Context";
 import { ADD_PRODUCT, REMOVE_PRODUCT } from "./Context/reducers";
 import "./App.css";
@@ -8,12 +8,15 @@ import Layout from "./Layout/Layout";
 import Profile from "./components/User/Profile";
 import { Switch, Route } from "react-router-dom";
 import ProductID from "./components/Products/ProductID";
+import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
+import Login from "./components/User/Login";
+import PrivateRoute from "./PrivateRoute";
 
 function App() {
   const { state, dispatch } = useContext(MyContext);
 
   const kur = "apple";
-
+  const [openLogin, setopenLogin] = useState(true);
   return (
     <Layout>
       <div className="App">
@@ -29,18 +32,28 @@ function App() {
         >
           removeee
         </button>
+        <Breadcrumbs />
         <UserLogin />
 
         <Switch>
           <Route exact path="/">
             <Products />
           </Route>
-
-          <Route path="/product/:id">
+          <Route path="/products/:id">
             <ProductID />
           </Route>
-          <Route path="/userprofile">
-            <Profile />
+          <PrivateRoute exact path="/userprofile" component={Profile} />
+
+          {/* <Route path="/userprofile">
+           <Profile />
+          
+          </Route> */}
+          <Route path="/login">
+            <h1> Please log in to use this section.</h1>
+            <Login
+              openLogin={openLogin}
+              handleClose={() => setopenLogin(false)}
+            />
           </Route>
         </Switch>
       </div>

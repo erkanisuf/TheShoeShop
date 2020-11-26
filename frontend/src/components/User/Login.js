@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
-import { USER_LOGIN } from "../../Context/reducers";
+import { USER_LOGIN, FETCH_ADRESS } from "../../Context/reducers";
+import { useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -13,6 +14,10 @@ import {
   makeStyles,
 } from "@material-ui/core/";
 
+const headers = {
+  "Content-Type": "application/json",
+  auth_token: `${localStorage.getItem("UserToken")}`,
+};
 const useStyles = makeStyles({
   loginbtn: {
     borderRadius: "25px",
@@ -26,7 +31,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Login = ({ openLogin, handleClose }) => {
+const Login = (props) => {
+  const history = useHistory();
+  const location = useLocation();
+  console.log(location);
   const { dispatch } = useContext(MyContext);
   const classes = useStyles();
   const [user, setUser] = useState({ name: "", password: "" });
@@ -34,6 +42,23 @@ const Login = ({ openLogin, handleClose }) => {
   const handleOnChange = (e) => {
     console.log({ ...user, [e.target.name]: e.target.value });
     setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const Adress = () => {
+    axios
+      .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
+      .then((res) => {
+        if (res.status === 400) {
+          console.log("err");
+        } else {
+          dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
+          console.log(res);
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response.request.response);
+        // setError(error.response.request.response);
+      });
   };
 
   const LogIn = () => {
@@ -51,22 +76,35 @@ const Login = ({ openLogin, handleClose }) => {
           dispatch({
             type: USER_LOGIN,
             token: res.data.token,
-            user: { name: res.data.user, id: res.data.userID },
+            user: {
+              name: res.data.user,
+              id: res.data.userID,
+              adress: res.data.adress,
+            },
           });
           setError(null);
-          handleClose();
+          props.handleClose();
+          if (location.state && location.state.from) {
+            history.replace(location.state.from.pathname);
+            console.log("ga");
+          }
+          // else go to home
+          else {
+            history.replace("/");
+            console.log("anus");
+          }
         }
       })
       .catch((error) => {
         // console.log(error.response.request.response);
-        // setError(error.response.request.response);
+        setError(error.response.request.response);
       });
   };
 
   return (
     <Dialog
-      open={openLogin}
-      onClose={handleClose}
+      open={props.openLogin}
+      onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
     >
       <DialogTitle id="form-dialog-title">Log in</DialogTitle>
@@ -96,7 +134,7 @@ const Login = ({ openLogin, handleClose }) => {
         />
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={props.handleClose} color="primary">
           Cancel
         </Button>
         <Button onClick={LogIn} className={classes.loginbtn}>

@@ -12,6 +12,7 @@ export const Context = (props) => {
     user: {
       name: localStorage.getItem("User"),
       id: localStorage.getItem("UserID"),
+      adress: null,
     },
     products: [
       {
@@ -53,6 +54,7 @@ export const Context = (props) => {
     ],
   });
 
+  const putence = "PTUENCEEEEEEEEEEEEEEEEEEEEE";
   // useEffect(() => {
   //   // axios
   //   //   .get(`https://customerrest.herokuapp.com/api/trainings`)
@@ -62,7 +64,7 @@ export const Context = (props) => {
   //   dispatch({ type: FETCH_PRODUCT });
   // }, []);
   return (
-    <MyContext.Provider value={{ state, dispatch }}>
+    <MyContext.Provider value={{ state, dispatch, putence }}>
       {props.children}
     </MyContext.Provider>
   );

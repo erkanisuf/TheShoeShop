@@ -68,10 +68,26 @@ router.post("/login", async (req, res) => {
 
   res
     .header("auth_token", token)
-    .send({ token: token, user: user.name, userID: user.id });
+    .send({
+      token: token,
+      user: user.name,
+      userID: user.id,
+      adress: user.adress,
+    });
 });
 // UPDATE User Adress
+const JoiSchemaUpdateAdress = Joi.object({
+  adress: {
+    street: Joi.string().min(6),
+    city: Joi.string().min(6),
+    phone: Joi.string().min(6),
+    postcode: Joi.string().min(4),
+  },
+});
+
 router.put("/update/:id", (request, response, next) => {
+  const { error } = JoiSchemaUpdateAdress.validate(request.body);
+  if (error) return response.status(400).send(error.details[0].message);
   const body = request.body;
 
   const newUpdate = {
@@ -93,11 +109,12 @@ router.put("/update/:id", (request, response, next) => {
       { new: true },
       function (err, user) {
         if (err) response.send(err);
-        response.json(user);
+        response.json(user.adress);
       }
     );
   });
 });
+///////// Get Adress User
 router.get("/useradress", verify, async (req, res) => {
   let token = req.header("auth_token");
   if (!token)

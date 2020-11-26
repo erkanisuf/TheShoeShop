@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Users = require("../models/UserModel");
+
 const jwt = require("jsonwebtoken");
 const verify = require("./privateRoute");
 
@@ -31,6 +32,31 @@ router.post("/addproduct", verify, async (req, res) => {
     res.status(400).status(err);
   }
 });
+///reviews
+///////////Add Review To Product
+const Reviews = require("../models/ReviewsModel");
+
+router.post("/addreview", verify, async (req, res) => {
+  const user = await Users.findById({ _id: req.user._id });
+  const product = await Products.findById({ _id: req.body.products });
+  const review = new Reviews({
+    review: req.body.review,
+    products: req.body.products,
+    user: user,
+  });
+
+  try {
+    const savedNote = await review.save();
+    user.reviews = user.reviews.concat(savedNote._id);
+    product.reviews = product.reviews.concat(savedNote._id);
+    await user.save();
+    await product.save();
+    res.send(savedNote);
+  } catch (err) {
+    res.status(400).status(err);
+  }
+});
+
 ///Adds to Database
 
 router.get("/showproducts", (req, res) => {
@@ -44,14 +70,20 @@ router.get("/singleproducts", (req, res) => {
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });
+
+///////////Gets All products with comments!!!!!!!!
 router.get("/productuser", async (req, res) => {
-  const products = await Products.find({}).populate("user", {
-    name: 1,
-    email: 1,
-  }); //stringa tuka e v mongoDB variable koito si go imam (primerno user e tozi na products v mongoto)
+  const products = await Products.find({})
+
+    .populate("user", {
+      name: 1,
+      email: 1,
+    })
+    .populate({ path: "reviews", populate: { path: "user", select: "name" } })
+    .exec(); //stringa tuka e v mongoDB variable koito si go imam (primerno user e tozi na products v mongoto)
   res.send(products);
 });
-
+///////////Gets All products with comments!!!!!!!!
 router.delete("/delete/:id", verify, async (request, response, next) => {
   const user = await Users.findById({ _id: request.user._id });
   const product = await Products.findById({ _id: request.params.id });

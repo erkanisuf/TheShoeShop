@@ -6,6 +6,7 @@ export const USER_LOGOUT = "USER_LOGOUT";
 export const INCREMENT_QUANT = "INCREMENT_QUANT";
 export const DECREMENT_QUANT = "DECREMENT_QUANT";
 export const REMOVE_ALL_CART = "REMOVE_ALL_CART";
+export const FETCH_ADRESS = "FETCH_ADRESS";
 ////////////////////////////////
 const addProduct = (dispatch, state) => {
   const newProduct = dispatch.product;
@@ -41,7 +42,11 @@ const userLogin = (dispatch, state) => {
   return {
     ...state,
     token: dispatch.token,
-    user: { name: dispatch.user.name, id: dispatch.user.id },
+    user: {
+      name: dispatch.user.name,
+      id: dispatch.user.id,
+      adress: dispatch.user.adress,
+    },
   };
 };
 const userLogout = (dispatch, state) => {
@@ -80,6 +85,10 @@ const decrement = (dispatch, state) => {
 const clearCart = (dispatch, state) => {
   return { ...state, cart: [] };
 };
+const adressUpdate = (dispatch, state) => {
+  console.log(dispatch);
+  return { ...state, user: { ...state.user, adress: dispatch.adress } };
+};
 
 //////////////////////
 export const shopReducer = (state, action) => {
@@ -100,6 +109,8 @@ export const shopReducer = (state, action) => {
       return decrement(action, state);
     case REMOVE_ALL_CART:
       return clearCart(action, state);
+    case FETCH_ADRESS:
+      return adressUpdate(action, state);
 
     default:
       return state;
