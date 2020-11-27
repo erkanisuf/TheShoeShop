@@ -66,14 +66,12 @@ router.post("/login", async (req, res) => {
   //Make Tokens
   const token = jwt.sign({ _id: user._id }, process.env.TOKEN_USER);
 
-  res
-    .header("auth_token", token)
-    .send({
-      token: token,
-      user: user.name,
-      userID: user.id,
-      adress: user.adress,
-    });
+  res.header("auth_token", token).send({
+    token: token,
+    user: user.name,
+    userID: user.id,
+    adress: user.adress,
+  });
 });
 // UPDATE User Adress
 const JoiSchemaUpdateAdress = Joi.object({

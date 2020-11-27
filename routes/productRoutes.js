@@ -23,8 +23,10 @@ router.post("/addproduct", verify, async (req, res) => {
     // description: "high quality product",
   });
 
+  console.log(product);
   try {
     const savedNote = await product.save();
+    console.log(savedNote);
     user.products = user.products.concat(savedNote._id);
     await user.save();
     res.send(savedNote);
@@ -37,8 +39,29 @@ router.post("/addproduct", verify, async (req, res) => {
 const Reviews = require("../models/ReviewsModel");
 
 router.post("/addreview", verify, async (req, res) => {
+  //First check if user has already posted
   const user = await Users.findById({ _id: req.user._id });
-  const product = await Products.findById({ _id: req.body.products });
+
+  const product = await Products.findById({ _id: req.body.products })
+    .populate("user", {
+      name: 1,
+      email: 1,
+    })
+    .populate({ path: "reviews", populate: { path: "user", select: "name" } })
+
+    .then((result) => {
+      return result;
+    })
+    .catch((err) => console.log(err));
+  const reviews = product.reviews;
+
+  const checkForUser = reviews.find(
+    (el) => el.user._id.toString() == user._id.toString()
+  );
+
+  if (checkForUser)
+    return res.status(400).send("This user has already reviewed it!!");
+
   const review = new Reviews({
     review: req.body.review,
     products: req.body.products,
@@ -65,10 +88,27 @@ router.get("/showproducts", (req, res) => {
     .catch((err) => console.log(err));
 });
 ///SHOWS The DataBase
-router.get("/singleproducts", (req, res) => {
-  Products.findById("5fb2c5a4c72d5422d816f2a8")
-    .then((result) => res.send(result))
+router.get("/singleproducts", async (req, res) => {
+  const find = await Products.findById({ _id: "5fc0054d778b1f2ad42998b1" })
+    .populate("user", {
+      name: 1,
+      email: 1,
+    })
+    .populate({ path: "reviews", populate: { path: "user", select: "name" } })
+
+    .then((result) => {
+      return result;
+    })
     .catch((err) => console.log(err));
+  const reviews = find.reviews;
+  const checkForUser = reviews.find(
+    (el) => el.user.id === "5fb4f31c18e2fd166083b9342"
+  );
+  if (checkForUser) {
+    console.log(checkForUser);
+  } else {
+    console.log("nope");
+  }
 });
 
 ///////////Gets All products with comments!!!!!!!!
