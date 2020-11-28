@@ -3,6 +3,7 @@ import React, { createContext, useReducer } from "react";
 import { shopReducer } from "./reducers";
 import p1 from "../components/Products/images/p1.jpg";
 import p2 from "../components/Products/images/p2.jpg";
+import p40 from "../components/Products/images/40.jpg";
 export const MyContext = createContext();
 
 export const Context = (props) => {
@@ -19,7 +20,7 @@ export const Context = (props) => {
         id: 32333,
         name: "Nike Slim Shirt",
         category: "Shirts",
-        image: p1,
+        image: [p1, p2, p40],
         price: 120,
         countInStock: 10,
         brand: "Nike",
@@ -31,7 +32,7 @@ export const Context = (props) => {
         id: 55555,
         name: "Adidas Fit Shirt",
         category: "Shirts",
-        image: p2,
+        image: [p1, p2],
         price: 111,
         countInStock: 20,
         brand: "Adidas",
@@ -43,7 +44,7 @@ export const Context = (props) => {
         id: 55551115,
         name: "abnannaS",
         category: "Shirts",
-        image: p2,
+        image: [p1, p2],
         price: 125,
         countInStock: 20,
         brand: "Adidasz",

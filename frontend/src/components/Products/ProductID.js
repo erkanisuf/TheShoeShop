@@ -1,15 +1,156 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../Context/Context";
+import Carousel from "react-material-ui-carousel";
+import {
+  Paper,
+  Button,
+  makeStyles,
+  IconButton,
+  Modal,
+} from "@material-ui/core";
+import AspectRatioIcon from "@material-ui/icons/AspectRatio";
+import CloseIcon from "@material-ui/icons/Close";
+
 const ProductID = () => {
+  const useStyles = makeStyles((theme) => ({
+    sectionDesktop: {
+      width: "90%",
+      margin: "0 auto",
+      position: "relative",
+
+      [theme.breakpoints.up("md")]: {
+        width: "40%",
+
+        maxHeight: "100%",
+        objectFit: "contain",
+        margin: "0 auto",
+        position: "relative",
+      },
+    },
+    paper: {
+      width: window.innerWidth > 1024 ? "100%" : "375px",
+      height: window.innerWidth > 1024 ? "100%" : "80%",
+      overflow: "scroll",
+      position: "relative",
+      justifyContent: "center",
+      alignContent: "center",
+
+      margin: "0 auto",
+      display: "flex",
+      backgroundColor: theme.palette.background.paper,
+      border: window.innerWidth > 1024 ? "2px solid #000" : "none",
+
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }));
+
+  const classes = useStyles();
   const { state, dispatch, putence } = useContext(MyContext);
-  console.log(putence, "form IDDDDDDDDDDDDDDDDDDDDDDDDDD");
+
   let { id } = useParams();
   const product = state.products.find((n) => n.id === Number(id));
   console.log(product, "FROM PRODUCT ID");
+
+  const [open, setOpen] = useState(false);
+  const [openImage, setOpenImage] = useState(null);
+
+  const handleOpen = (param) => {
+    setOpenImage(param);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const Item = (props) => {
+    return (
+      <Paper className={classes.sectionDesktop}>
+        <img
+          onClick={(val) => handleOpen(val.target.currentSrc)}
+          style={{
+            cursor: "pointer",
+            objectFit: "contain",
+            width: window.innerWidth > 1024 ? "700px" : "100%",
+            height: window.innerWidth > 1024 ? "500px" : "200px",
+          }}
+          src={props.item}
+        />
+
+        <IconButton
+          onClick={(val) => handleOpen(val.target.currentSrc)}
+          style={{
+            position: "absolute",
+            top: 5,
+            left: 5,
+            border: "1px solid grey",
+          }}
+        >
+          <AspectRatioIcon />
+        </IconButton>
+      </Paper>
+    );
+  };
+
   return (
     <div>
       <h1>THis is ProducT IDDD</h1>
+
+      <Carousel timeout={100} autoPlay={false} navButtonsAlwaysInvisible={true}>
+        {product.image.map((item, i) => (
+          <Item key={i} item={item} />
+        ))}
+      </Carousel>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className={classes.paper}>
+          {" "}
+          <Carousel
+            timeout={100}
+            autoPlay={false}
+            navButtonsAlwaysInvisible={window.innerWidth > 1024 ? true : false}
+          >
+            {product.image.map((item, i) => (
+              <div key={i}>
+                <img
+                  src={item}
+                  style={
+                    window.innerWidth > 1024
+                      ? {
+                          maxHeight: "1000px",
+                          position: "relative",
+                        }
+                      : {
+                          width: "375px",
+
+                          objectFit: "contain",
+                          margin: "0 auto",
+                        }
+                  }
+                />
+              </div>
+            ))}
+          </Carousel>
+          <IconButton
+            onClick={handleClose}
+            style={{
+              position: "absolute",
+              top: 15,
+              right: 100,
+              transform: "scale(2)",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+      </Modal>
     </div>
   );
 };
