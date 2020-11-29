@@ -249,7 +249,7 @@ export default function Layout(props) {
             <div className={classes.rootTwo} key={index}>
               <ListItem alignItems="flex-start" className={classes.list}>
                 <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src={item.image} />
+                  <Avatar alt="Remy Sharp" src={item.image[0]} />
                 </ListItemAvatar>
                 <ListItemText
                   className={classes.inline}

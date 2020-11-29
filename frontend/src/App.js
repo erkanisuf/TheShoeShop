@@ -7,7 +7,7 @@ import Products from "./components/Products/Products";
 import Layout from "./Layout/Layout";
 import Profile from "./components/User/Profile";
 import { Switch, Route } from "react-router-dom";
-import ProductID from "./components/Products/ProductID";
+import ProductID from "./components/Products/ProductID/ProductID";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import Login from "./components/User/Login";
 import PrivateRoute from "./PrivateRoute";

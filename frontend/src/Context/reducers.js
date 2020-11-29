@@ -13,10 +13,13 @@ const addProduct = (dispatch, state) => {
   const copyState = [...state.cart];
   const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
   if (findIndex < 0) {
-    copyState.push({ ...newProduct, quantity: 1 });
+    copyState.push({
+      ...newProduct,
+      quantity: newProduct.quantity ? newProduct.quantity : 1,
+    });
   } else {
     const update = { ...copyState[findIndex] };
-    update.quantity = 1;
+    update.quantity = newProduct.quantity ? newProduct.quantity : 1;
     copyState[findIndex] = update;
   }
 

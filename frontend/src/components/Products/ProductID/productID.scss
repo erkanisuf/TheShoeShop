@@ -1,0 +1,31 @@
+.gridProduct {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  width: 100%;
+  .nameAndRating {
+    grid-column: 1/2;
+    grid-row: 1/2;
+  }
+
+  .carouselGrid {
+    grid-column: 1/2;
+    grid-row: 2/3;
+  }
+  .productDescription {
+    grid-column: 1/2;
+    grid-row: 3/4;
+  }
+  .priceProduct {
+    grid-column: 2/3;
+    grid-row: 1/2;
+  }
+  .addCart {
+    grid-column: 2/3;
+    grid-row: 2/3;
+  }
+  .shoeSize {
+    grid-column: 2/3;
+    grid-row: 4/5;
+  }
+}
