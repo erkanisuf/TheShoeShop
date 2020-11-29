@@ -12,21 +12,14 @@
     grid-column: 1/2;
     grid-row: 2/3;
   }
-  .productDescription {
-    grid-column: 1/2;
-    grid-row: 3/4;
-  }
-  .priceProduct {
-    grid-column: 2/3;
-    grid-row: 1/2;
-  }
+
   .addCart {
     grid-column: 2/3;
+
     grid-row: 2/3;
-    height: 200px;
   }
-  .shoeSize {
-    grid-column: 2/3;
+  .productDescription {
+    grid-column: 1/3;
     grid-row: 3/4;
   }
 }

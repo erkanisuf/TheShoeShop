@@ -13,6 +13,7 @@ import Rating from "@material-ui/lab/Rating";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CloseIcon from "@material-ui/icons/Close";
 import "./productID.css";
+import Description from "./Description";
 
 import ProductPrice from "./ProductPrice";
 
@@ -167,13 +168,13 @@ const ProductID = () => {
           </div>
         </Modal>
       </div>
-      <div className="productDescription">productDescription</div>
-      <div className="priceProduct">pricductduct</div>
+      <div className="productDescription">
+        <Description product={product} />
+      </div>
+
       <div className="addCart">
         <ProductPrice product={product} />
-        <div>Product SZZZZ </div>
       </div>
-      <div className="shoeSize">shoeSize</div>
     </div>
   );
 };
