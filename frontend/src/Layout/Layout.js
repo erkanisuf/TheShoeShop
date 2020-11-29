@@ -3,6 +3,7 @@ import { MyContext } from "../Context/Context";
 import Login from "../components/User/Login";
 import Register from "../components/User/Register";
 import { Link, useHistory } from "react-router-dom";
+import SelectSize from "../components/SelectSize/SelectSize";
 ////////////
 import {
   USER_LOGOUT,
@@ -251,11 +252,13 @@ export default function Layout(props) {
                 <ListItemAvatar>
                   <Avatar alt="Remy Sharp" src={item.image[0]} />
                 </ListItemAvatar>
+
                 <ListItemText
                   className={classes.inline}
                   primary={<b>{item.name}</b>}
                   secondary={item.price * item.quantity + "€"}
                 />
+                <SelectSize item={item} />
                 <ListItemText
                   primary={<b>Quantity</b>}
                   secondary={

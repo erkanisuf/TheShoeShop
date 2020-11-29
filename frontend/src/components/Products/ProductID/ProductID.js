@@ -13,7 +13,8 @@ import Rating from "@material-ui/lab/Rating";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CloseIcon from "@material-ui/icons/Close";
 import "./productID.css";
-import AddCartButton from "./AddCartButton";
+
+import ProductPrice from "./ProductPrice";
 
 const ProductID = () => {
   const useStyles = makeStyles((theme) => ({
@@ -167,9 +168,10 @@ const ProductID = () => {
         </Modal>
       </div>
       <div className="productDescription">productDescription</div>
-      <div className="priceProduct">priceProduct</div>
+      <div className="priceProduct">pricductduct</div>
       <div className="addCart">
-        <AddCartButton product={product} />
+        <ProductPrice product={product} />
+        <div>Product SZZZZ </div>
       </div>
       <div className="shoeSize">shoeSize</div>
     </div>

@@ -1,5 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import DialogWindow from "./ProductID/DialogWindow ";
 
 import {
   Card,
@@ -41,12 +42,46 @@ const useStyles = makeStyles({
   price: {
     marginTop: "15px",
   },
+  inCart: {
+    margin: "0 auto",
+    borderRadius: "25px",
+    fontSize: "13px",
+    padding: "5px 15px",
+    backgroundColor: "#e0e0e0",
+  },
 });
 
 export default function Product({ product }) {
   const classes = useStyles();
-  const { dispatch } = useContext(MyContext);
 
+  const { state, dispatch } = useContext(MyContext);
+  const [disable, setDisable] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const disableChange = (param) => {
+    setDisable(param);
+  };
+  useEffect(() => {
+    const copyState = [...state.cart];
+    const findIndex = copyState.findIndex((item) => item.id === product.id);
+    if (findIndex < 0) {
+      disableChange(false);
+    } else {
+      disableChange(true);
+      handleClose();
+    }
+  }, [state.cart, product]);
+
+  const addToCart = () => {
+    if (product.selectedSize === "") {
+      setOpen(true);
+    } else {
+      dispatch({ type: ADD_PRODUCT, product: product });
+    }
+  };
   return (
     <Paper elevation={1} className={classes.root}>
       <Card>
@@ -83,15 +118,26 @@ export default function Product({ product }) {
         </CardActionArea>
 
         <CardActions>
-          <Button
-            startIcon={<AddShoppingCartIcon />}
-            className={classes.addToCart}
-            onClick={() => dispatch({ type: ADD_PRODUCT, product: product })}
-          >
-            Add to Cart
-          </Button>
+          {disable ? (
+            <Button
+              startIcon={<AddShoppingCartIcon />}
+              disabled
+              className={classes.inCart}
+            >
+              In Cart
+            </Button>
+          ) : (
+            <Button
+              startIcon={<AddShoppingCartIcon />}
+              className={classes.addToCart}
+              onClick={addToCart}
+            >
+              Add to Cart
+            </Button>
+          )}
         </CardActions>
       </Card>
+      <DialogWindow open={open} handleClose={handleClose} product={product} />
     </Paper>
   );
 }

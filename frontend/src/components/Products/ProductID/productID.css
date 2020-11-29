@@ -50,14 +50,15 @@
   -ms-grid-row: 2;
   -ms-grid-row-span: 1;
   grid-row: 2/3;
+  height: 200px;
 }
 
 .gridProduct .shoeSize {
   -ms-grid-column: 2;
   -ms-grid-column-span: 1;
   grid-column: 2/3;
-  -ms-grid-row: 4;
+  -ms-grid-row: 3;
   -ms-grid-row-span: 1;
-  grid-row: 4/5;
+  grid-row: 3/4;
 }
 /*# sourceMappingURL=productID.css.map */

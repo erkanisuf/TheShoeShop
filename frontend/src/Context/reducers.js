@@ -7,6 +7,7 @@ export const INCREMENT_QUANT = "INCREMENT_QUANT";
 export const DECREMENT_QUANT = "DECREMENT_QUANT";
 export const REMOVE_ALL_CART = "REMOVE_ALL_CART";
 export const FETCH_ADRESS = "FETCH_ADRESS";
+export const SELECT_SIZE = "SELECT_SIZE";
 ////////////////////////////////
 const addProduct = (dispatch, state) => {
   const newProduct = dispatch.product;
@@ -85,6 +86,21 @@ const decrement = (dispatch, state) => {
   return { ...state, cart: copyState };
 };
 
+const sizeSelect = (dispatch, state) => {
+  console.log(dispatch, "sizesl", state);
+  const newProduct = dispatch.product;
+  const copyState = [...state.cart];
+  const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
+
+  const update = { ...copyState[findIndex] };
+
+  update.selectedSize = newProduct.selectedSize ? newProduct.selectedSize : "";
+
+  copyState[findIndex] = update;
+
+  return { ...state, cart: copyState };
+};
+
 const clearCart = (dispatch, state) => {
   return { ...state, cart: [] };
 };
@@ -114,6 +130,8 @@ export const shopReducer = (state, action) => {
       return clearCart(action, state);
     case FETCH_ADRESS:
       return adressUpdate(action, state);
+    case SELECT_SIZE:
+      return sizeSelect(action, state);
 
     default:
       return state;

@@ -6,7 +6,7 @@ import ShopIcon from "@material-ui/icons/Shop";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-
+import DialogWindow from "./DialogWindow ";
 const useStyles = makeStyles({
   addcart: {
     width: "400px",
@@ -19,12 +19,20 @@ const useStyles = makeStyles({
   plusminus: { margin: "0 auto ", padding: "0px", color: "black" },
 });
 
-const AddCartButton = ({ product }) => {
+const AddCartButton = ({ product, selectedSize }) => {
   const classes = useStyles();
   const { state, dispatch } = useContext(MyContext);
-  const [productID, setproductID] = useState({ ...product, quantity: 1 });
-  console.log(productID, "cartbutn");
+  const [productID, setproductID] = useState({
+    ...product,
+    quantity: 1,
+    selectedSize: selectedSize,
+  });
+
   const [disable, setDisable] = useState(false);
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const disableChange = (param) => {
     setDisable(param);
@@ -36,9 +44,13 @@ const AddCartButton = ({ product }) => {
       disableChange(false);
     } else {
       disableChange(true);
+      handleClose();
     }
-  }, [state.cart, productID.id]);
+  }, [state.cart, productID]);
 
+  useEffect(() => {
+    setproductID((p) => ({ ...p, selectedSize: selectedSize }));
+  }, [selectedSize]);
   const handleChange = () => {
     const copy = { ...productID };
     copy.quantity++;
@@ -57,6 +69,15 @@ const AddCartButton = ({ product }) => {
     const copy = { ...productID, quantity: parseInt(e.target.value) };
     setproductID(copy);
   };
+
+  const addToCart = () => {
+    if (productID.selectedSize === "") {
+      setOpen(true);
+    } else {
+      dispatch({ type: ADD_PRODUCT, product: productID });
+    }
+  };
+
   return (
     <div
       style={{
@@ -101,11 +122,12 @@ const AddCartButton = ({ product }) => {
         <Button
           endIcon={<ShopIcon />}
           className={classes.addcart}
-          onClick={() => dispatch({ type: ADD_PRODUCT, product: productID })}
+          onClick={addToCart}
         >
           Add to Cart
         </Button>
       )}
+      <DialogWindow open={open} handleClose={handleClose} product={product} />
     </div>
   );
 };
