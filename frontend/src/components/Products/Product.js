@@ -12,35 +12,56 @@ import {
   Typography,
   makeStyles,
   Paper,
+  IconButton,
 } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { MyContext } from "../../Context/Context";
 import { ADD_PRODUCT } from "../../Context/reducers";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 
 const useStyles = makeStyles({
   root: {
     borderRadius: "5px",
     width: "100%",
 
-    maxWidth: 400,
-    margin: "5px",
+    maxWidth: 250,
+    margin: " 15px",
   },
   media: {
     height: 300,
+    position: "relative",
+  },
+  cardcontainer: {
+    width: "250px",
+    display: "flex",
+    position: "relative",
+  },
+  btncontainer: {
+    position: "absolute",
+    bottom: 100,
+    right: 0,
   },
   addToCart: {
     margin: "0 auto",
-    borderRadius: "25px",
+    width: "70px",
+    height: "70px",
+    border: "10px solid white",
+    borderRadius: "50px",
     fontSize: "13px",
     padding: "5px 15px",
     backgroundColor: "#ffc107",
+    transition: "1s",
+    color: "black",
     "&:hover": {
       backgroundColor: "#ffac33",
+      border: "5px solid grey",
+      transform: "scale(1.2)",
     },
   },
   price: {
     marginTop: "15px",
+    fontFamily: "Goldman",
   },
   inCart: {
     margin: "0 auto",
@@ -84,27 +105,36 @@ export default function Product({ product }) {
   };
   return (
     <Paper elevation={1} className={classes.root}>
-      <Card>
+      <Card className={classes.cardcontainer}>
         <CardActionArea>
-          <Link to={`/products/${product.id}`}>
+          <Link
+            to={`/products/${product.id}`}
+            style={{
+              textDecoration: "none",
+              color: "black",
+            }}
+          >
             <CardMedia
               className={classes.media}
               image={product.image[0]}
               title="Contemplative Reptile"
             />
+            <Rating
+              name="simple-controlled"
+              value={product.rating}
+              onChange={console.log("change")}
+              readOnly
+            />
 
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography
+                gutterBottom
+                variant="h5"
+                component="h2"
+                style={{ fontFamily: "Exo 2" }}
+              >
                 {product.name}
-              </Typography>
-
-              <Rating
-                name="simple-controlled"
-                value={product.rating}
-                onChange={console.log("change")}
-                readOnly
-              />
-
+              </Typography>{" "}
               <Typography
                 gutterBottom
                 variant="h6"
@@ -117,23 +147,16 @@ export default function Product({ product }) {
           </Link>
         </CardActionArea>
 
-        <CardActions>
+        <CardActions className={classes.btncontainer}>
           {disable ? (
-            <Button
-              startIcon={<AddShoppingCartIcon />}
-              disabled
-              className={classes.inCart}
-            >
-              In Cart
-            </Button>
+            <IconButton disabled className={classes.inCart}>
+              <AddShoppingCartIcon />
+              in cart
+            </IconButton>
           ) : (
-            <Button
-              startIcon={<AddShoppingCartIcon />}
-              className={classes.addToCart}
-              onClick={addToCart}
-            >
-              Add to Cart
-            </Button>
+            <IconButton className={classes.addToCart} onClick={addToCart}>
+              <ShoppingCartIcon />
+            </IconButton>
           )}
         </CardActions>
       </Card>

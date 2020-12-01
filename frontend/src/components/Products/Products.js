@@ -41,7 +41,10 @@ export const Products = () => {
         style={{
           display: "flex",
           flexDirection: "row",
-          justifyContent: "space-evenly",
+          flexWrap: "wrap",
+
+          flex: "1 1 0",
+          justifyContent: "flex-start",
           width: "80%",
           margin: "0 auto",
         }}

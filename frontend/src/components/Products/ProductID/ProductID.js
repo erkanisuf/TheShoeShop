@@ -75,11 +75,6 @@ const ProductID = () => {
     setOpen(false);
   };
 
-  const selectColor = (param) => {
-    console.log("select color", param);
-    setProduct(param);
-  };
-
   const Item = (props) => {
     return (
       <Paper className={classes.sectionDesktop}>
@@ -190,11 +185,11 @@ const ProductID = () => {
 
       <div className="addCart">
         <ProductPrice product={product} />
-        <ColorPicker
-          selectColor={selectColor}
-          productOriginal={product}
-          state={state.products}
-        />
+        <div style={{ height: "10px", marginTop: "15px" }}>
+          <b>Other colors:</b>
+        </div>
+
+        <ColorPicker productOriginal={product} state={state.products} />
       </div>
     </div>
   );

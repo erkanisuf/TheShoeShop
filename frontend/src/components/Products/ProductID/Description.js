@@ -24,6 +24,7 @@ const Description = ({ product }) => {
       </div>
     );
   };
+
   const TabRender = () => {
     switch (value) {
       case 0:
