@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../../Context/Context";
 import Carousel from "react-material-ui-carousel";
@@ -14,7 +14,7 @@ import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CloseIcon from "@material-ui/icons/Close";
 import "./productID.css";
 import Description from "./Description";
-
+import ColorPicker from "./ColorPicker";
 import ProductPrice from "./ProductPrice";
 
 const ProductID = () => {
@@ -54,7 +54,13 @@ const ProductID = () => {
   const { state, dispatch, putence } = useContext(MyContext);
 
   let { id } = useParams();
-  const product = state.products.find((n) => n.id === Number(id));
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    const productFind = state.products.find((n) => n.id === Number(id));
+    setProduct(productFind);
+  }, [state.products, id]);
+
   console.log(product, "FROM PRODUCT ID");
 
   const [open, setOpen] = useState(false);
@@ -69,6 +75,11 @@ const ProductID = () => {
     setOpen(false);
   };
 
+  const selectColor = (param) => {
+    console.log("select color", param);
+    setProduct(param);
+  };
+
   const Item = (props) => {
     return (
       <Paper className={classes.sectionDesktop}>
@@ -80,6 +91,7 @@ const ProductID = () => {
             width: window.innerWidth > 1024 ? "100%" : "100%",
             height: window.innerWidth > 1024 ? "500px" : "200px",
           }}
+          alt={props.item}
           src={props.item}
         />
 
@@ -98,6 +110,9 @@ const ProductID = () => {
     );
   };
 
+  if (!product) {
+    return <h1> Loading....</h1>;
+  }
   return (
     <div className="gridProduct">
       <div className="nameAndRating">
@@ -137,6 +152,7 @@ const ProductID = () => {
               {product.image.map((item, i) => (
                 <div key={i}>
                   <img
+                    alt={item}
                     src={item}
                     style={
                       window.innerWidth > 1024
@@ -174,6 +190,11 @@ const ProductID = () => {
 
       <div className="addCart">
         <ProductPrice product={product} />
+        <ColorPicker
+          selectColor={selectColor}
+          productOriginal={product}
+          state={state.products}
+        />
       </div>
     </div>
   );

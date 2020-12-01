@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useReducer, useEffect } from "react";
 import { MyContext } from "../../../Context/Context";
 import { makeStyles, Button, TextField, IconButton } from "@material-ui/core";
 import { ADD_PRODUCT } from "../../../Context/reducers";
@@ -28,6 +28,15 @@ const AddCartButton = ({ product, selectedSize }) => {
     selectedSize: selectedSize,
   });
 
+  useEffect(() => {
+    setproductID({
+      ...product,
+      quantity: 1,
+      selectedSize: selectedSize,
+    });
+  }, [product]);
+
+  console.log(productID, "ЦАРРРРРРРРРРР");
   const [disable, setDisable] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -46,11 +55,11 @@ const AddCartButton = ({ product, selectedSize }) => {
       disableChange(true);
       handleClose();
     }
-  }, [state.cart, productID]);
+  }, [state.cart, productID, product]);
 
   useEffect(() => {
     setproductID((p) => ({ ...p, selectedSize: selectedSize }));
-  }, [selectedSize]);
+  }, [selectedSize, product]);
   const handleChange = () => {
     const copy = { ...productID };
     copy.quantity++;

@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../Context/Context";
 import { Paper, makeStyles } from "@material-ui/core";
 import AddCartButton from "./AddCartButton";
-import ColorPicker from "./ColorPicker";
+
 const useStyles = makeStyles({
   paper: {
     height: "100px",
@@ -84,6 +84,10 @@ const ProductPrice = ({ product }) => {
       disableChange(true);
     }
   }, [state.cart, productID]);
+
+  useEffect(() => {
+    setproductID({ ...product });
+  }, [product]);
   const handleChange = (e) => {
     const copy = { ...productID, selectedSize: Number(e.target.innerText) };
     setproductID(copy);
@@ -117,7 +121,6 @@ const ProductPrice = ({ product }) => {
           );
         })}
       </Paper>
-      <ColorPicker />
     </div>
   );
 };

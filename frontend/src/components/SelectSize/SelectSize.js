@@ -9,7 +9,7 @@ const SelectSize = ({ item }) => {
   const [productID, setproductID] = useState({ ...item });
 
   const handleChange = (e) => {
-    const copy = { ...productID, selectedSize: parseInt(e.target.value) };
+    const copy = { ...productID, selectedSize: Number(e.target.value) };
     setproductID(copy);
     dispatch({ type: SELECT_SIZE, product: copy });
   };
