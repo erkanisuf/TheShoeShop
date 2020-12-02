@@ -3,37 +3,65 @@ const Users = require("../models/UserModel");
 
 const jwt = require("jsonwebtoken");
 const verify = require("./privateRoute");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./uploads/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname);
+  },
+});
 
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(new Error("Only jpeg and png files!"), false);
+  }
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 // import Models
 const Products = require("../models/ProductModel");
-router.post("/addproduct", verify, async (req, res) => {
-  const user = await Users.findById({ _id: req.user._id });
-  const product = new Products({
-    name: req.body.name,
-    price: parseInt(req.body.price),
-    user: user,
-    // name: "Adidas Fit Shirt",
-    // category: "Shirts",
-    // image: "/images/p2.jpg",
-    // price: 100,
-    // countInStock: 20,
-    // brand: "Adidas",
-    // rating: 4.0,
-    // numReviews: 10,
-    // description: "high quality product",
-  });
 
-  console.log(product);
-  try {
-    const savedNote = await product.save();
-    console.log(savedNote);
-    user.products = user.products.concat(savedNote._id);
-    await user.save();
-    res.send(savedNote);
-  } catch (err) {
-    res.status(400).status(err);
+router.post(
+  "/addproduct",
+  verify,
+  upload.array("productImage", 12),
+  async (req, res, next) => {
+    const user = await Users.findById({ _id: req.user._id });
+    const userAdmin = user.isAdmin;
+
+    if (userAdmin !== "Admin") {
+      return res.status(400).send("Only admin premission");
+    } else {
+      console.log(req.file, "fileee");
+      const product = new Products({
+        name: req.body.name,
+        price: parseInt(req.body.price),
+        user: user,
+        image: req.files,
+        // name: "Adidas Fit Shirt",
+        // category: "Shirts",
+        // image: "/images/p2.jpg",
+        // price: 100,
+        // countInStock: 20,
+        // brand: "Adidas",
+        // rating: 4.0,
+        // numReviews: 10,
+        // description: "high quality product",
+      });
+      console.log(product);
+
+      const savedNote = await product.save();
+      console.log(savedNote);
+      user.products = user.products.concat(savedNote._id);
+      await user.save();
+      res.send(savedNote);
+    }
   }
-});
+);
 ///reviews
 ///////////Add Review To Product
 const Reviews = require("../models/ReviewsModel");
@@ -84,6 +112,8 @@ router.post("/addreview", verify, async (req, res) => {
 
 router.get("/showproducts", (req, res) => {
   Products.find({})
+    .select("name price _id image")
+    .exec()
     .then((result) => res.send(result))
     .catch((err) => console.log(err));
 });

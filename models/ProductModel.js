@@ -10,6 +10,7 @@ const productSchema = new Schema(
     // description: { type: String, required: true, unique: true },
     name: { type: String, required: true, unique: true },
     price: { type: Number, required: true },
+    image: { type: Array, default: [] },
     user: [
       {
         type: mongoose.Schema.Types.ObjectId,

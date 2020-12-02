@@ -11,6 +11,7 @@ import ProductID from "./components/Products/ProductID/ProductID";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import Login from "./components/User/Login";
 import PrivateRoute from "./PrivateRoute";
+import AdminPanel from "./components/User/AdminPanel";
 
 function App() {
   const { state, dispatch } = useContext(MyContext);
@@ -42,6 +43,7 @@ function App() {
           <Route path="/products/:id">
             <ProductID />
           </Route>
+
           <PrivateRoute exact path="/userprofile" component={Profile} />
 
           {/* <Route path="/userprofile">
@@ -54,6 +56,9 @@ function App() {
               openLogin={openLogin}
               handleClose={() => setopenLogin(false)}
             />
+          </Route>
+          <Route path="/adminpanel">
+            <AdminPanel />
           </Route>
         </Switch>
       </div>

@@ -33,3 +33,6 @@ const productsRoute = require("./routes/productRoutes");
 app.use("/api/user", userRoute);
 app.use("/api/test", testRoute);
 app.use("/api/products", productsRoute);
+app.use("/uploads", express.static("uploads"));
+
+//http://localhost:4000/uploads/Climbing-the-Rinjani-Volcano.jpg  IMG how to get

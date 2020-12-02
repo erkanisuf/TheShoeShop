@@ -6,6 +6,13 @@ const usersSchema = new Schema(
     name: { type: String, required: true, min: 6, max: 200 },
     email: { type: String, required: true, min: 6, max: 200 },
     password: { type: String, required: true, min: 6, max: 1500 },
+    isAdmin: {
+      type: String,
+      required: true,
+      min: 6,
+      max: 1500,
+      default: "user",
+    },
     adress: {
       type: {
         street: { type: String, required: false, min: 6, max: 1500 },
