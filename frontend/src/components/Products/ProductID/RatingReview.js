@@ -1,0 +1,152 @@
+import React, { useState } from "react";
+import Rating from "@material-ui/lab/Rating";
+import axios from "axios";
+import {
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  Chip,
+} from "@material-ui/core";
+import RateReviewIcon from "@material-ui/icons/RateReview";
+import RatingAll from "./RatingAll";
+const headers = {
+  auth_token: `${localStorage.getItem("UserToken")}`,
+};
+const RatingReview = ({ productId, product }) => {
+  const [open, setOpen] = useState(false);
+  const [review, setReview] = useState({
+    review: "",
+    rating: 0,
+    products: productId,
+  });
+  const [error, setError] = useState(null);
+
+  const handleText = (e) => {
+    setReview({ ...review, review: e.target.value });
+  };
+  console.log(review);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addReview = () => {
+    axios
+      .post(
+        `http://localhost:4000/api/products/addreview`,
+
+        review,
+        {
+          headers: headers,
+        }
+      )
+
+      .then((res) => {
+        if (res.status === 400) {
+          console.log("err");
+        } else {
+          console.log(res);
+          handleClose();
+        }
+      })
+      .catch((error) => {
+        setError(error.response.request.response);
+      });
+  };
+  return (
+    <div>
+      <div
+        style={{
+          alignContent: "center",
+
+          display: "flex",
+        }}
+      >
+        {" "}
+        <Rating value={4} name="simple-controlled" readOnly />
+        <Chip
+          variant="outlined"
+          color="primary"
+          size="small"
+          label={`Total ${product.reviews.length} reviews / New review`}
+          onClick={handleClickOpen}
+          icon={<RateReviewIcon />}
+          style={{ marginLeft: "10px", padding: "5px" }}
+        />
+      </div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Reviews</DialogTitle>
+        <DialogContent
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "center",
+            margin: "0 auto",
+          }}
+        >
+          <DialogContentText>All reviews for this product .</DialogContentText>
+          <RatingAll reviews={product} />
+          <TextField
+            id="outlined-multiline-static"
+            label="Review"
+            multiline
+            rows={4}
+            name="review"
+            value={review.review}
+            onChange={handleText}
+            variant="outlined"
+          />
+          <span
+            style={{
+              margin: "0 auto",
+            }}
+          >
+            Rate
+          </span>
+          <Rating
+            style={{
+              margin: "0 auto",
+            }}
+            value={review.rating}
+            name="simple-controlled"
+            onChange={(event, newValue) => {
+              setReview({ ...review, rating: newValue });
+            }}
+          />
+          {error && <span style={{ color: "red" }}>{error}</span>}
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+          <Button
+            onClick={addReview}
+            color="primary"
+            variant="contained"
+            style={{
+              backgroundColor: "#ffc107",
+              color: "black",
+              padding: "5px",
+            }}
+          >
+            Send Review
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default RatingReview;

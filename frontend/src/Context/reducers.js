@@ -44,6 +44,8 @@ const fetchProduct = (dispatch, state) => {
 
 const userLogin = (dispatch, state) => {
   console.log("logged", dispatch);
+  window.location.reload();
+
   return {
     ...state,
     token: dispatch.token,
@@ -55,9 +57,10 @@ const userLogin = (dispatch, state) => {
   };
 };
 const userLogout = (dispatch, state) => {
-  window.localStorage.removeItem("UserToken");
-  window.localStorage.removeItem("User");
-  window.localStorage.removeItem("UserID");
+  localStorage.removeItem("UserToken");
+  localStorage.removeItem("User");
+  localStorage.removeItem("UserID");
+  window.location.reload();
   return { ...state, token: null, user: null };
 };
 

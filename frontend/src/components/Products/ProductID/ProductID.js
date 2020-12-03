@@ -9,7 +9,7 @@ import {
   IconButton,
   Modal,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
+import RatingReview from "./RatingReview";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CloseIcon from "@material-ui/icons/Close";
 import "./productID.css";
@@ -112,12 +112,7 @@ const ProductID = () => {
     <div className="gridProduct">
       <div className="nameAndRating">
         <h1>{product.name}</h1>
-        <Rating
-          name="simple-controlled"
-          value={product.rating}
-          onChange={console.log("change")}
-        />
-        Reviews
+        <RatingReview productId={product.id} product={product} />
       </div>
       <div className="carouselGrid">
         <Carousel

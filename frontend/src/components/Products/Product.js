@@ -71,7 +71,7 @@ const useStyles = makeStyles({
     borderRadius: "50px",
     fontSize: "13px",
     padding: "5px 15px",
-
+    backgroundColor: "#e0e0e0",
     transition: "1s",
     color: "black",
   },
@@ -155,13 +155,12 @@ export default function Product({ product }) {
 
         <CardActions className={classes.btncontainer}>
           {disable ? (
-            <IconButton disabled className={classes.inCart}>
-              <AddShoppingCartIcon />
-              <span>In Cart</span>
+            <IconButton className={classes.inCart} disabled>
+              <ShoppingCartIcon style={{ color: "grey" }} />
             </IconButton>
           ) : (
             <IconButton className={classes.addToCart} onClick={addToCart}>
-              <ShoppingCartIcon />
+              <AddShoppingCartIcon />
             </IconButton>
           )}
         </CardActions>

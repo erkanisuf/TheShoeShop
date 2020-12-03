@@ -69,9 +69,9 @@ const Login = (props) => {
         if (res.status === 400) {
           console.log("err");
         } else {
-          window.localStorage.setItem("UserToken", res.data.token);
-          window.localStorage.setItem("User", res.data.user);
-          window.localStorage.setItem("UserID", res.data.userID);
+          localStorage.setItem("UserToken", res.data.token);
+          localStorage.setItem("User", res.data.user);
+          localStorage.setItem("UserID", res.data.userID);
           console.log(res.data);
           dispatch({
             type: USER_LOGIN,
@@ -90,7 +90,7 @@ const Login = (props) => {
           }
           // else go to home
           else {
-            history.replace("/");
+            history.push("/");
             console.log("anus");
           }
         }
