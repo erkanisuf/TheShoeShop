@@ -57,7 +57,11 @@ const ColorPicker = ({ productOriginal, state }) => {
       {colors.map((el, i) => {
         return (
           <Circle color={el.id} key={i}>
-            <Avatar src={el.image[0]} alt={el.name} className={classes.large} />
+            <Avatar
+              src={`http://localhost:4000/uploads/${el.image[0].filename}`}
+              alt={el.name}
+              className={classes.large}
+            />
           </Circle>
         );
       })}

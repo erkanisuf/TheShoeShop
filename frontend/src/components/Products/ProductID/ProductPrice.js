@@ -72,6 +72,7 @@ const ProductPrice = ({ product }) => {
   const { state } = useContext(MyContext);
   const [productID, setproductID] = useState({ ...product });
   const [disable, setDisable] = useState(false);
+
   const disableChange = (param) => {
     setDisable(param);
   };
@@ -88,8 +89,10 @@ const ProductPrice = ({ product }) => {
   useEffect(() => {
     setproductID({ ...product });
   }, [product]);
+
   const handleChange = (e) => {
-    const copy = { ...productID, selectedSize: Number(e.target.innerText) };
+    console.log(e.target.innerText);
+    const copy = { ...productID, selectedSize: e.target.innerText };
     setproductID(copy);
   };
 
@@ -112,7 +115,7 @@ const ProductPrice = ({ product }) => {
               variant="outlined"
               onClick={handleChange}
             >
-              {el}
+              {Number(el)}
             </Paper>
           ) : (
             <Paper key={i} className={classes.disabled} variant="outlined">

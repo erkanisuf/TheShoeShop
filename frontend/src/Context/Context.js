@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
+import axios from "axios";
 
 import { shopReducer } from "./reducers";
 import p1 from "../components/Products/images/p1.jpg";
@@ -6,6 +7,7 @@ import p2 from "../components/Products/images/p2.jpg";
 import p40 from "../components/Products/images/40.jpg";
 import red from "../components/Products/images/red.jpg";
 import red2 from "../components/Products/images/red2.jpg";
+import { FETCH_PRODUCT } from "./reducers";
 export const MyContext = createContext();
 
 export const Context = (props) => {
@@ -91,17 +93,13 @@ export const Context = (props) => {
     ],
   });
 
-  const putence = "PTUENCEEEEEEEEEEEEEEEEEEEEE";
-  // useEffect(() => {
-  //   // axios
-  //   //   .get(`https://customerrest.herokuapp.com/api/trainings`)
-  //   //   .then((res) => {
-  //   //     dispatch({ type: FETCH_PRODUCT, product: res.data.content });
-  //   //   });
-  //   dispatch({ type: FETCH_PRODUCT });
-  // }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:4000/api/products/productuser`).then((res) => {
+      dispatch({ type: FETCH_PRODUCT, product: res.data });
+    });
+  }, []);
   return (
-    <MyContext.Provider value={{ state, dispatch, putence }}>
+    <MyContext.Provider value={{ state, dispatch }}>
       {props.children}
     </MyContext.Provider>
   );

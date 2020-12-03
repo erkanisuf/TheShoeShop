@@ -3,6 +3,8 @@ const Users = require("../models/UserModel");
 
 const jwt = require("jsonwebtoken");
 const verify = require("./privateRoute");
+
+//Images Multer Setup
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -22,6 +24,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({ storage: storage, fileFilter: fileFilter });
+
 // import Models
 const Products = require("../models/ProductModel");
 
@@ -36,21 +39,21 @@ router.post(
     if (userAdmin !== "Admin") {
       return res.status(400).send("Only admin premission");
     } else {
-      console.log(req.file, "fileee");
+      const json_arr = req.body.sizes;
+      console.log(json_arr);
       const product = new Products({
         name: req.body.name,
         price: parseInt(req.body.price),
         user: user,
         image: req.files,
-        // name: "Adidas Fit Shirt",
-        // category: "Shirts",
-        // image: "/images/p2.jpg",
-        // price: 100,
-        // countInStock: 20,
-        // brand: "Adidas",
-        // rating: 4.0,
-        // numReviews: 10,
-        // description: "high quality product",
+        ///
+        category: req.body.category,
+        countInStock: req.body.countInStock,
+        brand: req.body.brand,
+        sizes: json_arr,
+        description: req.body.description,
+        selectedSize: req.body.selectedSize,
+        color: req.body.color,
       });
       console.log(product);
 
@@ -92,6 +95,7 @@ router.post("/addreview", verify, async (req, res) => {
 
   const review = new Reviews({
     review: req.body.review,
+    rating: req.body.rating,
     products: req.body.products,
     user: user,
   });
@@ -144,7 +148,9 @@ router.get("/singleproducts", async (req, res) => {
 ///////////Gets All products with comments!!!!!!!!
 router.get("/productuser", async (req, res) => {
   const products = await Products.find({})
-
+    .select(
+      "name price _id image user category  countInStock  brand sizes description selectedSize color"
+    )
     .populate("user", {
       name: 1,
       email: 1,

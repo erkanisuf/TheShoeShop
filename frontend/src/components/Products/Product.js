@@ -65,10 +65,15 @@ const useStyles = makeStyles({
   },
   inCart: {
     margin: "0 auto",
-    borderRadius: "25px",
+    width: "70px",
+    height: "70px",
+    border: "10px solid white",
+    borderRadius: "50px",
     fontSize: "13px",
     padding: "5px 15px",
-    backgroundColor: "#e0e0e0",
+
+    transition: "1s",
+    color: "black",
   },
 });
 
@@ -103,6 +108,7 @@ export default function Product({ product }) {
       dispatch({ type: ADD_PRODUCT, product: product });
     }
   };
+  console.log(product.image[0].filename);
   return (
     <Paper elevation={1} className={classes.root}>
       <Card className={classes.cardcontainer}>
@@ -116,15 +122,15 @@ export default function Product({ product }) {
           >
             <CardMedia
               className={classes.media}
-              image={product.image[0]}
+              image={`http://localhost:4000/uploads/${product.image[0].filename}`}
               title="Contemplative Reptile"
             />
-            <Rating
+            {/* <Rating
               name="simple-controlled"
               value={product.rating}
               onChange={console.log("change")}
               readOnly
-            />
+            /> */}
 
             <CardContent>
               <Typography
@@ -133,7 +139,7 @@ export default function Product({ product }) {
                 component="h2"
                 style={{ fontFamily: "Exo 2" }}
               >
-                {product.name}
+                {product.name},{product.color}
               </Typography>{" "}
               <Typography
                 gutterBottom
@@ -151,7 +157,7 @@ export default function Product({ product }) {
           {disable ? (
             <IconButton disabled className={classes.inCart}>
               <AddShoppingCartIcon />
-              in cart
+              <span>In Cart</span>
             </IconButton>
           ) : (
             <IconButton className={classes.addToCart} onClick={addToCart}>

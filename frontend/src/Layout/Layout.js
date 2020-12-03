@@ -250,7 +250,10 @@ export default function Layout(props) {
             <div className={classes.rootTwo} key={index}>
               <ListItem alignItems="flex-start" className={classes.list}>
                 <ListItemAvatar>
-                  <Avatar alt="Remy Sharp" src={item.image[0]} />
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={`http://localhost:4000/uploads/${item.image[0].filename}`}
+                  />
                 </ListItemAvatar>
 
                 <ListItemText

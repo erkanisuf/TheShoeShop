@@ -57,11 +57,11 @@ const ProductID = () => {
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    const productFind = state.products.find((n) => n.id === Number(id));
+    const productFind = state.products.find((n) => n.id === id);
     setProduct(productFind);
   }, [state.products, id]);
 
-  console.log(product, "FROM PRODUCT ID");
+  console.log(id, "FROM PRODUCT ID");
 
   const [open, setOpen] = useState(false);
   const [openImage, setOpenImage] = useState(null);
@@ -117,7 +117,7 @@ const ProductID = () => {
           value={product.rating}
           onChange={console.log("change")}
         />
-        Reviews {product.rating.lenght}
+        Reviews
       </div>
       <div className="carouselGrid">
         <Carousel
@@ -126,7 +126,10 @@ const ProductID = () => {
           navButtonsAlwaysInvisible={true}
         >
           {product.image.map((item, i) => (
-            <Item key={i} item={item} />
+            <Item
+              key={i}
+              item={`http://localhost:4000/uploads/${item.filename}`}
+            />
           ))}
         </Carousel>
         <Modal

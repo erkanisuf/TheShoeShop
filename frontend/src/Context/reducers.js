@@ -38,7 +38,8 @@ const removeProduct = (dispatch, state) => {
 };
 
 const fetchProduct = (dispatch, state) => {
-  // return { ...state, cart: dispatch.product };
+  console.log("from redzz", dispatch);
+  return { ...state, products: dispatch.product };
 };
 
 const userLogin = (dispatch, state) => {

@@ -8,19 +8,22 @@ const productSchema = new Schema(
     // countInStock: { type: Number, required: true, unique: true },
     // brand: { type: String, required: true, unique: true },
     // description: { type: String, required: true, unique: true },
-    name: { type: String, required: true, unique: true },
+
+    category: { type: String },
+    countInStock: { type: Number, default: 1 },
+    brand: { type: String },
+
+    sizes: { type: Array },
+    description: { type: String, required: true },
+    selectedSize: { type: String, default: "" },
+    name: { type: String, required: true, unique: false },
     price: { type: Number, required: true },
+    color: { type: String },
     image: { type: Array, default: [] },
     user: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Users", //ref se izpolzva za modela Users
-      },
-    ],
-    rating: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Rating", //ref se izpolzva za modela Users
       },
     ],
     reviews: [
