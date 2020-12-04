@@ -2,10 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
 import { FETCH_ADRESS } from "../../Context/reducers";
 import axios from "axios";
-import UpdateAdress from "./UpdateAdress";
+
+import Adress from "./Adress";
+
 import PropTypes from "prop-types";
 import { makeStyles, AppBar, Tabs, Tab, Box, Button } from "@material-ui/core/";
-import EditIcon from "@material-ui/icons/Edit";
 
 const headers = {
   "Content-Type": "application/json",
@@ -73,22 +74,22 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  useEffect(() => {
-    axios
-      .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
-      .then((res) => {
-        if (res.status === 400) {
-          console.log("err");
-        } else {
-          dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
-          console.log(res);
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response.request.response);
-        // setError(error.response.request.response);
-      });
-  }, [dispatch]);
+  // useEffect(() => {
+  //   axios
+  //     .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
+  //     .then((res) => {
+  //       if (res.status === 400) {
+  //         console.log("err");
+  //       } else {
+  //         dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
+  //         console.log(res);
+  //       }
+  //     })
+  //     .catch((error) => {
+  //       // console.log(error.response.request.response);
+  //       // setError(error.response.request.response);
+  //     });
+  // }, [dispatch]);
 
   if (!state.user.adress) {
     return <h1>Loading..</h1>;
@@ -109,41 +110,7 @@ const Profile = () => {
           </Tabs>
         </AppBar>
         <TabPanel value={value} index={0}>
-          <div
-            style={{
-              textAlign: "justify",
-              margin: "0 auto",
-              width: "300px",
-            }}
-          >
-            <p>
-              <b>city:</b> {state.user.adress.city}
-            </p>
-            <p>
-              <b>postcode:</b> {state.user.adress.postcode}
-            </p>
-            <p>
-              <b>phone: </b>
-              {state.user.adress.phone}
-            </p>
-            <p>
-              <b>street: </b>
-              {state.user.adress.street}
-            </p>
-
-            <Button
-              startIcon={<EditIcon />}
-              className={classes.editbtn}
-              onClick={() => setopenUpdateAdress(true)}
-            >
-              Edit/Update Adress
-            </Button>
-          </div>
-
-          <UpdateAdress
-            handleCloseAdress={() => setopenUpdateAdress(false)}
-            openUpdateAdress={openUpdateAdress}
-          />
+          <Adress state={state.user.adress} />
         </TabPanel>
         <TabPanel value={value} index={1}>
           My Orders

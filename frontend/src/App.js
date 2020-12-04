@@ -12,6 +12,13 @@ import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import Login from "./components/User/Login";
 import PrivateRoute from "./PrivateRoute";
 import AdminPanel from "./components/User/AdminPanel";
+import CheckOut from "./components/CheckOut/CheckOut";
+import Success from "./components/CheckOut/Success";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+const stripePromise = loadStripe(
+  "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
+);
 
 function App() {
   const { state, dispatch } = useContext(MyContext);
@@ -59,6 +66,14 @@ function App() {
           </Route>
           <Route path="/adminpanel">
             <AdminPanel />
+          </Route>
+          <Route path="/checkout">
+            <Elements stripe={stripePromise}>
+              <CheckOut />
+            </Elements>
+          </Route>
+          <Route path="/finishedpaid">
+            <Success />
           </Route>
         </Switch>
       </div>

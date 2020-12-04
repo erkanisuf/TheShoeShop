@@ -320,6 +320,9 @@ export default function Layout(props) {
           startIcon={<ShoppingCartIcon />}
           variant="contained"
           color="primary"
+          component={Link}
+          to={"/checkout"}
+          onClick={handleMenuCloseCART}
         >
           Check Out
         </Button>

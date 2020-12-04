@@ -112,7 +112,11 @@ const ProductID = () => {
     <div className="gridProduct">
       <div className="nameAndRating">
         <h1>{product.name}</h1>
-        <RatingReview productId={product.id} product={product} />
+        <RatingReview
+          productId={product.id}
+          product={product}
+          user={state.user}
+        />
       </div>
       <div className="carouselGrid">
         <Carousel
@@ -123,7 +127,7 @@ const ProductID = () => {
           {product.image.map((item, i) => (
             <Item
               key={i}
-              item={`http://localhost:4000/uploads/${item.filename}`}
+              item={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
             />
           ))}
         </Carousel>
@@ -146,7 +150,7 @@ const ProductID = () => {
                 <div key={i}>
                   <img
                     alt={item}
-                    src={item}
+                    src={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
                     style={
                       window.innerWidth > 1024
                         ? {

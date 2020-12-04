@@ -15,6 +15,9 @@ const usersSchema = new Schema(
     },
     adress: {
       type: {
+        name: { type: String, required: false, min: 6, max: 1500 },
+        surname: { type: String, required: false, min: 6, max: 1500 },
+        contactemail: { type: String, required: false, min: 6, max: 1500 },
         street: { type: String, required: false, min: 6, max: 1500 },
         city: { type: String, required: false, min: 6, max: 1500 },
         postcode: { type: String, required: false, min: 6, max: 1500 },

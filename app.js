@@ -29,10 +29,12 @@ const userRoute = require("./routes/userRoutes");
 
 const testRoute = require("./routes/testRoute");
 const productsRoute = require("./routes/productRoutes");
+const paymentRoute = require("./routes/paymentRoutes");
 // Use Routes
 app.use("/api/user", userRoute);
 app.use("/api/test", testRoute);
 app.use("/api/products", productsRoute);
 app.use("/uploads", express.static("uploads"));
+app.use("/api/payment", paymentRoute);
 
 //http://localhost:4000/uploads/Climbing-the-Rinjani-Volcano.jpg  IMG how to get

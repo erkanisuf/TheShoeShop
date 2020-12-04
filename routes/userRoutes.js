@@ -80,6 +80,9 @@ const JoiSchemaUpdateAdress = Joi.object({
     city: Joi.string().min(6),
     phone: Joi.string().min(6),
     postcode: Joi.string().min(4),
+    name: Joi.string().min(4),
+    surname: Joi.string().min(4),
+    contactemail: Joi.string().email(),
   },
 });
 

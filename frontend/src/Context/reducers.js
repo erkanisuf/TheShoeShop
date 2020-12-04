@@ -8,6 +8,9 @@ export const DECREMENT_QUANT = "DECREMENT_QUANT";
 export const REMOVE_ALL_CART = "REMOVE_ALL_CART";
 export const FETCH_ADRESS = "FETCH_ADRESS";
 export const SELECT_SIZE = "SELECT_SIZE";
+export const REFRESH_CART = "REFRESH_CART";
+export const GUEST_ADRESS = "GUEST_ADRESS";
+
 ////////////////////////////////
 const addProduct = (dispatch, state) => {
   const newProduct = dispatch.product;
@@ -23,6 +26,8 @@ const addProduct = (dispatch, state) => {
     update.quantity = newProduct.quantity ? newProduct.quantity : 1;
     copyState[findIndex] = update;
   }
+
+  localStorage.setItem("cart", JSON.stringify(copyState));
 
   return { ...state, cart: copyState };
 }; //adds product to Cart
@@ -43,9 +48,6 @@ const fetchProduct = (dispatch, state) => {
 };
 
 const userLogin = (dispatch, state) => {
-  console.log("logged", dispatch);
-  window.location.reload();
-
   return {
     ...state,
     token: dispatch.token,
@@ -60,8 +62,17 @@ const userLogout = (dispatch, state) => {
   localStorage.removeItem("UserToken");
   localStorage.removeItem("User");
   localStorage.removeItem("UserID");
+  localStorage.removeItem("cart");
   window.location.reload();
-  return { ...state, token: null, user: null };
+  return {
+    ...state,
+    token: null,
+    user: {
+      name: null,
+      id: null,
+      adress: null,
+    },
+  };
 };
 
 const increment = (dispatch, state) => {
@@ -106,6 +117,7 @@ const sizeSelect = (dispatch, state) => {
 };
 
 const clearCart = (dispatch, state) => {
+  localStorage.removeItem("cart");
   return { ...state, cart: [] };
 };
 const adressUpdate = (dispatch, state) => {
@@ -113,6 +125,24 @@ const adressUpdate = (dispatch, state) => {
   return { ...state, user: { ...state.user, adress: dispatch.adress } };
 };
 
+const cartRefresh = (dispatch, state) => {
+  const cart = dispatch.cart;
+  return { ...state, cart: cart ? cart : [] };
+};
+
+const guestAdress = (dispatch, state) => {
+  console.log(dispatch, "adzz");
+  return {
+    ...state,
+    token: null,
+    user: {
+      name: null,
+      id: null,
+      adress: dispatch.adress,
+      guest: true,
+    },
+  };
+};
 //////////////////////
 export const shopReducer = (state, action) => {
   switch (action.type) {
@@ -136,6 +166,10 @@ export const shopReducer = (state, action) => {
       return adressUpdate(action, state);
     case SELECT_SIZE:
       return sizeSelect(action, state);
+    case REFRESH_CART:
+      return cartRefresh(action, state);
+    case GUEST_ADRESS:
+      return guestAdress(action, state);
 
     default:
       return state;

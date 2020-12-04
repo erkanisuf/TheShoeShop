@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Rating from "@material-ui/lab/Rating";
 import axios from "axios";
 import {
@@ -13,10 +13,9 @@ import {
 } from "@material-ui/core";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import RatingAll from "./RatingAll";
-const headers = {
-  auth_token: `${localStorage.getItem("UserToken")}`,
-};
-const RatingReview = ({ productId, product }) => {
+import { Link } from "react-router-dom";
+
+const RatingReview = ({ productId, product, user }) => {
   const [open, setOpen] = useState(false);
   const [review, setReview] = useState({
     review: "",
@@ -24,6 +23,9 @@ const RatingReview = ({ productId, product }) => {
     products: productId,
   });
   const [error, setError] = useState(null);
+  const [headers, setHeaders] = useState({
+    auth_token: `${localStorage.getItem("UserToken")}`,
+  });
 
   const handleText = (e) => {
     setReview({ ...review, review: e.target.value });
@@ -35,7 +37,9 @@ const RatingReview = ({ productId, product }) => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    setHeaders({ auth_token: `${localStorage.getItem("UserToken")}` });
+  }, [user]);
   const addReview = () => {
     axios
       .post(
@@ -59,6 +63,61 @@ const RatingReview = ({ productId, product }) => {
         setError(error.response.request.response);
       });
   };
+  if (user.name === null) {
+    return (
+      <div>
+        <div
+          style={{
+            alignContent: "center",
+
+            display: "flex",
+          }}
+        >
+          {" "}
+          <Rating value={4} name="simple-controlled" readOnly />
+          <Chip
+            variant="outlined"
+            color="primary"
+            size="small"
+            label={`Total ${product.reviews.length} reviews / New review`}
+            onClick={handleClickOpen}
+            icon={<RateReviewIcon />}
+            style={{ marginLeft: "10px", padding: "5px" }}
+          />
+        </div>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Reviews</DialogTitle>
+          <DialogContent
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignContent: "center",
+              margin: "0 auto",
+            }}
+          >
+            <DialogContentText>
+              All reviews for this product .
+            </DialogContentText>
+            <RatingAll reviews={product} />
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Close
+            </Button>
+            <Button component={Link} to={"/login"} color="primary">
+              Log in
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    );
+  }
   return (
     <div>
       <div

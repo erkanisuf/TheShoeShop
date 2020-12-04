@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
+
 import { MyContext } from "../../Context/Context";
-import { FETCH_ADRESS } from "../../Context/reducers";
+import { GUEST_ADRESS } from "../../Context/reducers";
 import {
   Button,
   TextField,
@@ -24,55 +24,29 @@ const useStyles = makeStyles({
     },
   },
 });
-const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
+const GuestAdress = ({ openUpdateAdress, handleCloseAdress }) => {
   const classes = useStyles();
   const { dispatch } = useContext(MyContext);
   const [adress, setAdress] = useState({
-    adress: {
-      street: "",
-      phone: "",
-      city: "",
-      postcode: "",
-      name: "",
-      surname: "",
-      contactemail: "",
-    },
+    street: "",
+    phone: "",
+    city: "",
+    postcode: "",
+    name: "",
+    surname: "",
+    contactemail: "",
   });
   const [error, setError] = useState(null);
   const handleOnChange = (e) => {
     setAdress({
       ...adress,
-      adress: { ...adress.adress, [e.target.name]: e.target.value },
+      [e.target.name]: e.target.value,
     });
   };
   console.log(adress);
-
-  const headers = {
-    "Content-Type": "application/json",
-    auth_token: `${localStorage.getItem("UserToken")}`,
-  };
-  const addAdress = () => {
-    axios
-      .put(
-        `http://localhost:4000/api/user/update/${localStorage.getItem(
-          "UserID"
-        )}`,
-        adress,
-        { headers: headers }
-      )
-
-      .then((res) => {
-        if (res.status === 400) {
-          console.log("err");
-        } else {
-          console.log(res);
-          dispatch({ type: FETCH_ADRESS, adress: res.data });
-          handleCloseAdress();
-        }
-      })
-      .catch((error) => {
-        setError(error.response.request.response);
-      });
+  const ConfirmAdress = () => {
+    dispatch({ type: GUEST_ADRESS, adress });
+    handleCloseAdress();
   };
   return (
     <Dialog
@@ -161,8 +135,8 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
         <Button onClick={handleCloseAdress} color="primary">
           Cancel
         </Button>
-        <Button onClick={addAdress} className={classes.loginbtn}>
-          Update Adress
+        <Button onClick={ConfirmAdress} className={classes.loginbtn}>
+          Confirm Adress
         </Button>
       </DialogActions>
       {error && (
@@ -176,4 +150,4 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
   );
 };
 
-export default UpdateAdress;
+export default GuestAdress;

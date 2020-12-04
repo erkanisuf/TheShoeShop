@@ -40,27 +40,9 @@ const Login = (props) => {
   const [user, setUser] = useState({ name: "", password: "" });
   const [error, setError] = useState(null);
   const handleOnChange = (e) => {
-    console.log({ ...user, [e.target.name]: e.target.value });
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-
-  const Adress = () => {
-    axios
-      .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
-      .then((res) => {
-        if (res.status === 400) {
-          console.log("err");
-        } else {
-          dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
-          console.log(res);
-        }
-      })
-      .catch((error) => {
-        // console.log(error.response.request.response);
-        // setError(error.response.request.response);
-      });
-  };
-
+  console.log(location.pathname, "anaa");
   const LogIn = () => {
     axios
       .post(`http://localhost:4000/api/user/login`, user)
@@ -86,12 +68,12 @@ const Login = (props) => {
           props.handleClose();
           if (location.state && location.state.from) {
             history.replace(location.state.from.pathname);
-            console.log("ga");
+          } else if (location.pathname) {
+            history.replace(location.pathname);
           }
           // else go to home
           else {
-            history.push("/");
-            console.log("anus");
+            history.replace("/");
           }
         }
       })
