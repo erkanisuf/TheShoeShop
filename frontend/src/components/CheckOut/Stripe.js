@@ -7,6 +7,7 @@ import {
   useStripe,
   CardElement,
 } from "@stripe/react-stripe-js";
+import "./Stripe.css";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
@@ -78,7 +79,8 @@ const Stripe = ({ state }) => {
   const [processing, setProcessing] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
-
+  const [mongoWaiter, setmongoWaiter] = useState(null);
+  console.log(mongoWaiter, "monggggggggg");
   useEffect(() => {
     window
       .fetch("http://localhost:4000/api/payment/create-payment-intent", {
@@ -86,16 +88,22 @@ const Stripe = ({ state }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ items: sendToStrapiProducts }),
+        body: JSON.stringify({
+          items: sendToStrapiProducts,
+          userinfo: state.user.adress,
+          cart: state.cart,
+        }),
       })
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data, "SECZZ");
+        console.log(data, "Data From Stripe (not succ yet)");
+        const waiter = JSON.parse(data.info.metadata.cartProducts);
+        setmongoWaiter({ ...waiter });
         setClientSecret(data.clientSecret);
       });
-  }, [state.cart]);
+  }, [state.cart, state.user.adress]);
   console.log(clientSecret, "SECRET CLIENT");
   const handleSubmit = async (ev) => {
     ev.preventDefault();
@@ -105,11 +113,19 @@ const Stripe = ({ state }) => {
         card: elements.getElement(CardElement),
       },
     });
-    console.log(payload, "payload"); //IF PAYLOAD.STATUS === SUCCEEDED
+    console.log(payload, "payload");
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
     } else {
+      const objtoMongoOders = {
+        ...mongoWaiter,
+        ...payload.paymentIntent.shipping,
+        dateofsucc: payload.paymentIntent.created,
+        receipt_email: payload.paymentIntent.receipt_email,
+        amount: payload.paymentIntent.amount,
+      }; ///////////This goes to mongo If succes
+      console.log("ifSUCCCCC", objtoMongoOders);
       setError(null);
       setProcessing(false);
       setSucceeded(true);
@@ -125,6 +141,7 @@ const Stripe = ({ state }) => {
         color: "#32325d",
         fontFamily: "Arial, sans-serif",
         fontSmoothing: "antialiased",
+
         fontSize: "16px",
         "::placeholder": {
           color: "#32325d",
@@ -137,18 +154,28 @@ const Stripe = ({ state }) => {
     },
   };
   return (
-    <div style={{ width: "500px" }}>
+    <div>
       <h1>Stripe</h1>
-      <button onClick={handleClick}>Send To Strapi</button>
-      <form id="payment-form" onSubmit={handleSubmit}>
+      {/* <button onClick={handleClick}>Send To Strapi</button> */}
+      <form id="payment-form" onSubmit={handleSubmit} className="Stripeform">
         <CardElement
+          className="Stripeinput "
           id="card-element"
           options={cardStyle}
           onChange={handleChange}
+          name
         />
-        <button disabled={processing || disabled || succeeded} id="submit">
+        <button
+          disabled={processing || disabled || succeeded}
+          id="submit"
+          className={succeeded ? "StripebuttonGreen" : "Stripebutton"}
+        >
           <span id="button-text">
-            {processing ? <div className="spinner" id="spinner"></div> : "Pay"}
+            {processing ? (
+              <div className="spinner" id="spinner"></div>
+            ) : (
+              `${succeeded ? "Paid" : "Pay"}`
+            )}
           </span>
         </button>
         {/* Show any error that happens when processing the payment */}
@@ -158,14 +185,7 @@ const Stripe = ({ state }) => {
           </div>
         )}
         {/* Show a success message upon completion */}
-        <p className={succeeded ? "result-message" : "result-message hidden"}>
-          Payment succeeded, see the result in your
-          <a href={`https://dashboard.stripe.com/test/payments`}>
-            {" "}
-            Stripe dashboard.
-          </a>{" "}
-          Refresh the page to pay again.
-        </p>
+        {succeeded && <p>Succsesfully paid !</p>}
       </form>
     </div>
   );

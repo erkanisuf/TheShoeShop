@@ -12,30 +12,6 @@ export const Products = () => {
   const products = state.products;
   return (
     <div>
-      <h1>CART</h1>
-      {state.cart.map((item, index) => {
-        return (
-          <div key={index}>
-            {item.name}
-            <p>QUantitiy: {item.quantity}</p>
-            <button
-              onClick={() => dispatch({ type: INCREMENT_QUANT, product: item })}
-            >
-              +
-            </button>
-            <button
-              onClick={() => dispatch({ type: DECREMENT_QUANT, product: item })}
-            >
-              -
-            </button>
-            <button
-              onClick={() => dispatch({ type: REMOVE_PRODUCT, product: item })}
-            >
-              Remove item
-            </button>
-          </div>
-        );
-      })}
       <h1>Products</h1>
       <div
         style={{

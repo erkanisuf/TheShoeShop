@@ -1,8 +1,7 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "./Context/Context";
-import { ADD_PRODUCT, REMOVE_PRODUCT } from "./Context/reducers";
 import "./App.css";
-import UserLogin from "./components/User/UserLogin";
+
 import Products from "./components/Products/Products";
 import Layout from "./Layout/Layout";
 import Profile from "./components/User/Profile";
@@ -15,7 +14,7 @@ import AdminPanel from "./components/User/AdminPanel";
 import CheckOut from "./components/CheckOut/CheckOut";
 import Success from "./components/CheckOut/Success";
 import { loadStripe } from "@stripe/stripe-js";
-import { Elements, useElements, useStripe } from "@stripe/react-stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
@@ -28,20 +27,9 @@ function App() {
   return (
     <Layout>
       <div className="App">
-        <h1>Dispatch</h1>
-        <button
-          onClick={() => dispatch({ type: REMOVE_PRODUCT, product: kur })}
-        >
-          GGGG
-        </button>
         <button onClick={() => console.log(state)}>c</button>
-        <button
-          onClick={() => dispatch({ type: REMOVE_PRODUCT, product: "amcik" })}
-        >
-          removeee
-        </button>
+
         <Breadcrumbs />
-        <UserLogin />
 
         <Switch>
           <Route exact path="/">
