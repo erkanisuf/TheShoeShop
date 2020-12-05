@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { MyContext } from "../../Context/Context";
-import { FETCH_ADRESS } from "../../Context/reducers";
+import { FETCH_ADRESS, GUEST_ADRESS } from "../../Context/reducers";
 import {
   Button,
   TextField,
@@ -67,6 +67,25 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
         } else {
           console.log(res);
           dispatch({ type: FETCH_ADRESS, adress: res.data });
+          handleCloseAdress();
+        }
+      })
+      .catch((error) => {
+        setError(error.response.request.response);
+      });
+  };
+  const ConfirmAdress = () => {
+    axios
+      .post(`http://localhost:4000/api/payment/checkadress`, {
+        userinfo: { ...adress.adress },
+      })
+
+      .then((res) => {
+        if (res.status === 400) {
+          console.log("err");
+        } else {
+          setError(null);
+          dispatch({ type: GUEST_ADRESS, ...adress });
           handleCloseAdress();
         }
       })
@@ -161,7 +180,10 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
         <Button onClick={handleCloseAdress} color="primary">
           Cancel
         </Button>
-        <Button onClick={addAdress} className={classes.loginbtn}>
+        <Button
+          onClick={localStorage.getItem("UserID") ? addAdress : ConfirmAdress}
+          className={classes.loginbtn}
+        >
           Update Adress
         </Button>
       </DialogActions>

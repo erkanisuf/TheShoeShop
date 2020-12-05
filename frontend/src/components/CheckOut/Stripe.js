@@ -1,37 +1,11 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  useElements,
-  useStripe,
-  CardElement,
-} from "@stripe/react-stripe-js";
+import { REMOVE_ALL_CART } from "../../Context/reducers";
+import { useHistory, useLocation } from "react-router-dom";
+import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import "./Stripe.css";
-const stripePromise = loadStripe(
-  "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
-);
-// {
-//   "products":[{"price_data":{
-//   "currency": "eur",
-//    "product_data": {
-//      "name": "Stubborn Attachments",
-//      "images": ["https://i.imgur.com/EHyR2nP.png"]
-//       },
-//      "unit_amount": "2000"
-//    },
-//   "quantity": "1"},
-//  {"price_data":{
-//   "currency": "eur",
-//    "product_data": {
-//      "name": "ANUSSS",
-//      "images": ["https://i.imgur.com/EHyR2nP.png"]
-//       },
-//      "unit_amount": "3500"
-//    },
-//   "quantity": "1"}]
-//   }
-const Stripe = ({ state }) => {
+
+const Stripe = ({ state, dispatch }) => {
+  const history = useHistory();
   const sendToStrapiProducts = state.cart.map((el) => {
     const newArr = {
       price_data: {
@@ -48,27 +22,6 @@ const Stripe = ({ state }) => {
     };
     return newArr;
   });
-  console.log(sendToStrapiProducts);
-  const handleClick = async (event) => {
-    const stripe = await stripePromise;
-    const response = await axios({
-      url: `http://localhost:4000/api/payment/paymentsession`,
-      method: "post",
-      data: { products: sendToStrapiProducts },
-    }).then((response) => {
-      console.log(response, "After send");
-      const session = response.data;
-      // When the customer clicks on the button, redirect them to Checkout.
-      const result = stripe.redirectToCheckout({
-        sessionId: session.id,
-      });
-      if (result.error) {
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer
-        // using `result.error.message`.
-      }
-    });
-  };
 
   ///////////////////
 
@@ -80,7 +33,7 @@ const Stripe = ({ state }) => {
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
   const [mongoWaiter, setmongoWaiter] = useState(null);
-  console.log(mongoWaiter, "monggggggggg");
+  console.log(mongoWaiter);
   useEffect(() => {
     window
       .fetch("http://localhost:4000/api/payment/create-payment-intent", {
@@ -92,6 +45,7 @@ const Stripe = ({ state }) => {
           items: sendToStrapiProducts,
           userinfo: state.user.adress,
           cart: state.cart,
+          typeUser: state.user,
         }),
       })
       .then((res) => {
@@ -99,12 +53,15 @@ const Stripe = ({ state }) => {
       })
       .then((data) => {
         console.log(data, "Data From Stripe (not succ yet)");
-        const waiter = JSON.parse(data.info.metadata.cartProducts);
+        const waiter = {
+          ...JSON.parse(data.info.metadata.cartProducts),
+          ...JSON.parse(data.info.metadata.typeUser),
+        };
         setmongoWaiter({ ...waiter });
         setClientSecret(data.clientSecret);
       });
   }, [state.cart, state.user.adress]);
-  console.log(clientSecret, "SECRET CLIENT");
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     setProcessing(true);
@@ -129,6 +86,12 @@ const Stripe = ({ state }) => {
       setError(null);
       setProcessing(false);
       setSucceeded(true);
+
+      history.push({
+        pathname: "/finishedpaid",
+
+        state: { detail: objtoMongoOders },
+      });
     }
   };
   const handleChange = async (event) => {

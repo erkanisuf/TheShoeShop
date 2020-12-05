@@ -91,35 +91,39 @@ const Profile = () => {
   //     });
   // }, [dispatch]);
 
-  if (!state.user.adress) {
-    return <h1>Loading..</h1>;
-  } else
-    return (
-      <div className={classes.root}>
-        <AppBar position="static" className={classes.bar}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="simple tabs example"
-            style={{ margin: "0 auto" }}
-            classes={{ indicator: classes.indicator }}
-          >
-            <Tab label="Adress" {...a11yProps(0)} />
-            <Tab label="Settings" {...a11yProps(1)} />
-            <Tab label="My Orders" {...a11yProps(2)} />
-          </Tabs>
-        </AppBar>
-        <TabPanel value={value} index={0}>
+  // // if (!state.user.adress) {
+  // //   return <h1>Loading..</h1>;
+  // } else
+  return (
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.bar}>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="simple tabs example"
+          style={{ margin: "0 auto" }}
+          classes={{ indicator: classes.indicator }}
+        >
+          <Tab label="Adress" {...a11yProps(0)} />
+          <Tab label="Settings" {...a11yProps(1)} />
+          <Tab label="My Orders" {...a11yProps(2)} />
+        </Tabs>
+      </AppBar>
+      <TabPanel value={value} index={0}>
+        {!state.user.adress ? (
+          <button>Add ADress</button>
+        ) : (
           <Adress state={state.user.adress} />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          My Orders
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-      </div>
-    );
+        )}
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        My Orders
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        Item Three
+      </TabPanel>
+    </div>
+  );
 };
 
 export default Profile;

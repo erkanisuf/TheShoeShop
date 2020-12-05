@@ -121,7 +121,6 @@ const clearCart = (dispatch, state) => {
   return { ...state, cart: [] };
 };
 const adressUpdate = (dispatch, state) => {
-  console.log(dispatch);
   return { ...state, user: { ...state.user, adress: dispatch.adress } };
 };
 

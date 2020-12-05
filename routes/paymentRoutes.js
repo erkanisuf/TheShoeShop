@@ -2,6 +2,7 @@ const router = require("express").Router();
 const keyStripe = process.env.KEY_STRIPE;
 const stripe = require("stripe")(keyStripe);
 const { v4: uuidv4 } = require("uuid");
+const Joi = require("@hapi/joi");
 
 const calculateOrderAmount = (items) => {
   console.log(items.length);
@@ -20,12 +21,36 @@ const calculateOrderAmount = (items) => {
   }
 };
 
-router.post("/create-payment-intent", async (req, res) => {
-  const { items, userinfo, cart } = req.body;
-  console.log(items);
+const JoiSchema = Joi.object({
+  street: Joi.string().min(6).required(),
+  phone: Joi.string().min(6).required(),
+  city: Joi.string().min(6).required(),
+  postcode: Joi.string().min(4).required(),
+  name: Joi.string().min(4).required(),
+  surname: Joi.string().min(4).required(),
+  contactemail: Joi.string().min(4).required().email(),
+});
+router.post("/checkadress", async (req, res) => {
+  const { userinfo } = req.body;
   console.log(userinfo);
-  console.log(cart);
+  const { error } = JoiSchema.validate(userinfo);
+  if (error) return res.status(400).send(error.details[0].message);
+  res.send({ message: "AdressOK" });
+});
 
+router.post("/create-payment-intent", async (req, res) => {
+  const { items, userinfo, cart, typeUser } = req.body;
+  console.log(typeUser, "Type User");
+  if (
+    userinfo.street === "" ||
+    userinfo.phone === "" ||
+    userinfo.city === "" ||
+    userinfo.postcode === "" ||
+    userinfo.name === "" ||
+    userinfo.surname === "" ||
+    userinfo.contactemail === ""
+  )
+    return res.status(400).send("Please make sure to fill all Fields !");
   const cartItems = cart.map((el) => {
     const newObj = {
       name: el.name,
@@ -35,7 +60,7 @@ router.post("/create-payment-intent", async (req, res) => {
     };
     return newObj;
   });
-  console.log(cartItems);
+
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
@@ -44,6 +69,7 @@ router.post("/create-payment-intent", async (req, res) => {
     metadata: {
       date: new Date(),
       cartProducts: JSON.stringify({ cartItems }),
+      typeUser: JSON.stringify({ typeUser }),
     },
     shipping: {
       address: {
@@ -56,7 +82,7 @@ router.post("/create-payment-intent", async (req, res) => {
       phone: userinfo.phone,
     },
   });
-  console.log(paymentIntent.metadata);
+  console.log(userinfo, "uzz");
   res.send({
     clientSecret: paymentIntent.client_secret,
     info: paymentIntent,

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-
+import axios from "axios";
 import { MyContext } from "../../Context/Context";
 import { GUEST_ADRESS } from "../../Context/reducers";
 import {
@@ -24,9 +24,10 @@ const useStyles = makeStyles({
     },
   },
 });
-const GuestAdress = ({ openUpdateAdress, handleCloseAdress }) => {
+const GuestAdress = ({ openUpdateAdress, handleCloseAdress, state }) => {
   const classes = useStyles();
   const { dispatch } = useContext(MyContext);
+
   const [adress, setAdress] = useState({
     street: "",
     phone: "",
@@ -45,8 +46,24 @@ const GuestAdress = ({ openUpdateAdress, handleCloseAdress }) => {
   };
   console.log(adress);
   const ConfirmAdress = () => {
-    dispatch({ type: GUEST_ADRESS, adress });
-    handleCloseAdress();
+    axios
+      .post(`http://localhost:4000/api/payment/checkadress`, {
+        userinfo: adress,
+      })
+
+      .then((res) => {
+        if (res.status === 400) {
+          console.log("err");
+        } else {
+          setError(null);
+          dispatch({ type: GUEST_ADRESS, adress });
+          handleCloseAdress();
+        }
+      })
+      .catch((error) => {
+        // console.log(error.response.request.response);
+        setError(error.response.request.response);
+      });
   };
   return (
     <Dialog

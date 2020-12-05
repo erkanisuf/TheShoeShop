@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { MyContext } from "../../Context/Context";
-import { FETCH_ADRESS } from "../../Context/reducers";
+import { FETCH_ADRESS, REMOVE_ALL_CART } from "../../Context/reducers";
 import axios from "axios";
 import {
   makeStyles,
@@ -33,7 +33,8 @@ function getSteps() {
 
 const CheckOut = () => {
   const { state, dispatch } = useContext(MyContext);
-  console.log(state, "FROM CHECKOUT");
+  const [adressOk, setadressOk] = useState(true);
+
   useEffect(() => {
     const headers = {
       "Content-Type": "application/json",
@@ -71,7 +72,7 @@ const CheckOut = () => {
       case 1:
         return <CheckOutAdress state={state} />;
       case 2:
-        return <Stripe state={state} />;
+        return <Stripe state={state} dispatch={dispatch} />;
       default:
         return "Unknown stepIndex";
     }
@@ -126,7 +127,10 @@ const CheckOut = () => {
               </Button>
               {activeStep === 1 && (
                 <Button
-                  disabled={state.user.adress === null}
+                  disabled={
+                    state.user.adress === null ||
+                    state.user.adress === undefined
+                  }
                   variant="contained"
                   color="primary"
                   onClick={handleNext}

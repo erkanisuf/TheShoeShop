@@ -3,11 +3,12 @@ import Adress from "../User/Adress";
 import { Button, Link } from "@material-ui/core/";
 import Login from "../User/Login";
 import GuestAdress from "./GuestAdress";
+import UpdateAdress from "../User/UpdateAdress";
 
 const CheckOutAdress = ({ state }) => {
   const [openLogin, setOpenLogin] = useState(false);
   const [openGuest, setOpenGuest] = useState(false);
-  console.log(state.user.adress, "--------------");
+  const [openUpdateAdress, setopenUpdateAdress] = useState(false);
   const handleClose = () => {
     setOpenLogin(false);
   };
@@ -18,6 +19,7 @@ const CheckOutAdress = ({ state }) => {
         <Link onClick={() => setOpenGuest(true)}>Guest</Link>
         <Login openLogin={openLogin} handleClose={handleClose} />
         <GuestAdress
+          state={state}
           openUpdateAdress={openGuest}
           handleCloseAdress={() => setOpenGuest(false)}
         />
@@ -31,7 +33,19 @@ const CheckOutAdress = ({ state }) => {
   } else
     return (
       <div>
-        <Adress state={state.user.adress} />{" "}
+        {!state.user.adress ? (
+          <div>
+            <button onClick={() => setopenUpdateAdress(true)}>
+              Add ADress
+            </button>
+            <UpdateAdress
+              handleCloseAdress={() => setopenUpdateAdress(false)}
+              openUpdateAdress={openUpdateAdress}
+            />
+          </div>
+        ) : (
+          <Adress state={state.user.adress} />
+        )}
       </div>
     );
 };
