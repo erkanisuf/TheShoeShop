@@ -3,6 +3,7 @@ const Users = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const verify = require("./privateRoute");
+
 //Validate
 const Joi = require("@hapi/joi"); //Validation package (it needs own Joi.object({} schema))
 
@@ -161,6 +162,31 @@ router.get("/userorders", verify, async (req, res) => {
       populate: { path: "cartMongo", select: "name id image" },
     });
   res.send(users);
+});
+
+router.put("/addfavorites", verify, async (req, res) => {
+  const item = req.body.item;
+
+  const newUpdate = {
+    $push: { favorites: req.body.item },
+  };
+
+  const findItem = await Users.findById({ _id: req.user._id });
+  const isItemIn = await findItem.favorites.find(
+    (el) => el.toString() === item
+  );
+
+  if (isItemIn)
+    return res.status(400).send("This Item is Already in your Favorite List");
+  const result = Users.findByIdAndUpdate(
+    { _id: req.user._id },
+    newUpdate,
+    { new: true },
+    function (err, user) {
+      if (err) res.send(err);
+      res.json(user);
+    }
+  );
 });
 
 module.exports = router;

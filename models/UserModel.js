@@ -13,6 +13,12 @@ const usersSchema = new Schema(
       max: 1500,
       default: "user",
     },
+    favorites: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Products", //ref se izpolzva za modela Products (ProductModel.js)
+      },
+    ],
     adress: {
       type: {
         name: { type: String, required: false, min: 6, max: 1500 },
