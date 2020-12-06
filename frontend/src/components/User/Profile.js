@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
-import { FETCH_ADRESS } from "../../Context/reducers";
-import axios from "axios";
+import MyOrders from "./MyOrders";
 
 import Adress from "./Adress";
 
@@ -74,26 +73,6 @@ const Profile = () => {
     setValue(newValue);
   };
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
-  //     .then((res) => {
-  //       if (res.status === 400) {
-  //         console.log("err");
-  //       } else {
-  //         dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
-  //         console.log(res);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       // console.log(error.response.request.response);
-  //       // setError(error.response.request.response);
-  //     });
-  // }, [dispatch]);
-
-  // // if (!state.user.adress) {
-  // //   return <h1>Loading..</h1>;
-  // } else
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.bar}>
@@ -117,10 +96,10 @@ const Profile = () => {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        My Orders
+        Settings
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <MyOrders />
       </TabPanel>
     </div>
   );

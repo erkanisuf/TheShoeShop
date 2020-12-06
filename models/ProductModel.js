@@ -3,12 +3,6 @@ const Schema = mongoose.Schema;
 
 const productSchema = new Schema(
   {
-    // category: { type: String, required: true, unique: true },
-    // image: { type: String, required: true, unique: true },
-    // countInStock: { type: Number, required: true, unique: true },
-    // brand: { type: String, required: true, unique: true },
-    // description: { type: String, required: true, unique: true },
-
     category: { type: String },
     countInStock: { type: Number, default: 1 },
     brand: { type: String },

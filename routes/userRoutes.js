@@ -7,7 +7,7 @@ const verify = require("./privateRoute");
 const Joi = require("@hapi/joi"); //Validation package (it needs own Joi.object({} schema))
 
 const JoiSchema = Joi.object({
-  name: Joi.string().min(6).required(),
+  name: Joi.string().min(4).required(),
   email: Joi.string().min(6).required().email(),
   password: Joi.string().min(6).required(),
 });
@@ -51,7 +51,7 @@ router.post("/register", async (req, res) => {
 
 ////// LOGIN //////////////
 const JoiSchemaLogin = Joi.object({
-  name: Joi.string().min(6).required(),
+  name: Joi.string().min(4).required(),
   password: Joi.string().min(6).required(),
 });
 router.post("/login", async (req, res) => {
@@ -133,6 +133,33 @@ router.get("/userpost", async (req, res) => {
     name: 1,
     price: 1,
   });
+  res.send(users);
+});
+
+router.get("/userorders", verify, async (req, res) => {
+  let token = req.header("auth_token");
+  if (!token)
+    return response
+      .status(401)
+      .send({ auth: false, message: "No token provided" });
+  const tokenID = jwt.verify(token, process.env.TOKEN_USER);
+
+  const users = await Users.find({ _id: tokenID })
+    .select("orders")
+    .populate("orders", {
+      trackingNumber: 1,
+      amount: 1,
+      createdAt: 1,
+      orderMessage: 1,
+      orderLocation: 1,
+      _id: 1,
+      cart: 1,
+      metadata: 1,
+    })
+    .populate({
+      path: "orders",
+      populate: { path: "cartMongo", select: "name id image" },
+    });
   res.send(users);
 });
 

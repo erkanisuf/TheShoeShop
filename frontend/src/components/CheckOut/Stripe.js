@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { REMOVE_ALL_CART } from "../../Context/reducers";
-import { useHistory, useLocation } from "react-router-dom";
+
+import { useHistory } from "react-router-dom";
 import { useElements, useStripe, CardElement } from "@stripe/react-stripe-js";
 import "./Stripe.css";
 
@@ -33,7 +33,7 @@ const Stripe = ({ state, dispatch }) => {
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
   const [mongoWaiter, setmongoWaiter] = useState(null);
-  console.log(mongoWaiter);
+  console.log(mongoWaiter, "MONGOWAITER");
   useEffect(() => {
     window
       .fetch("http://localhost:4000/api/payment/create-payment-intent", {
@@ -52,7 +52,7 @@ const Stripe = ({ state, dispatch }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data, "Data From Stripe (not succ yet)");
+        console.log(data, "STRIPE_DATA_NOT_SUCC_YET");
         const waiter = {
           ...JSON.parse(data.info.metadata.cartProducts),
           ...JSON.parse(data.info.metadata.typeUser),
@@ -62,6 +62,55 @@ const Stripe = ({ state, dispatch }) => {
       });
   }, [state.cart, state.user.adress]);
 
+  const orderstoMongo = (param) => {
+    let array = [];
+    const cartItems = param.cartItems.map((el) => {
+      array.push(el.mongoProductID);
+    });
+    const user = param.typeUser.id;
+    console.log(user, "Userr");
+    const orders = {
+      cart: param.cartItems,
+      cartMongo: array,
+      adress: {
+        city: param.address.city,
+        street: param.address.line1,
+        postcode: param.address.postal_code,
+      },
+      date: param.dateofsucc,
+      clientname: param.name,
+      email: param.receipt_email,
+      phone: param.phone,
+      orderMessage: param.orderStatus.message,
+      orderLocation: param.orderStatus.location,
+      trackingNumber: param.tracking_number,
+      amount: param.amount,
+      // metadata: param.metadata.cartProducts,
+    };
+    console.log(param, "THE PARAMM");
+    console.log(orders, "LASTONE");
+    const headers = {
+      "Content-Type": "application/json",
+      auth_token: `${localStorage.getItem("UserToken")}`,
+    };
+    fetch("http://localhost:4000/api/payment/orderstomongo", {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify({ orders }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        console.log(data, "otorder");
+        history.push({
+          pathname: "/finishedpaid",
+
+          state: { detail: param },
+        });
+      });
+  };
+
   const handleSubmit = async (ev) => {
     ev.preventDefault();
     setProcessing(true);
@@ -70,7 +119,7 @@ const Stripe = ({ state, dispatch }) => {
         card: elements.getElement(CardElement),
       },
     });
-    console.log(payload, "payload");
+    console.log(payload, "PAYLOAD_COMES_AFTER_PAYMENT");
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -81,17 +130,23 @@ const Stripe = ({ state, dispatch }) => {
         dateofsucc: payload.paymentIntent.created,
         receipt_email: payload.paymentIntent.receipt_email,
         amount: payload.paymentIntent.amount,
+        orderStatus: { message: "Processing", location: "Hakunila R-Kiosk" },
       }; ///////////This goes to mongo If succes
-      console.log("ifSUCCCCC", objtoMongoOders);
+
+      console.log(
+        objtoMongoOders,
+        "211111111111111111111111111111111111111111111111111111111111111111"
+      );
       setError(null);
       setProcessing(false);
       setSucceeded(true);
+      orderstoMongo(objtoMongoOders);
 
-      history.push({
-        pathname: "/finishedpaid",
+      // history.push({
+      //   pathname: "/finishedpaid",
 
-        state: { detail: objtoMongoOders },
-      });
+      //   state: { detail: objtoMongoOders },
+      // });
     }
   };
   const handleChange = async (event) => {
@@ -116,10 +171,23 @@ const Stripe = ({ state, dispatch }) => {
       },
     },
   };
+  console.log(clientSecret, "CLIENT_SECRET_");
+
+  const testa = () => {
+    console.log(localStorage.getItem("UserToken"));
+    const headers = {
+      auth_token: `${localStorage.getItem("UserToken")}`,
+    };
+    fetch("http://localhost:4000/api/payment/orderstomongo", {
+      method: "POST",
+      headers: headers,
+    });
+  };
   return (
     <div>
+      <button onClick={testa}>ConsoleLogORders</button>
       <h1>Stripe</h1>
-      {/* <button onClick={handleClick}>Send To Strapi</button> */}
+
       <form id="payment-form" onSubmit={handleSubmit} className="Stripeform">
         <CardElement
           className="Stripeinput "
@@ -141,13 +209,13 @@ const Stripe = ({ state, dispatch }) => {
             )}
           </span>
         </button>
-        {/* Show any error that happens when processing the payment */}
+
         {error && (
           <div className="card-error" role="alert">
             {error}
           </div>
         )}
-        {/* Show a success message upon completion */}
+
         {succeeded && <p>Succsesfully paid !</p>}
       </form>
     </div>

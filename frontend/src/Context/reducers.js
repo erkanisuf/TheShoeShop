@@ -63,7 +63,10 @@ const userLogout = (dispatch, state) => {
   localStorage.removeItem("User");
   localStorage.removeItem("UserID");
   localStorage.removeItem("cart");
-  window.location.reload();
+
+  if (window.location.pathname !== "/userprofile") {
+    window.location.reload();
+  }
   return {
     ...state,
     token: null,

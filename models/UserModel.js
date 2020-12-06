@@ -30,6 +30,12 @@ const usersSchema = new Schema(
         ref: "Products", //ref se izpolzva za modela Products (ProductModel.js)
       },
     ],
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Orders", //ref se izpolzva za modela Products (ProductModel.js)
+      },
+    ],
     reviews: [
       {
         type: mongoose.Schema.Types.ObjectId,

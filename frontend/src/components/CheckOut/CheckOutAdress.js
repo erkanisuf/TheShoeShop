@@ -15,8 +15,15 @@ const CheckOutAdress = ({ state }) => {
   if (state.user.name === null) {
     return (
       <div style={{ margin: "0 auto" }}>
-        <Link onClick={() => setOpenLogin(true)}>Log in</Link> or continue as{" "}
-        <Link onClick={() => setOpenGuest(true)}>Guest</Link>
+        {!state.user.guest && (
+          <div>
+            {" "}
+            <Link onClick={() => setOpenLogin(true)}>Log in / or</Link> continue
+            as
+            <Link onClick={() => setOpenGuest(true)}>Guest</Link>
+          </div>
+        )}
+
         <Login openLogin={openLogin} handleClose={handleClose} />
         <GuestAdress
           state={state}

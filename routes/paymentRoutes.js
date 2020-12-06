@@ -1,8 +1,10 @@
 const router = require("express").Router();
 const keyStripe = process.env.KEY_STRIPE;
+const guestToken = process.env.GUEST_TOKEN;
 const stripe = require("stripe")(keyStripe);
 const { v4: uuidv4 } = require("uuid");
 const Joi = require("@hapi/joi");
+const verify = require("./ordersGuest");
 
 const calculateOrderAmount = (items) => {
   console.log(items.length);
@@ -32,7 +34,7 @@ const JoiSchema = Joi.object({
 });
 router.post("/checkadress", async (req, res) => {
   const { userinfo } = req.body;
-  console.log(userinfo);
+
   const { error } = JoiSchema.validate(userinfo);
   if (error) return res.status(400).send(error.details[0].message);
   res.send({ message: "AdressOK" });
@@ -40,7 +42,7 @@ router.post("/checkadress", async (req, res) => {
 
 router.post("/create-payment-intent", async (req, res) => {
   const { items, userinfo, cart, typeUser } = req.body;
-  console.log(typeUser, "Type User");
+
   if (
     userinfo.street === "" ||
     userinfo.phone === "" ||
@@ -56,6 +58,8 @@ router.post("/create-payment-intent", async (req, res) => {
       name: el.name,
       mongoProductID: el.id,
       color: el.color,
+      quantity: el.quantity,
+      selectedSize: el.selectedSize,
       user: { ...el.user[0] },
     };
     return newObj;
@@ -82,10 +86,29 @@ router.post("/create-payment-intent", async (req, res) => {
       phone: userinfo.phone,
     },
   });
-  console.log(userinfo, "uzz");
+
   res.send({
     clientSecret: paymentIntent.client_secret,
     info: paymentIntent,
   });
+});
+
+const Users = require("../models/UserModel");
+const Orders = require("../models/OrdersModel");
+
+router.post("/orderstomongo", verify, async (req, res) => {
+  const { orders } = req.body;
+  const user = await Users.findById({ _id: req.user._id });
+
+  console.log(user);
+
+  const neworder = new Orders({ ...orders, user: user });
+
+  const savedOrder = await neworder.save();
+
+  user.orders = user.orders.concat(savedOrder._id);
+  await user.save();
+  console.log(savedOrder);
+  res.send(savedOrder);
 });
 module.exports = router;

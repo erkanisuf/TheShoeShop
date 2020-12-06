@@ -107,7 +107,7 @@ const Register = ({ openRegister, handleCloseRegister }) => {
           id="passwordTwo"
           name="passwordTwo"
           label="Confirm password"
-          type="passwordTwo"
+          type="password"
           fullWidth
           onChange={confirmPassword}
         />

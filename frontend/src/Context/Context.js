@@ -11,6 +11,7 @@ import { FETCH_PRODUCT, REFRESH_CART, FETCH_ADRESS } from "./reducers";
 export const MyContext = createContext();
 
 export const Context = (props) => {
+  console.log(window.location, "LOC");
   const [state, dispatch] = useReducer(shopReducer, {
     cart: [],
     token: localStorage.getItem("UserToken"),
