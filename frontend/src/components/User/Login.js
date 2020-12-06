@@ -34,7 +34,7 @@ const useStyles = makeStyles({
 const Login = (props) => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location);
+
   const { dispatch } = useContext(MyContext);
   const classes = useStyles();
   const [user, setUser] = useState({ name: "", password: "" });
@@ -42,7 +42,7 @@ const Login = (props) => {
   const handleOnChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
-  console.log(location.pathname, "anaa");
+
   const LogIn = () => {
     axios
       .post(`http://localhost:4000/api/user/login`, user)
@@ -54,7 +54,7 @@ const Login = (props) => {
           localStorage.setItem("UserToken", res.data.token);
           localStorage.setItem("User", res.data.user);
           localStorage.setItem("UserID", res.data.userID);
-          console.log(res.data);
+
           dispatch({
             type: USER_LOGIN,
             token: res.data.token,
@@ -66,8 +66,11 @@ const Login = (props) => {
           });
           setError(null);
           props.handleClose();
+          console.log(location, "location");
           if (location.state && location.state.from) {
             history.replace(location.state.from.pathname);
+          } else if (location.pathname === "/login") {
+            history.replace("/");
           } else if (location.pathname) {
             history.replace(location.pathname);
           }
@@ -78,7 +81,6 @@ const Login = (props) => {
         }
       })
       .catch((error) => {
-        // console.log(error.response.request.response);
         setError(error.response.request.response);
       });
   };
