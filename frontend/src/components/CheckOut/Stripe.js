@@ -173,20 +173,9 @@ const Stripe = ({ state, dispatch }) => {
   };
   console.log(clientSecret, "CLIENT_SECRET_");
 
-  const testa = () => {
-    console.log(localStorage.getItem("UserToken"));
-    const headers = {
-      auth_token: `${localStorage.getItem("UserToken")}`,
-    };
-    fetch("http://localhost:4000/api/payment/orderstomongo", {
-      method: "POST",
-      headers: headers,
-    });
-  };
   return (
     <div>
-      <button onClick={testa}>ConsoleLogORders</button>
-      <h1>Stripe</h1>
+      <h1>Payment</h1>
 
       <form id="payment-form" onSubmit={handleSubmit} className="Stripeform">
         <CardElement
@@ -218,6 +207,9 @@ const Stripe = ({ state, dispatch }) => {
 
         {succeeded && <p>Succsesfully paid !</p>}
       </form>
+      <div style={{ margin: "5px", textAlign: "center" }}>
+        This is Stripe Payment service
+      </div>
     </div>
   );
 };

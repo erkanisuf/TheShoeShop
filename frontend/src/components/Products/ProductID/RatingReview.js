@@ -10,6 +10,7 @@ import {
   DialogActions,
   Button,
   Chip,
+  Popover,
 } from "@material-ui/core";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import RatingAll from "./RatingAll";
@@ -68,6 +69,18 @@ const RatingReview = ({ productId, product, user }) => {
     (a, b) => (a.rating + b.rating) / product.reviews.length
   );
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopOver = () => {
+    setAnchorEl(null);
+  };
+
+  const openPop = Boolean(anchorEl);
+  const id = openPop ? "simple-popover" : undefined;
   if (user.name === null) {
     return (
       <div>
@@ -121,11 +134,28 @@ const RatingReview = ({ productId, product, user }) => {
             <Button onClick={handleClose} color="primary">
               Close
             </Button>
-            <Button component={Link} to={"/login"} color="primary">
-              Log in
+            <Button aria-describedby={id} color="primary" onClick={handleClick}>
+              Review it!
             </Button>
+            <Popover
+              id={id}
+              open={openPop}
+              anchorEl={anchorEl}
+              onClose={handleClosePopOver}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <p style={{ padding: "10px", color: "red" }}>
+                Please log in to Review it!
+              </p>
+            </Popover>
           </DialogActions>
-          <div>only registered can rate</div>
         </Dialog>
       </div>
     );

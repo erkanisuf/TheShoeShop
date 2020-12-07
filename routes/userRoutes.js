@@ -198,18 +198,21 @@ router.get("/userfavs", verify, async (req, res) => {
   res.status(200).send(findItem.favorites);
 });
 
-router.delete("/deletefav", verify, async (req, res) => {
+router.put("/deletefav", verify, async (req, res) => {
   const item = req.body.item;
-  const toObj = mongoose.Types.ObjectId(item);
-  console.log(typeof toObj);
 
-  const user = await Users.findOne({ _id: req.user._id });
-  console.log(user.favorites, "all");
+  Users.findOneAndUpdate(
+    { _id: req.user._id },
+    { $pull: { favorites: item } },
+    { multi: true },
+    function (err, data) {
+      if (err) {
+        return res.status(500).json({ error: "error in deleting address" });
+      }
 
-  console.log(remove, "rem");
-  console.log(user.favorites, "whole arr");
-  const result = user.favorites.updateOne({ $pullAll: [item] });
-  console.log(result);
+      res.json(data);
+    }
+  );
 });
 
 module.exports = router;

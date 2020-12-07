@@ -9,6 +9,7 @@ const RatingAll = ({ reviews }) => {
         return (
           <div key={index}>
             <p>by: {el.user.name}</p>
+            <p>Date:{el.createdAt}</p>
             <Rating value={el.rating} readOnly precision={0.5} />{" "}
             <p>{el.review}</p>
           </div>

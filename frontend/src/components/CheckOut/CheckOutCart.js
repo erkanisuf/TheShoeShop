@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import SelectSize from "../SelectSize/SelectSize";
 import {
@@ -16,6 +16,7 @@ import {
   ListItemSecondaryAction,
   Divider,
   Avatar,
+  Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
@@ -23,7 +24,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "500px",
+    width: "800px",
     flex: "1 1 0px",
   },
   list: {
@@ -53,6 +54,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const CheckOutCart = ({ state, dispatch }) => {
+  const [totalpricevalue, setTotalPrice] = useState(null);
+
+  ///
+  useEffect(() => {
+    const totalPrice = () => {
+      const copyArr = [...state.cart];
+      const sum = copyArr.reduce((a, b) => a + b.price * b.quantity, 0);
+      setTotalPrice(sum);
+    };
+    totalPrice();
+  }, [state.cart]);
   const classes = useStyles();
   return (
     <List className={classes.root}>
@@ -118,6 +130,9 @@ const CheckOutCart = ({ state, dispatch }) => {
           </div>
         );
       })}
+      <Typography variant="button" style={{ float: "right", padding: "5px" }}>
+        Total Price:<b>{totalpricevalue}</b>€
+      </Typography>
     </List>
   );
 };

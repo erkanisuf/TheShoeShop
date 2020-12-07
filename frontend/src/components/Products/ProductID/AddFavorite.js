@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { makeStyles, Button, IconButton } from "@material-ui/core";
+import { makeStyles, Button, IconButton, Popover } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 const token = localStorage.getItem("UserToken");
@@ -79,12 +79,28 @@ const AddFavorite = ({ product, state }) => {
       });
   }, [state.user, product.id]);
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
   return (
     <div>
       <Button
+        aria-describedby={id}
         className={classes.favbtn}
-        disabled={state.user.name === null || disable}
-        onClick={addToFavorites}
+        // disabled={state.user.name === null}
+        // onClick={addToFavorites}
+        onClick={
+          state.user.name === null || disable ? handleClick : addToFavorites
+        }
       >
         {state.user.name === null || disable ? (
           <FavoriteIcon />
@@ -92,6 +108,26 @@ const AddFavorite = ({ product, state }) => {
           <FavoriteBorderIcon />
         )}
       </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <p style={{ padding: "10px", color: "red" }}>
+          {state.user.name === null
+            ? "Please log in to use this function"
+            : "  Already added in to your wishlist."}
+        </p>
+      </Popover>
     </div>
   );
 };

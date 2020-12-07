@@ -123,7 +123,7 @@ router.get("/showproducts", (req, res) => {
 });
 ///SHOWS The DataBase
 router.get("/singleproducts", async (req, res) => {
-  const find = await Products.findById({ _id: "5fc0054d778b1f2ad42998b1" })
+  const find = await Products.findById({ _id: req.body.id })
     .populate("user", {
       name: 1,
       email: 1,
@@ -136,7 +136,7 @@ router.get("/singleproducts", async (req, res) => {
     .catch((err) => console.log(err));
   const reviews = find.reviews;
   const checkForUser = reviews.find(
-    (el) => el.user.id === "5fb4f31c18e2fd166083b9342"
+    (el) => el.user.id === req.body.id
   );
   if (checkForUser) {
     console.log(checkForUser);

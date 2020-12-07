@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { MyContext } from "../../Context/Context";
 import { REMOVE_ALL_CART } from "../../Context/reducers";
+import { Paper, NoSsr, Box } from "@material-ui/core/";
 
 const Success = () => {
   const { state, dispatch, putence } = useContext(MyContext);
@@ -21,26 +22,50 @@ const Success = () => {
   }
   return (
     <div>
-      <h1>SUCESS PAID</h1>
-      <h1>Tracking ID: {params.state.detail.tracking_number}</h1>
-      <div>
-        <h1>Shipping Adress</h1>
-        <p>City:{params.state.detail.address.city}</p>
-        <p>Adress:{params.state.detail.address.line1}</p>
-        <p>PostCode:{params.state.detail.address.postal_code}</p>
-      </div>
-      <div>
-        <h1>Contact</h1>
-        <p>Name:{params.state.detail.name}</p>
-        <p>phone:{params.state.detail.phone}</p>
-        <p>Email:{params.state.detail.receipt_email}</p>
+      <NoSsr>
+        <Box
+          p={2}
+          bgcolor="green"
+          color="primary.contrastText"
+          style={{ margin: "15px", borderRadius: "25px" }}
+        >
+          <div style={{ textAlign: "center" }}>Tracking ID:</div>
+          <h1 style={{ textAlign: "center" }}>
+            {params.state.detail.tracking_number}
+          </h1>
+        </Box>
+      </NoSsr>
+
+      <Paper elevation={3} style={{ padding: "15px", margin: "5px" }}>
+        <h2>Shipping Adress</h2>
+        <p>
+          City:<b>{params.state.detail.address.city}</b>
+        </p>
+        <p>
+          Adress:<b>{params.state.detail.address.line1}</b>
+        </p>
+        <p>
+          PostCode:<b>{params.state.detail.address.postal_code}</b>
+        </p>
+      </Paper>
+      <Paper elevation={3} style={{ padding: "15px", margin: "5px" }}>
+        <h2>User info:</h2>
+        <p>
+          Name:<b>{params.state.detail.name}</b>
+        </p>
+        <p>
+          phone:<b>{params.state.detail.phone}</b>
+        </p>
+        <p>
+          Email:<b>{params.state.detail.receipt_email}</b>
+        </p>
         <p>
           User:
           {params.state.detail.typeUser.name === null
-            ? "GuesT User"
+            ? "Guest user"
             : params.state.detail.typeUser.name}
         </p>
-      </div>
+      </Paper>
     </div>
   );
 };
