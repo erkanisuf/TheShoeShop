@@ -3,6 +3,7 @@ const Users = require("../models/UserModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const verify = require("./privateRoute");
+const mongoose = require("mongoose");
 
 //Validate
 const Joi = require("@hapi/joi"); //Validation package (it needs own Joi.object({} schema))
@@ -195,6 +196,20 @@ router.get("/userfavs", verify, async (req, res) => {
 
   const findItem = await Users.findById({ _id: req.user._id });
   res.status(200).send(findItem.favorites);
+});
+
+router.delete("/deletefav", verify, async (req, res) => {
+  const item = req.body.item;
+  const toObj = mongoose.Types.ObjectId(item);
+  console.log(typeof toObj);
+
+  const user = await Users.findOne({ _id: req.user._id });
+  console.log(user.favorites, "all");
+
+  console.log(remove, "rem");
+  console.log(user.favorites, "whole arr");
+  const result = user.favorites.updateOne({ $pullAll: [item] });
+  console.log(result);
 });
 
 module.exports = router;
