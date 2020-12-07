@@ -7,9 +7,10 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import DialogWindow from "./DialogWindow ";
+import AddFavorite from "./AddFavorite";
 const useStyles = makeStyles({
   addcart: {
-    width: "400px",
+    width: "350px",
     backgroundColor: "#ffc107",
     "&:hover": {
       backgroundColor: "#ffac33",
@@ -136,6 +137,7 @@ const AddCartButton = ({ product, selectedSize }) => {
           Add to Cart
         </Button>
       )}
+      <AddFavorite product={productID} state={state} />
       <DialogWindow open={open} handleClose={handleClose} product={product} />
     </div>
   );

@@ -108,10 +108,34 @@ export default function Product({ product }) {
       dispatch({ type: ADD_PRODUCT, product: product });
     }
   };
-  console.log(product.image[0].filename);
+  const [hover, setHover] = useState(1);
+
+  const imgCard = () => {
+    if (hover === 2) {
+      return (
+        <CardMedia
+          className={classes.media}
+          image={`http://localhost:4000/uploads/${product.image[1].filename}`}
+          title="Contemplative Reptile"
+        />
+      );
+    } else {
+      return (
+        <CardMedia
+          className={classes.media}
+          image={`http://localhost:4000/uploads/${product.image[0].filename}`}
+          title="Contemplative Reptile"
+        />
+      );
+    }
+  };
   return (
     <Paper elevation={1} className={classes.root}>
-      <Card className={classes.cardcontainer}>
+      <Card
+        className={classes.cardcontainer}
+        onMouseOver={() => setHover(2)}
+        onMouseOut={() => setHover(1)}
+      >
         <CardActionArea>
           <Link
             to={`/products/${product.id}`}
@@ -120,17 +144,7 @@ export default function Product({ product }) {
               color: "black",
             }}
           >
-            <CardMedia
-              className={classes.media}
-              image={`http://localhost:4000/uploads/${product.image[0].filename}`}
-              title="Contemplative Reptile"
-            />
-            {/* <Rating
-              name="simple-controlled"
-              value={product.rating}
-              onChange={console.log("change")}
-              readOnly
-            /> */}
+            {imgCard()}
 
             <CardContent>
               <Typography

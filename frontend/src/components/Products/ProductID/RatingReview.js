@@ -63,6 +63,11 @@ const RatingReview = ({ productId, product, user }) => {
         setError(error.response.request.response);
       });
   };
+
+  const rating = product.reviews.reduce(
+    (a, b) => (a.rating + b.rating) / product.reviews.length
+  );
+
   if (user.name === null) {
     return (
       <div>
@@ -74,7 +79,13 @@ const RatingReview = ({ productId, product, user }) => {
           }}
         >
           {" "}
-          <Rating value={4} name="simple-controlled" readOnly />
+          <Rating
+            value={rating}
+            name="simple-controlled"
+            readOnly
+            precision={0.5}
+          />
+          <span>({rating})</span>
           <Chip
             variant="outlined"
             color="primary"
@@ -114,6 +125,7 @@ const RatingReview = ({ productId, product, user }) => {
               Log in
             </Button>
           </DialogActions>
+          <div>only registered can rate</div>
         </Dialog>
       </div>
     );
@@ -128,7 +140,13 @@ const RatingReview = ({ productId, product, user }) => {
         }}
       >
         {" "}
-        <Rating value={4} name="simple-controlled" readOnly />
+        <Rating
+          value={rating}
+          name="simple-controlled"
+          readOnly
+          precision={0.5}
+        />
+        <span>({rating})</span>
         <Chip
           variant="outlined"
           color="primary"

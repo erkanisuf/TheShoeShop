@@ -166,7 +166,7 @@ router.get("/userorders", verify, async (req, res) => {
 
 router.put("/addfavorites", verify, async (req, res) => {
   const item = req.body.item;
-
+  console.log(item);
   const newUpdate = {
     $push: { favorites: req.body.item },
   };
@@ -184,9 +184,17 @@ router.put("/addfavorites", verify, async (req, res) => {
     { new: true },
     function (err, user) {
       if (err) res.send(err);
-      res.json(user);
+      res.json(user.favorites);
     }
   );
+});
+
+router.get("/userfavs", verify, async (req, res) => {
+  const item = req.body.item;
+  console.log(item);
+
+  const findItem = await Users.findById({ _id: req.user._id });
+  res.status(200).send(findItem.favorites);
 });
 
 module.exports = router;
