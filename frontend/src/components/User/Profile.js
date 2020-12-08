@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
 import MyOrders from "./MyOrders";
+import MyFavorites from "./MyFavorites";
 
 import Adress from "./Adress";
 
@@ -83,8 +84,8 @@ const Profile = () => {
           style={{ margin: "0 auto" }}
           classes={{ indicator: classes.indicator }}
         >
-          <Tab label="Adress" {...a11yProps(0)} />
-          <Tab label="Settings" {...a11yProps(1)} />
+          <Tab label="My Adress" {...a11yProps(0)} />
+          <Tab label="My Wishlist" {...a11yProps(1)} />
           <Tab label="My Orders" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
@@ -96,7 +97,7 @@ const Profile = () => {
         )}
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Settings
+        <MyFavorites state={state} />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <MyOrders />

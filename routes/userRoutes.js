@@ -198,6 +198,17 @@ router.get("/userfavs", verify, async (req, res) => {
   res.status(200).send(findItem.favorites);
 });
 
+router.get("/myfavs", verify, async (req, res) => {
+  const item = req.body.item;
+  console.log(item);
+
+  const findItem = await Users.findById({ _id: req.user._id })
+    .select("favorites")
+    .populate("favorites", {});
+
+  res.send(findItem);
+});
+
 router.put("/deletefav", verify, async (req, res) => {
   const item = req.body.item;
 
