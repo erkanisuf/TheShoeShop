@@ -1,8 +1,26 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import Product from "../Products/Product";
+import { IconButton, makeStyles } from "@material-ui/core/";
+import ClearIcon from "@material-ui/icons/Clear";
+
+const useStyles = makeStyles((theme) => ({
+  removeStyle: {
+    marginBottom: "-25px",
+    color: "white",
+    position: "absolute",
+    top: "0",
+    zIndex: "55",
+    border: "5px solid white",
+    backgroundColor: "#ffc107",
+    "&:hover": {
+      backgroundColor: "#e65100",
+    },
+  },
+}));
 
 const MyFavorites = ({ state }) => {
+  const classes = useStyles();
   const [myfavs, setmyFavs] = useState([]);
 
   const removeFromFav = useCallback((param) => {
@@ -26,9 +44,7 @@ const MyFavorites = ({ state }) => {
           ReFetch();
         }
       })
-      .catch((error) => {
-        // setError(error.response.request.response);
-      });
+      .catch((error) => {});
   }, []);
 
   const ReFetch = () => {
@@ -48,36 +64,12 @@ const MyFavorites = ({ state }) => {
           setmyFavs(res.data.favorites);
         }
       })
-      .catch((error) => {
-        //   console.log(error.response.request.response);
-        //   setError(error.response.request.response);
-      });
+      .catch((error) => {});
   };
 
   useEffect(() => {
     ReFetch();
   }, [state.user, removeFromFav]);
-
-  //   const removeFromFav = (param) => {
-  //     console.log(param);
-  //     axios
-  //       .put(
-  //         `http://localhost:4000/api/user/deletefav`,
-  //         { item: param },
-  //         { headers: headers }
-  //       )
-
-  //       .then((res) => {
-  //         if (res.status === 400) {
-  //           console.log("err");
-  //         } else {
-  //           console.log(res);
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         // setError(error.response.request.response);
-  //       });
-  //   };
 
   return (
     <div>
@@ -96,11 +88,15 @@ const MyFavorites = ({ state }) => {
       >
         {myfavs.map((item, index) => {
           return (
-            <div key={index}>
+            <div key={index} style={{ position: "relative" }}>
+              <IconButton
+                onClick={() => removeFromFav(item.id)}
+                className={classes.removeStyle}
+              >
+                <ClearIcon size="sm" />
+              </IconButton>
+
               <Product product={item} key={index} />
-              <button onClick={() => removeFromFav(item.id)}>
-                Un-favorite
-              </button>
             </div>
           );
         })}

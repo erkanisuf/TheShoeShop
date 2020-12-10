@@ -4,6 +4,7 @@ import Login from "../components/User/Login";
 import Register from "../components/User/Register";
 import { Link, useHistory } from "react-router-dom";
 import SelectSize from "../components/SelectSize/SelectSize";
+import SearchBar from "../components/SearchBar/SearchBar";
 ////////////
 import {
   USER_LOGOUT,
@@ -389,19 +390,9 @@ export default function Layout(props) {
             <Typography className={classes.title} variant="h6" noWrap>
               The Shoe Shop
             </Typography>
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
+
+            <SearchBar state={state.products} />
+
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
               <IconButton

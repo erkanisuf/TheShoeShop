@@ -1,14 +1,9 @@
 import React, { useContext } from "react";
 import { MyContext } from "../../Context/Context";
 
-import {
-  REMOVE_PRODUCT,
-  INCREMENT_QUANT,
-  DECREMENT_QUANT,
-} from "../../Context/reducers";
 import Product from "./Product";
 export const Products = () => {
-  const { state, dispatch } = useContext(MyContext);
+  const { state } = useContext(MyContext);
   const products = state.products;
   return (
     <div>

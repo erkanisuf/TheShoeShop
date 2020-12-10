@@ -15,14 +15,14 @@ import CheckOut from "./components/CheckOut/CheckOut";
 import Success from "./components/CheckOut/Success";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import SearchBar from "./components/SearchBar/SearchBar";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
 
 function App() {
-  const { state, dispatch } = useContext(MyContext);
+  const { state } = useContext(MyContext);
 
-  const kur = "apple";
   const [openLogin, setopenLogin] = useState(true);
   return (
     <Layout>
@@ -41,10 +41,6 @@ function App() {
 
           <PrivateRoute exact path="/userprofile" component={Profile} />
 
-          {/* <Route path="/userprofile">
-           <Profile />
-          
-          </Route> */}
           <Route path="/login">
             <h1> Please log in to use this section.</h1>
             <Login

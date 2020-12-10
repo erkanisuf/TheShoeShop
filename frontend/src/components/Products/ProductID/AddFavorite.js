@@ -103,7 +103,7 @@ const AddFavorite = ({ product, state }) => {
         }
       >
         {state.user.name === null || disable ? (
-          <FavoriteIcon />
+          <FavoriteIcon style={{ color: "#ff5722" }} />
         ) : (
           <FavoriteBorderIcon />
         )}

@@ -111,7 +111,9 @@ const ProductID = () => {
   return (
     <div className="gridProduct">
       <div className="nameAndRating">
-        <h1>{product.name}</h1>
+        <h1>
+          {product.name},{product.color}
+        </h1>
         <RatingReview
           productId={product.id}
           product={product}

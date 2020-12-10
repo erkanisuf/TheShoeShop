@@ -18,9 +18,9 @@ const CheckOutAdress = ({ state }) => {
         {!state.user.guest && (
           <div>
             {" "}
-            <Link onClick={() => setOpenLogin(true)}>Log in / or</Link> continue
+            <Link onClick={() => setOpenLogin(true)}>Log in </Link>or continue
             as
-            <Link onClick={() => setOpenGuest(true)}>Guest</Link>
+            <Link onClick={() => setOpenGuest(true)}> Guest</Link>
           </div>
         )}
 
