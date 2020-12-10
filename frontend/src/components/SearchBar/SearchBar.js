@@ -1,9 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles, InputBase, fade } from "@material-ui/core/";
+import React, { useState, useEffect, useRef } from "react";
+import {
+  makeStyles,
+  InputBase,
+  fade,
+  List,
+  ListItem,
+  Avatar,
+  Divider,
+  ListItemAvatar,
+  ListItemText,
+  Paper,
+  IconButton,
+} from "@material-ui/core/";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link, useHistory } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
+
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
     "&:hover": {
@@ -12,12 +26,15 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: "100%",
+
     [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
       width: "auto",
     },
+    zIndex: "2",
   },
   searchIcon: {
+    cursor: "pointer",
     padding: theme.spacing(0, 2),
     height: "100%",
     position: "absolute",
@@ -35,22 +52,44 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create("width"),
     width: "100%",
+    height: "100%",
     [theme.breakpoints.up("md")]: {
-      width: "20ch",
+      width: "23ch",
+      height: "100%",
     },
   },
   searchBox: {
     width: "100%",
-    height: "100%",
-    minHeight: "200px",
-    backgroundColor: "red",
+    padding: "15px",
+    margin: "0 auto",
+    height: "500px",
+
+    backgroundColor: "white",
+    color: "black",
     position: "absolute",
-    top: 35,
+    top: 40,
+    left: -15,
     zIndex: "15",
+    borderRadius: "5px",
+  },
+  theitem: {
+    height: "100%",
+    "&:hover": {
+      backgroundColor: "#eeeeee",
+    },
+  },
+  searchbtn: {
+    backgroundColor: "#ffd180",
+    color: "white",
+    "&:hover": {
+      backgroundColor: "#ffab40",
+    },
   },
 }));
 
 const SearchBar = ({ state }) => {
+  const history = useHistory();
+  const wrapperRef = useRef(null);
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -79,38 +118,98 @@ const SearchBar = ({ state }) => {
       setOpen(false);
     }
   }, [searchValue, state]);
+
+  const handleClose = () => {
+    setOpen(false);
+    setSearchValue("");
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        handleClose();
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
+
+  const sendToSearchRoute = (e) => {
+    e.preventDefault();
+    history.push({
+      pathname: "/search",
+
+      state: { arrayFiltered, key: searchValue },
+    });
+    handleClose();
+  };
+
+  const copyArr = [...arrayFiltered];
   return (
     <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
-      </div>
-      <InputBase
-        value={searchValue}
-        onChange={handleSearch}
-        placeholder="Search…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        inputProps={{ "aria-label": "search" }}
-      />
-
-      {open && (
-        <div className={classes.searchBox}>
-          {arrayFiltered.length >= 1 && (
-            <div>
-              {" "}
-              {arrayFiltered.map((el, index) => {
-                return (
-                  <p key={index}>
-                    {el.name},{el.color}
-                  </p>
-                );
-              })}
-            </div>
-          )}
+      <form onSubmit={sendToSearchRoute}>
+        <div onClick={sendToSearchRoute} className={classes.searchIcon}>
+          <SearchIcon />
         </div>
-      )}
+        <InputBase
+          value={searchValue}
+          onChange={handleSearch}
+          placeholder="Search…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ "aria-label": "search" }}
+        />
+
+        {open && (
+          <Paper className={classes.searchBox} ref={wrapperRef} elevation={3}>
+            {arrayFiltered.length >= 1 && (
+              <List>
+                {" "}
+                {copyArr.slice(0, 3).map((el, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      onClick={handleClose}
+                      to={`/products/${el.id}`}
+                      style={{
+                        textDecoration: "none",
+                        color: "black",
+                        height: "100%",
+                      }}
+                    >
+                      <ListItem key={index} className={classes.theitem}>
+                        <ListItemAvatar>
+                          <Avatar
+                            style={{ border: "1px solid #9e9e9e" }}
+                            alt={el.name}
+                            src={`http://localhost:4000/uploads/${el.image[1].filename}`}
+                          />
+                        </ListItemAvatar>
+                        <ListItemText primary={el.name + "," + el.color} />
+                      </ListItem>
+                      <Divider variant="inset" component="li" />
+                    </Link>
+                  );
+                })}
+              </List>
+            )}
+            <div style={{ float: "right", cursor: "pointer" }}>
+              {`Search `}
+              <IconButton
+                onClick={sendToSearchRoute}
+                className={classes.searchbtn}
+              >
+                <SearchIcon />
+              </IconButton>
+            </div>
+          </Paper>
+        )}
+      </form>
     </div>
   );
 };

@@ -20,6 +20,7 @@ const Stripe = ({ state, dispatch }) => {
       },
       quantity: el.quantity,
     };
+    console.log(newArr, "toSTRAP");
     return newArr;
   });
 
@@ -33,6 +34,7 @@ const Stripe = ({ state, dispatch }) => {
   const [disabled, setDisabled] = useState(true);
   const [clientSecret, setClientSecret] = useState("");
   const [mongoWaiter, setmongoWaiter] = useState(null);
+
   console.log(mongoWaiter, "MONGOWAITER");
   useEffect(() => {
     window
@@ -53,11 +55,12 @@ const Stripe = ({ state, dispatch }) => {
       })
       .then((data) => {
         console.log(data, "STRIPE_DATA_NOT_SUCC_YET");
+        // const waiter = { ...data.cartItems };
         const waiter = {
-          ...JSON.parse(data.info.metadata.cartProducts),
-          ...JSON.parse(data.info.metadata.typeUser),
+          ...JSON.parse(data.metadata.cartProducts),
+          ...JSON.parse(data.metadata.typeUser),
         };
-        setmongoWaiter({ ...waiter });
+        setmongoWaiter({ ...waiter }); //////////
         setClientSecret(data.clientSecret);
       });
   }, [state.cart, state.user.adress]);

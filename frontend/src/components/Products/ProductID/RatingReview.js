@@ -64,10 +64,21 @@ const RatingReview = ({ productId, product, user }) => {
         setError(error.response.request.response);
       });
   };
+  useEffect(() => {
+    if (!product.reviews.length) {
+      setRating(0);
+    } else if (product.reviews.length === 1) {
+      setRating(product.reviews[0].rating);
+    } else {
+      const calculate = product.reviews.reduce((a, b) => {
+        return (a.rating + b.rating) / product.reviews.length;
+      });
 
-  const rating = product.reviews.reduce(
-    (a, b) => (a.rating + b.rating) / product.reviews.length
-  );
+      setRating(calculate);
+    }
+  }, [product]);
+
+  const [rating, setRating] = useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 

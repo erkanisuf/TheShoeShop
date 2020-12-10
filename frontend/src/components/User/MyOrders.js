@@ -67,6 +67,9 @@ const MyOrders = () => {
     };
     myOrders();
   }, []);
+  if (orders.length < 1) {
+    return <p>No orders made yet....</p>;
+  }
   return (
     <div>
       <List className={classes.root} style={{ justifyContent: "center" }}>

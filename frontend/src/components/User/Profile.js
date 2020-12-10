@@ -4,7 +4,7 @@ import MyOrders from "./MyOrders";
 import MyFavorites from "./MyFavorites";
 
 import Adress from "./Adress";
-
+import UpdateAdress from "./UpdateAdress";
 import PropTypes from "prop-types";
 import { makeStyles, AppBar, Tabs, Tab, Box, Button } from "@material-ui/core/";
 
@@ -91,7 +91,19 @@ const Profile = () => {
       </AppBar>
       <TabPanel value={value} index={0}>
         {!state.user.adress ? (
-          <button>Add ADress</button>
+          <div>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => setopenUpdateAdress(true)}
+            >
+              Add ADress
+            </Button>
+            <UpdateAdress
+              handleCloseAdress={() => setopenUpdateAdress(false)}
+              openUpdateAdress={openUpdateAdress}
+            />
+          </div>
         ) : (
           <Adress state={state.user.adress} />
         )}

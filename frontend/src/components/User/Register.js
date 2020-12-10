@@ -43,7 +43,8 @@ const Register = ({ openRegister, handleCloseRegister }) => {
   const confirmPassword = (e) => {
     setPasswordTwo(e.target.value);
   };
-  const addNewUser = () => {
+  const addNewUser = (e) => {
+    e.preventDefault();
     if (user.password !== passwordTwo) {
       setError("Passwords does not match!");
     } else {
@@ -77,66 +78,68 @@ const Register = ({ openRegister, handleCloseRegister }) => {
       onClose={handleCloseRegister}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
-      <DialogContent>
-        <DialogContentText>Please create a new account.</DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          name="name"
-          label="Username"
-          type="name"
-          fullWidth
-          onChange={handleOnChange}
-        />
+      <form onSubmit={addNewUser}>
+        <DialogTitle id="form-dialog-title">Sign Up</DialogTitle>
+        <DialogContent>
+          <DialogContentText>Please create a new account.</DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            name="name"
+            label="Username"
+            type="name"
+            fullWidth
+            onChange={handleOnChange}
+          />
 
-        <TextField
-          autoFocus
-          margin="dense"
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          fullWidth
-          onChange={handleOnChange}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="passwordTwo"
-          name="passwordTwo"
-          label="Confirm password"
-          type="password"
-          fullWidth
-          onChange={confirmPassword}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="email"
-          name="email"
-          label="Email"
-          type="email"
-          fullWidth
-          onChange={handleOnChange}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleCloseRegister} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={addNewUser} className={classes.loginbtn}>
-          Sign Up
-        </Button>
-      </DialogActions>
-      {error && (
-        <div>
-          <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
-            {error}
-          </p>
-        </div>
-      )}
+          <TextField
+            autoFocus
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            onChange={handleOnChange}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="passwordTwo"
+            name="passwordTwo"
+            label="Confirm password"
+            type="password"
+            fullWidth
+            onChange={confirmPassword}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="email"
+            name="email"
+            label="Email"
+            type="email"
+            fullWidth
+            onChange={handleOnChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseRegister} color="primary">
+            Cancel
+          </Button>
+          <Button type="submit" className={classes.loginbtn}>
+            Sign Up
+          </Button>
+        </DialogActions>
+        {error && (
+          <div>
+            <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
+              {error}
+            </p>
+          </div>
+        )}
+      </form>
     </Dialog>
   );
 };

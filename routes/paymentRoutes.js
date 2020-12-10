@@ -7,20 +7,38 @@ const Joi = require("@hapi/joi");
 const verify = require("./ordersGuest");
 
 const calculateOrderAmount = (items) => {
-  console.log(items.length);
-  const sum = items.reduce((a, b) => {
-    return (
-      a.price_data.unit_amount * a.quantity +
-      b.price_data.unit_amount * b.quantity
-    );
+  const arrayZ = [...items];
+
+  var resultPrice = 0;
+
+  // we wait for the axios.get Promise to be resolved
+  const objects = arrayZ;
+
+  objects.forEach((childSnapshot) => {
+    let childData = childSnapshot;
+    resultPrice += childData.price_data.unit_amount * childData.quantity;
   });
-  if (items.length > 1) {
-    console.log("sum of all items", sum);
-    return sum;
-  } else {
-    console.log("sum of one item", items[0].price_data.unit_amount);
-    return items[0].price_data.unit_amount;
-  }
+  console.log(resultPrice, "resutl price");
+
+  return Number(resultPrice);
+  // console.log('Price is: ' + resultPrice);
+  // // we then return the data, just like we did in the callback-based version!
+  // return resultPrice;
+
+  // const sum = items.reduce((a, b) => {
+  //   return (
+  //     a.price_data.unit_amount * a.quantity +
+  //     b.price_data.unit_amount * b.quantity
+  //   );
+  // });
+
+  // if (items.length > 1) {
+  //   console.log("sum of all items", sum);
+  //   return sum;
+  // } else {
+  //   console.log("sum of one item", items[0].price_data.unit_amount);
+  //   return items[0].price_data.unit_amount;
+  // }
 };
 
 const JoiSchema = Joi.object({
@@ -64,17 +82,17 @@ router.post("/create-payment-intent", async (req, res) => {
     };
     return newObj;
   });
-
+  console.log(cart);
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "eur",
     receipt_email: userinfo.contactemail,
-    metadata: {
-      date: new Date(),
-      cartProducts: JSON.stringify({ cartItems }),
-      typeUser: JSON.stringify({ typeUser }),
-    },
+    // metadata: {
+    //   date: new Date(),
+    //   cartProducts: JSON.stringify({ cartItems }),
+    //   typeUser: JSON.stringify({ typeUser }),
+    // },
     shipping: {
       address: {
         line1: userinfo.street,
@@ -90,11 +108,17 @@ router.post("/create-payment-intent", async (req, res) => {
   res.send({
     clientSecret: paymentIntent.client_secret,
     info: paymentIntent,
+    metadata: {
+      date: new Date(),
+      cartProducts: JSON.stringify({ cartItems }),
+      typeUser: JSON.stringify({ typeUser }),
+    },
   });
 });
 
 const Users = require("../models/UserModel");
 const Orders = require("../models/OrdersModel");
+const { array } = require("@hapi/joi");
 
 router.post("/orderstomongo", verify, async (req, res) => {
   const { orders } = req.body;

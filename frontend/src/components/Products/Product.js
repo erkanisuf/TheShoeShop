@@ -26,20 +26,24 @@ const useStyles = makeStyles({
     width: "100%",
 
     maxWidth: 250,
+    maxHeight: 500,
     margin: " 15px",
   },
   media: {
-    height: 300,
+    height: 250,
+    maxHeight: 300,
+
     position: "relative",
   },
   cardcontainer: {
     width: "250px",
+    maxWidth: "250px",
     display: "flex",
     position: "relative",
   },
   btncontainer: {
     position: "absolute",
-    bottom: 100,
+    bottom: 140,
     right: 0,
   },
   addToCart: {
@@ -146,12 +150,26 @@ export default function Product({ product }) {
           >
             {imgCard()}
 
-            <CardContent>
+            <CardContent
+              style={{
+                maxHeight: "200px",
+                overflow: "hidden",
+                maxHeight: "200px",
+              }}
+            >
               <Typography
                 gutterBottom
                 variant="h5"
                 component="h2"
-                style={{ fontFamily: "Exo 2" }}
+                style={{
+                  fontFamily: "Exo 2",
+                  height: "50px",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+
+                  marginTop: "25px",
+                }}
               >
                 {product.name},{product.color}
               </Typography>{" "}

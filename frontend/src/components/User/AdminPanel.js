@@ -14,7 +14,7 @@ const AdminPanel = () => {
     category: "",
     countInStock: "",
     brand: "",
-    sizes: [35, 25, 44],
+    sizes: [40, 41, 42, 42.5, 43, 44, 44.5, 45, 45.5, 46],
     description: "",
     selectedSize: "",
     color: "",
@@ -90,7 +90,7 @@ const AdminPanel = () => {
       brand
       <input type="text" name="brand" onChange={onChange} />
       description
-      <input type="text" name="description" onChange={onChange} />
+      <textarea type="text" name="description" row="25" onChange={onChange} />
       color
       <input type="text" name="color" onChange={onChange} />
       <input

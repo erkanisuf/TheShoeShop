@@ -43,7 +43,8 @@ const Login = (props) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const LogIn = () => {
+  const LogIn = (e) => {
+    e.preventDefault();
     axios
       .post(`http://localhost:4000/api/user/login`, user)
 
@@ -91,47 +92,51 @@ const Login = (props) => {
       onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Log in</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Please write your username and password to log in.
-        </DialogContentText>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          name="name"
-          label="Name"
-          type="name"
-          fullWidth
-          onChange={handleOnChange}
-        />
-        <TextField
-          autoFocus
-          margin="dense"
-          id="password"
-          name="password"
-          label="Password"
-          type="password"
-          fullWidth
-          onChange={handleOnChange}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={props.handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={LogIn} className={classes.loginbtn}>
-          Sign in
-        </Button>
-      </DialogActions>
-      {error && (
-        <div>
-          <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
-            {error}
-          </p>
-        </div>
-      )}
+      <form onSubmit={LogIn}>
+        <DialogTitle id="form-dialog-title">Log in</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please write your username and password to log in.
+          </DialogContentText>
+
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            name="name"
+            label="Name"
+            type="name"
+            fullWidth
+            onChange={handleOnChange}
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            fullWidth
+            onChange={handleOnChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={props.handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button type="submit" className={classes.loginbtn}>
+            Sign in
+          </Button>
+        </DialogActions>
+
+        {error && (
+          <div>
+            <p style={{ textAlign: "center", color: "red", fontWeight: "400" }}>
+              {error}
+            </p>
+          </div>
+        )}
+      </form>
     </Dialog>
   );
 };

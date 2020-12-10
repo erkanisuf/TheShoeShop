@@ -15,7 +15,7 @@ import CheckOut from "./components/CheckOut/CheckOut";
 import Success from "./components/CheckOut/Success";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import SearchBar from "./components/SearchBar/SearchBar";
+import Search from "./components/SearchBar/Search";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
@@ -58,6 +58,9 @@ function App() {
           </Route>
           <Route path="/finishedpaid">
             <Success />
+          </Route>
+          <Route path="/search">
+            <Search />
           </Route>
         </Switch>
       </div>

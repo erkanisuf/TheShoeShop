@@ -71,9 +71,11 @@ const MyFavorites = ({ state }) => {
     ReFetch();
   }, [state.user, removeFromFav]);
 
+  if (myfavs.length < 1) {
+    return <p>No products added yet in wishlist...</p>;
+  }
   return (
     <div>
-      <h1>Products</h1>
       <div
         style={{
           display: "flex",
