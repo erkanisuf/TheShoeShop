@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { makeStyles, Button, IconButton, Popover } from "@material-ui/core";
+import { makeStyles, Button, Popover } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-const token = localStorage.getItem("UserToken");
 
 const useStyles = makeStyles({
   favbtn: {

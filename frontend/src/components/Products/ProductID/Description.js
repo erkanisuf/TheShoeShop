@@ -5,13 +5,11 @@ import {
   Tab,
   makeStyles,
   Table,
-  TableHead,
   TableRow,
   TableCell,
   TableBody,
   TableContainer,
 } from "@material-ui/core/";
-import Product from "../Product";
 
 const useStyles = makeStyles((theme) => ({
   indicator: {

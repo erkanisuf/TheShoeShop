@@ -21,7 +21,6 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   Badge,
   MenuItem,
   Menu,
@@ -36,7 +35,7 @@ import {
 } from "@material-ui/core/";
 /////////////
 import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
+
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Paper from "@material-ui/core/Paper";
 import MoreIcon from "@material-ui/icons/MoreVert";

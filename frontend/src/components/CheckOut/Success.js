@@ -1,19 +1,14 @@
 import { useElements } from "@stripe/react-stripe-js";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { MyContext } from "../../Context/Context";
 import { REMOVE_ALL_CART } from "../../Context/reducers";
 import { Paper, NoSsr, Box } from "@material-ui/core/";
 
 const Success = () => {
-  const { state, dispatch, putence } = useContext(MyContext);
+  const { dispatch } = useContext(MyContext);
   const params = useLocation();
-  // console.log(params.state.detail, "formSUCC PAGE");
-  // const info = params.state.detail ? params.state.detail : "";
 
-  // const clearCart = () => {
-  //   dispatch({ type: REMOVE_ALL_CART });
-  // };
   useEffect(() => {
     dispatch({ type: REMOVE_ALL_CART });
   }, []);

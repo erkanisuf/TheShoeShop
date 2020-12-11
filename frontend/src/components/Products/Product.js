@@ -8,13 +8,12 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  Button,
   Typography,
   makeStyles,
   Paper,
   IconButton,
 } from "@material-ui/core";
-import Rating from "@material-ui/lab/Rating";
+
 import { MyContext } from "../../Context/Context";
 import { ADD_PRODUCT } from "../../Context/reducers";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
@@ -154,7 +153,6 @@ export default function Product({ product }) {
               style={{
                 maxHeight: "200px",
                 overflow: "hidden",
-                maxHeight: "200px",
               }}
             >
               <Typography

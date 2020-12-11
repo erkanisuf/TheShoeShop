@@ -2,11 +2,7 @@ import React, { createContext, useReducer, useEffect } from "react";
 import axios from "axios";
 
 import { shopReducer } from "./reducers";
-import p1 from "../components/Products/images/p1.jpg";
-import p2 from "../components/Products/images/p2.jpg";
-import p40 from "../components/Products/images/40.jpg";
-import red from "../components/Products/images/red.jpg";
-import red2 from "../components/Products/images/red2.jpg";
+
 import { FETCH_PRODUCT, REFRESH_CART, FETCH_ADRESS } from "./reducers";
 export const MyContext = createContext();
 

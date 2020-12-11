@@ -1,4 +1,4 @@
-import React, { useContext, useState, useReducer, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../Context/Context";
 import { makeStyles, Button, TextField, IconButton } from "@material-ui/core";
 import { ADD_PRODUCT } from "../../../Context/reducers";

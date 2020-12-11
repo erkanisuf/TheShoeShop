@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { MyContext } from "../../Context/Context";
-import { FETCH_ADRESS, REMOVE_ALL_CART } from "../../Context/reducers";
+import { FETCH_ADRESS } from "../../Context/reducers";
 import axios from "axios";
 import {
   makeStyles,
@@ -33,7 +33,6 @@ function getSteps() {
 
 const CheckOut = () => {
   const { state, dispatch } = useContext(MyContext);
-  const [adressOk, setadressOk] = useState(true);
 
   useEffect(() => {
     const headers = {

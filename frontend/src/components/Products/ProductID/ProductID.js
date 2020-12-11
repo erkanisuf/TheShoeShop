@@ -2,13 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MyContext } from "../../../Context/Context";
 import Carousel from "react-material-ui-carousel";
-import {
-  Paper,
-  Button,
-  makeStyles,
-  IconButton,
-  Modal,
-} from "@material-ui/core";
+import { Paper, makeStyles, IconButton, Modal } from "@material-ui/core";
 import RatingReview from "./RatingReview";
 import AspectRatioIcon from "@material-ui/icons/AspectRatio";
 import CloseIcon from "@material-ui/icons/Close";
@@ -51,7 +45,7 @@ const ProductID = () => {
   }));
 
   const classes = useStyles();
-  const { state, dispatch, putence } = useContext(MyContext);
+  const { state } = useContext(MyContext);
 
   let { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -64,10 +58,8 @@ const ProductID = () => {
   console.log(id, "FROM PRODUCT ID");
 
   const [open, setOpen] = useState(false);
-  const [openImage, setOpenImage] = useState(null);
 
   const handleOpen = (param) => {
-    setOpenImage(param);
     setOpen(true);
   };
 
