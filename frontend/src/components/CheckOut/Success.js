@@ -1,4 +1,3 @@
-import { useElements } from "@stripe/react-stripe-js";
 import React, { useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { MyContext } from "../../Context/Context";
@@ -11,7 +10,7 @@ const Success = () => {
 
   useEffect(() => {
     dispatch({ type: REMOVE_ALL_CART });
-  }, []);
+  }, [dispatch]);
   if (!params.state) {
     return <p>No purchases!</p>;
   }

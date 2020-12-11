@@ -1,16 +1,22 @@
-import React, { useContext, useState, useEffect, useCallback } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../Context/Context";
 import FilterProducts from "./FilterProducts";
 import Product from "./Product";
+import { useLocation } from "react-router-dom";
 export const Products = () => {
   const { state } = useContext(MyContext);
-
+  const params = useLocation();
+  console.log(params);
   const [products, setProducts] = useState(state.products);
   const [activeFilter, setActiveFilter] = useState([]);
 
   useEffect(() => {
     setProducts(state.products);
-  }, [state.products]);
+
+    if (params.state) {
+      setValue(params.state);
+    }
+  }, [state.products, params]);
 
   const onFilterChange = (filter) => {
     if (filter === "All") {
