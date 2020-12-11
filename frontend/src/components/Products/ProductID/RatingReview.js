@@ -58,6 +58,7 @@ const RatingReview = ({ productId, product, user }) => {
         } else {
           console.log(res);
           handleClose();
+          window.location.reload();
         }
       })
       .catch((error) => {

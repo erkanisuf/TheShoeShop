@@ -66,22 +66,29 @@ export const Products = () => {
       );
 
       if (combine.length) {
-        const combineZ = combine.filter(
-          (el) => el.category.toLowerCase() === value
-        );
-        setProducts(combineZ);
+        if (value === "all") {
+          setProducts(combine);
+        } else {
+          const combineZ = combine.filter(
+            (el) => el.category.toLowerCase() === value
+          );
+          setProducts(combineZ);
+        }
       } else {
-        const filterZ = filter.filter(
-          (el) => el.category.toLowerCase() === value
-        );
-        setProducts(filterZ);
+        if (value === "all") {
+          setProducts(filter);
+        } else {
+          const filterZ = filter.filter(
+            (el) => el.category.toLowerCase() === value
+          );
+          setProducts(filterZ);
+        }
       }
     }
   }, [activeFilter, state.products, value]);
 
   return (
-    <div>
-      <h1>Products</h1>
+    <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
       <FilterProducts
         onFilterChange={onFilterChange}
         activeFilter={activeFilter}
@@ -97,7 +104,7 @@ export const Products = () => {
 
           flex: "1 1 0",
           justifyContent: "flex-start",
-          width: "80%",
+          width: "100%",
           margin: "0 auto",
         }}
       >

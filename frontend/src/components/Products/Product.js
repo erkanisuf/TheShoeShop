@@ -18,7 +18,7 @@ import { MyContext } from "../../Context/Context";
 import { ADD_PRODUCT } from "../../Context/reducers";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-
+import { Rating } from "@material-ui/lab";
 const useStyles = makeStyles({
   root: {
     borderRadius: "5px",
@@ -36,13 +36,14 @@ const useStyles = makeStyles({
   },
   cardcontainer: {
     width: "250px",
+    height: 500,
     maxWidth: "250px",
     display: "flex",
     position: "relative",
   },
   btncontainer: {
     position: "absolute",
-    bottom: 140,
+    bottom: 160,
     right: 0,
   },
   addToCart: {
@@ -132,6 +133,23 @@ export default function Product({ product }) {
       );
     }
   };
+
+  useEffect(() => {
+    if (!product.reviews.length) {
+      setRating(0);
+    } else if (product.reviews.length === 1) {
+      setRating(product.reviews[0].rating);
+    } else {
+      const calculate = product.reviews.reduce((a, b) => {
+        return (a.rating + b.rating) / product.reviews.length;
+      });
+
+      setRating(calculate);
+    }
+  }, [product]);
+
+  const [rating, setRating] = useState(0);
+
   return (
     <Paper elevation={1} className={classes.root}>
       <Card
@@ -147,6 +165,17 @@ export default function Product({ product }) {
               color: "black",
             }}
           >
+            <Rating
+              style={{
+                display: "flex",
+                paddingBottom: "15px",
+                justifyContent: "center",
+              }}
+              value={rating}
+              name="simple-controlled"
+              readOnly
+              precision={0.5}
+            />
             {imgCard()}
 
             <CardContent
