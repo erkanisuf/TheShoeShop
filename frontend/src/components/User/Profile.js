@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
 import MyOrders from "./MyOrders";
 import MyFavorites from "./MyFavorites";
@@ -7,11 +7,6 @@ import Adress from "./Adress";
 import UpdateAdress from "./UpdateAdress";
 import PropTypes from "prop-types";
 import { makeStyles, AppBar, Tabs, Tab, Box, Button } from "@material-ui/core/";
-
-const headers = {
-  "Content-Type": "application/json",
-  auth_token: `${localStorage.getItem("UserToken")}`,
-};
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -65,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Profile = () => {
-  const { state, dispatch } = useContext(MyContext);
+  const { state } = useContext(MyContext);
 
   const classes = useStyles();
   const [value, setValue] = useState(0);

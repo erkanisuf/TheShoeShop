@@ -43,6 +43,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClearIcon from "@material-ui/icons/Clear";
+import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 ////////////////
 
 const useStyles = makeStyles((theme) => ({
@@ -152,6 +153,15 @@ const useStyles = makeStyles((theme) => ({
       color: "#ffc107",
     },
   },
+
+  navMenu: {
+    fontFamily: "Goldman",
+    color: "white",
+    textDecoration: "none",
+    "&:hover": {
+      color: "#ffc107",
+    },
+  },
 }));
 
 export default function Layout(props) {
@@ -165,6 +175,7 @@ export default function Layout(props) {
   const isCartOpen = Boolean(anchorElCart);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [totalpricevalue, setTotalPrice] = useState(null);
+  const [openNav, setOpenNav] = useState(false);
 
   //Open Login Dialog
   const [openLogin, setopenLogin] = useState(false);
@@ -377,14 +388,71 @@ export default function Layout(props) {
     <div className="LayoutContainer">
       <div className={classes.grow}>
         <AppBar position="static" className={classes.AppBar}>
-          <Toolbar style={{ width: "80%", margin: "0 auto" }}>
+          <Toolbar
+            style={{
+              width: "80%",
+              margin: "0 auto",
+              position: "relative",
+              paddingBottom: "15px",
+            }}
+          >
+            <Paper
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-around",
+                position: "absolute",
+                width: "100%",
+                height: openNav ? "40px" : "0px",
+                zIndex: "1",
+                backgroundColor: "black",
+                borderRadius: "15px",
+                paddingBottom: "12px",
+                top: 55,
+                color: "white",
+
+                transition: "0.5s",
+                visibility: openNav ? "visible" : "hidden",
+              }}
+            >
+              {openNav && (
+                <div
+                  style={{
+                    width: "80%",
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Link
+                    to={{ pathname: `/products`, state: "men" }}
+                    className={classes.navMenu}
+                  >
+                    <p>Men</p>
+                  </Link>
+                  <Link
+                    to={{ pathname: `/products`, state: "women" }}
+                    className={classes.navMenu}
+                  >
+                    <p>Women</p>
+                  </Link>
+                  <Link
+                    to={{ pathname: `/products`, state: "all" }}
+                    className={classes.navMenu}
+                  >
+                    <p>All Shoes</p>
+                  </Link>{" "}
+                </div>
+              )}
+            </Paper>
             <IconButton
+              onClick={() => setOpenNav(!openNav)}
               edge="start"
               className={classes.menuButton}
               color="inherit"
               aria-label="open drawer"
             >
-              <MenuIcon />
+              {openNav ? <CancelPresentationIcon /> : <MenuIcon />}
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
               The Shoe Shop
