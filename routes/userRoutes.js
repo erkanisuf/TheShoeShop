@@ -164,6 +164,19 @@ router.get("/userorders", verify, async (req, res) => {
     });
   res.send(users);
 });
+const Orders = require("../models/OrdersModel");
+router.get("/toporders", async (req, res) => {
+  const orders = await Orders.find({})
+    .select("cartMongo")
+    .populate({
+      path: "cartMongo",
+      select: { id: 1, name: 1, image: 1, price: 1 },
+
+      populate: { path: "reviews", select: "rating" },
+    });
+  console.log(orders);
+  res.send(orders);
+});
 
 router.put("/addfavorites", verify, async (req, res) => {
   const item = req.body.item;
