@@ -27,8 +27,24 @@ const TopRated = ({ state }) => {
   }, [state]);
   console.log("top", top);
   return (
-    <div>
-      <h1>Top 5 Highst Rated</h1>
+    <div style={{ margin: "25px auto" }}>
+      <Paper
+        elevation={3}
+        style={{
+          width: "300px",
+          height: "40px",
+          textAlign: "center",
+          alignItems: "center",
+          padding: "5px 0",
+          borderRadius: "20px",
+          marginBottom: "-15px",
+          fontSize: "20px",
+          fontWeight: "700",
+          fontFamily: "Goldman",
+        }}
+      >
+        Highest Rated
+      </Paper>
       <Paper
         elevation={3}
         style={{
@@ -36,6 +52,7 @@ const TopRated = ({ state }) => {
           display: "flex",
           flexDirection: "row",
           margin: "0 auto",
+          flexWrap: "wrap",
           justifyContent: "center",
         }}
       >

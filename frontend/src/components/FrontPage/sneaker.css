@@ -1,0 +1,18 @@
+.showBG {
+}
+
+.showBG div {
+  position: absolute;
+  display: flex;
+  justify-self: start;
+  left: 55px;
+  transform: rotateX(360deg) rotateY(180deg);
+}
+
+.imageLogo {
+  width: 1000px;
+  opacity: 0.2;
+  background-size: cover;
+  transform: rotateX(360deg) rotateY(160deg);
+  position: relative;
+}

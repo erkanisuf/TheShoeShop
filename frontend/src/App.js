@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "./Context/Context";
 import "./App.css";
+import Sneaker from "./components/FrontPage/Sneaker";
 import MostBought from "./components/FrontPage/MostBought";
 import TopRated from "./components/FrontPage/TopRated";
 import Products from "./components/Products/Products";
@@ -28,14 +29,15 @@ function App() {
   return (
     <Layout>
       <div className="App">
-        <button onClick={() => console.log(state)}>c</button>
-
         <Breadcrumbs />
 
         <Switch>
           <Route exact path="/">
-            <MostBought state={state.products} />
-            <TopRated state={state.products} />
+            <Sneaker />
+            <div style={{ backgroundColor: "#f5f5f5", padding: "25px" }}>
+              <MostBought state={state.products} />
+              <TopRated state={state.products} />
+            </div>
           </Route>
           <Route exact path="/products">
             <Products />

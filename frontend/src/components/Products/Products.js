@@ -4,7 +4,7 @@ import FilterProducts from "./FilterProducts";
 import Product from "./Product";
 import SortBy from "./SortBy";
 import { useLocation } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { Paper, CircularProgress } from "@material-ui/core/";
 import ReactPaginate from "react-paginate";
 import "./paginate.css";
 
@@ -155,7 +155,7 @@ export const Products = () => {
   );
   ///Pagination
   const [pageCount, setpageCount] = useState(3);
-  const [perPage, setperPage] = useState(5);
+  const [perPage, setperPage] = useState(6);
   const [offset, setoffset] = useState(0);
 
   const handlePageClick = (data) => {
@@ -166,7 +166,7 @@ export const Products = () => {
     setoffset(offset);
   };
   useEffect(() => {
-    setperPage(5);
+    setperPage(6);
     setoffset(0);
   }, [value]);
   useEffect(() => {
@@ -213,19 +213,21 @@ export const Products = () => {
           })}
         </div>
       </div>
-      <ReactPaginate
-        previousLabel={"previous"}
-        nextLabel={"next"}
-        breakLabel={"..."}
-        breakClassName={"break-me"}
-        pageCount={pageCount}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageClick}
-        containerClassName={"pagination"}
-        subContainerClassName={"pages pagination"}
-        activeClassName={"active"}
-      />
+      <Paper elevation={1} style={{ width: "100%", float: "right" }}>
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          breakClassName={"break-me"}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          subContainerClassName={"pages pagination"}
+          activeClassName={"active"}
+        />
+      </Paper>
     </div>
   );
 };

@@ -57,13 +57,31 @@ const MostBought = ({ state }) => {
   }
   return (
     <div>
-      <h1>Top 5 Most Sold shoes</h1>
+      <Paper
+        elevation={3}
+        style={{
+          width: "300px",
+          height: "40px",
+          textAlign: "center",
+          alignItems: "center",
+          padding: "5px 0",
+          borderRadius: "20px",
+          marginBottom: "-15px",
+          fontSize: "20px",
+
+          fontWeight: "700",
+          fontFamily: "Goldman",
+        }}
+      >
+        Most Sold shoes
+      </Paper>
       <Paper
         elevation={3}
         style={{
           width: "100%",
           display: "flex",
           flexDirection: "row",
+          flexWrap: "wrap",
           margin: "0 auto",
           justifyContent: "center",
         }}
