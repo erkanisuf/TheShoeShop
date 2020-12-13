@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   .nameAndRating {
     grid-column: 1/2;
     grid-row: 1/2;

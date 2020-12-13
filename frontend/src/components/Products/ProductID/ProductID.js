@@ -10,6 +10,7 @@ import "./productID.css";
 import Description from "./Description";
 import ColorPicker from "./ColorPicker";
 import ProductPrice from "./ProductPrice";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const ProductID = () => {
   const useStyles = makeStyles((theme) => ({
@@ -98,7 +99,13 @@ const ProductID = () => {
   };
 
   if (!product) {
-    return <h1> Loading....</h1>;
+    return (
+      <h1>
+        {" "}
+        <CircularProgress color="secondary" style={{ color: "orange" }} />
+        Loading....
+      </h1>
+    );
   }
   return (
     <div className="gridProduct">

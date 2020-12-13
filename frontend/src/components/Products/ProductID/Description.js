@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const Description = ({ product }) => {
   const classes = useStyles();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

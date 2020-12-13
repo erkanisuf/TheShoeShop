@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import { MyContext } from "./Context/Context";
 import "./App.css";
-
+import MostBought from "./components/FrontPage/MostBought";
+import TopRated from "./components/FrontPage/TopRated";
 import Products from "./components/Products/Products";
 import Layout from "./Layout/Layout";
 import Profile from "./components/User/Profile";
-import { Switch, Route, Link } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 import ProductID from "./components/Products/ProductID/ProductID";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import Login from "./components/User/Login";
@@ -33,12 +34,8 @@ function App() {
 
         <Switch>
           <Route exact path="/">
-            <Link to={{ pathname: `/products`, state: "men" }}>
-              <p>Men</p>
-            </Link>
-            <Link to={{ pathname: `/products`, state: "women" }}>
-              <p>Women</p>
-            </Link>
+            <MostBought state={state.products} />
+            <TopRated state={state.products} />
           </Route>
           <Route exact path="/products">
             <Products />

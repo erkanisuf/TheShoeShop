@@ -175,7 +175,7 @@ export default function Layout(props) {
   const isCartOpen = Boolean(anchorElCart);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [totalpricevalue, setTotalPrice] = useState(null);
-  const [openNav, setOpenNav] = useState(false);
+  const [openNav, setOpenNav] = useState(true);
 
   //Open Login Dialog
   const [openLogin, setopenLogin] = useState(false);
@@ -394,6 +394,7 @@ export default function Layout(props) {
               margin: "0 auto",
               position: "relative",
               paddingBottom: "15px",
+              backgroundColor: "black",
             }}
           >
             <Paper
@@ -407,8 +408,8 @@ export default function Layout(props) {
                 zIndex: "1",
                 backgroundColor: "black",
                 borderRadius: "15px",
-                paddingBottom: "12px",
-                top: 55,
+                paddingBottom: "10px",
+                top: 52,
                 color: "white",
 
                 transition: "0.5s",

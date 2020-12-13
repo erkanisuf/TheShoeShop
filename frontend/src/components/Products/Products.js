@@ -4,10 +4,14 @@ import FilterProducts from "./FilterProducts";
 import Product from "./Product";
 import SortBy from "./SortBy";
 import { useLocation } from "react-router-dom";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import ReactPaginate from "react-paginate";
+import "./paginate.css";
+
 export const Products = () => {
   const { state } = useContext(MyContext);
   const params = useLocation();
-  console.log(params.state);
+
   const [products, setProducts] = useState(state.products);
   const [activeFilter, setActiveFilter] = useState([]);
 
@@ -149,7 +153,34 @@ export const Products = () => {
     },
     [products]
   );
+  ///Pagination
+  const [pageCount, setpageCount] = useState(3);
+  const [perPage, setperPage] = useState(5);
+  const [offset, setoffset] = useState(0);
 
+  const handlePageClick = (data) => {
+    console.log(data);
+    let selected = data.selected;
+    let offset = Math.ceil(selected * perPage);
+
+    setoffset(offset);
+  };
+  useEffect(() => {
+    setperPage(5);
+    setoffset(0);
+  }, [value]);
+  useEffect(() => {
+    setpageCount(Math.ceil(products.length / perPage));
+  }, [perPage, products.length, value]);
+  if (!state.products) {
+    return (
+      <h1>
+        {" "}
+        <CircularProgress color="secondary" style={{ color: "orange" }} />
+        Loading...
+      </h1>
+    );
+  }
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <SortBy
@@ -177,11 +208,24 @@ export const Products = () => {
             margin: "0 auto",
           }}
         >
-          {products.map((item, index) => {
+          {products.slice(offset, offset + perPage).map((item, index) => {
             return <Product product={item} key={index} />;
           })}
         </div>
       </div>
+      <ReactPaginate
+        previousLabel={"previous"}
+        nextLabel={"next"}
+        breakLabel={"..."}
+        breakClassName={"break-me"}
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={"pagination"}
+        subContainerClassName={"pages pagination"}
+        activeClassName={"active"}
+      />
     </div>
   );
 };
