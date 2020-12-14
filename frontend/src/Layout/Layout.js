@@ -405,7 +405,7 @@ export default function Layout(props) {
                 position: "absolute",
                 width: "100%",
                 height: openNav ? "40px" : "0px",
-                zIndex: "1",
+                // zIndex: "1",
                 backgroundColor: "black",
                 borderRadius: "15px",
                 paddingBottom: "10px",

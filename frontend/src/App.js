@@ -34,7 +34,14 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Sneaker />
-            <div style={{ backgroundColor: "#f5f5f5", padding: "25px" }}>
+            <div
+              style={{
+                backgroundColor: "#f5f5f5",
+                padding: "25px",
+                width: "90%",
+                margin: "0 auto",
+              }}
+            >
               <MostBought state={state.products} />
               <TopRated state={state.products} />
             </div>
