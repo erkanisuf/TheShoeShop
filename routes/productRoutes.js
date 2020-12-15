@@ -135,9 +135,7 @@ router.get("/singleproducts", async (req, res) => {
     })
     .catch((err) => console.log(err));
   const reviews = find.reviews;
-  const checkForUser = reviews.find(
-    (el) => el.user.id === req.body.id
-  );
+  const checkForUser = reviews.find((el) => el.user.id === req.body.id);
   if (checkForUser) {
     console.log(checkForUser);
   } else {
@@ -160,19 +158,35 @@ router.get("/productuser", async (req, res) => {
   res.send(products);
 });
 ///////////Gets All products with comments!!!!!!!!
-router.delete("/delete/:id", verify, async (request, response, next) => {
-  const user = await Users.findById({ _id: request.user._id });
-  const product = await Products.findById({ _id: request.params.id });
-  console.log(product.user[0], "product");
-  console.log(user._id, "user");
-  if (user._id.toString() === product.user[0].toString()) {
-    Products.findByIdAndRemove(request.params.id)
-      .then((result) => {
-        response.status(204).end();
-      })
-      .catch((error) => next(error));
+
+const Orders = require("../models/OrdersModel");
+router.post("/trackorder", (req, res) => {
+  console.log(req.body.trackingNumber);
+
+  if (!req.body.trackingNumber) {
+    res.status(401).send("Please write a valid Order ID!");
   } else {
-    response.send("Premission denied!");
+    const orders = Orders.find({ trackingNumber: req.body.trackingNumber })
+      .select(
+        "trackingNumber orderMessage orderLocation clientname date adress"
+      )
+
+      .then((result) => {
+        console.log(Boolean(result.length), "len");
+        if (!result.length) {
+          res.send({
+            message: `Not found any orders by ID: ${req.body.trackingNumber}`,
+            data: result,
+          });
+        } else {
+          res.send({
+            message: `Order by id: ${req.body.trackingNumber}`,
+            data: result,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   }
 });
+
 module.exports = router;

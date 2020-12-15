@@ -3,6 +3,7 @@ import axios from "axios";
 import Product from "../Products/Product";
 import Paper from "@material-ui/core/Paper";
 import CircularProgress from "@material-ui/core/CircularProgress";
+const windowCheck = window.screen.width;
 const MostBought = ({ state }) => {
   const [data, setData] = useState([]);
   const [most, setMost] = useState([]);

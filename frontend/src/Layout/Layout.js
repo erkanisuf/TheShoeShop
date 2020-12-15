@@ -5,6 +5,7 @@ import Register from "../components/User/Register";
 import { Link, useHistory } from "react-router-dom";
 import SelectSize from "../components/SelectSize/SelectSize";
 import SearchBar from "../components/SearchBar/SearchBar";
+import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 ////////////
 import {
   USER_LOGOUT,
@@ -456,12 +457,30 @@ export default function Layout(props) {
               {openNav ? <CancelPresentationIcon /> : <MenuIcon />}
             </IconButton>
             <Typography className={classes.title} variant="h6" noWrap>
-              The Shoe Shop
+              <Link
+                to={{ pathname: `/` }}
+                style={{ color: "white", textDecoration: "none" }}
+              >
+                The Shoe Shop
+              </Link>
             </Typography>
 
             <SearchBar state={state.products} />
 
             <div className={classes.grow} />
+            <div className={classes.grow}>
+              <Link
+                to={{ pathname: `/trackpackage` }}
+                className={classes.navMenu}
+              >
+                <p>
+                  Order Tracking{" "}
+                  <Badge>
+                    <LocalShippingIcon />
+                  </Badge>
+                </p>
+              </Link>{" "}
+            </div>
             <div className={classes.sectionDesktop}>
               <IconButton
                 edge="end"

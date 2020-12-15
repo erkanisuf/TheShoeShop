@@ -9,6 +9,12 @@ const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(cors());
 app.use(cookieParser());
+var bodyParser = require("body-parser");
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 //start server
 const dbUrl = process.env.DB_CONNECT;
 mongoose

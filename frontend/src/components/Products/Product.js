@@ -19,26 +19,39 @@ import { ADD_PRODUCT } from "../../Context/reducers";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Rating } from "@material-ui/lab";
+
+const windowCheck = window.screen.width;
+
 const useStyles = makeStyles({
   root: {
     borderRadius: "5px",
-    width: "100%",
 
-    maxWidth: 250,
-    maxHeight: 500,
-    margin: " 15px",
+    width: windowCheck < 1024 ? "45%" : "100%",
+
+    maxWidth: windowCheck < 1024 ? "100%" : 250,
+    maxHeight: windowCheck < 1024 ? 250 : 500,
+    margin: "15px",
+  },
+  rootMobile: {
+    borderRadius: "5px",
+
+    width: "45%",
+    maxHeight: 250,
+    margin: "2px",
   },
   media: {
-    height: 250,
-    maxHeight: 300,
+    height: windowCheck < 1024 ? 100 : 250,
+    maxHeight: windowCheck < 1024 ? 200 : 300,
 
     position: "relative",
   },
   cardcontainer: {
-    width: "250px",
-    height: 500,
-    maxWidth: "250px",
+    width: windowCheck < 1024 ? "100%" : "250px",
+    height: windowCheck < 1024 ? "100%" : 500,
+    maxWidth: windowCheck < 1024 ? "100%" : "250px",
+
     display: "flex",
+
     position: "relative",
   },
   btncontainer: {
@@ -64,7 +77,7 @@ const useStyles = makeStyles({
     },
   },
   price: {
-    marginTop: "15px",
+    marginTop: windowCheck < 1024 ? "5px" : "15px",
     fontFamily: "Goldman",
   },
   inCart: {
@@ -151,7 +164,10 @@ export default function Product({ product }) {
   const [rating, setRating] = useState(0);
 
   return (
-    <Paper elevation={1} className={classes.root}>
+    <Paper
+      elevation={1}
+      className={windowCheck < 420 ? classes.rootMobile : classes.root}
+    >
       <Card
         className={classes.cardcontainer}
         onMouseOver={() => setHover(2)}
@@ -180,20 +196,21 @@ export default function Product({ product }) {
 
             <CardContent
               style={{
-                maxHeight: "200px",
+                maxHeight: windowCheck < 1024 ? "100%" : "200px",
                 overflow: "hidden",
               }}
             >
               <Typography
                 gutterBottom
                 variant="h5"
-                component="h2"
+                component={"h2"}
                 style={{
                   fontFamily: "Exo 2",
-                  height: "50px",
+                  height: windowCheck < 1024 ? "100%" : "50px",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                   whiteSpace: "nowrap",
+                  fontSize: windowCheck < 1024 ? "12px" : "",
 
                   marginTop: "25px",
                 }}

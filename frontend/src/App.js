@@ -15,6 +15,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminPanel from "./components/User/AdminPanel";
 import CheckOut from "./components/CheckOut/CheckOut";
 import Success from "./components/CheckOut/Success";
+import Tracker from "./components/Tracker/Tracker";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Search from "./components/SearchBar/Search";
@@ -75,6 +76,9 @@ function App() {
           </Route>
           <Route path="/search">
             <Search />
+          </Route>
+          <Route path="/trackpackage">
+            <Tracker />
           </Route>
         </Switch>
       </div>
