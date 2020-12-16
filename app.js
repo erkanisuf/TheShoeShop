@@ -17,6 +17,7 @@ app.use(
 );
 //start server
 const dbUrl = process.env.DB_CONNECT;
+const PORT = process.env.PORT || 4000;
 mongoose
   .connect(dbUrl, {
     useNewUrlParser: true,

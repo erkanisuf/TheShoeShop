@@ -552,8 +552,13 @@ export default function Layout(props) {
           handleCloseRegister={() => setopenRegister(false)}
         />
       </div>
+      <div className="footermin">{props.children}</div>
 
-      {props.children}
+      <footer>
+        <AppBar position="static">
+          <Toolbar style={{ backgroundColor: "black" }}></Toolbar>
+        </AppBar>
+      </footer>
     </div>
   );
 }

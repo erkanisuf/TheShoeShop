@@ -199,7 +199,7 @@ const SearchBar = ({ state }) => {
               </List>
             )}
             <div style={{ float: "right", cursor: "pointer" }}>
-              {`Search `}
+              {`More results `}
               <IconButton
                 onClick={sendToSearchRoute}
                 className={classes.searchbtn}
