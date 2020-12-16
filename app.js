@@ -8,6 +8,7 @@ const dotenv = require("dotenv"); // Hides my DB passw login
 const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(cors());
+const nodemailer = require("nodemailer");
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

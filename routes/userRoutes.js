@@ -248,6 +248,7 @@ const sendEmailToUser = (useremail, token) => {
     service: "gmail",
     auth: {
       user: process.env.GMAIL_ACC,
+
       pass: process.env.GMAIL_PASW, // naturally, replace both with your real credentials or an application-specific password
     },
   });
