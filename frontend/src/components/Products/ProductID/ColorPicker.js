@@ -58,7 +58,7 @@ const ColorPicker = ({ productOriginal, state }) => {
         return (
           <Circle color={el.id} key={i}>
             <Avatar
-              src={`http://localhost:4000/uploads/${el.image[0].filename}`}
+              src={`${el.image[0].location}`}
               alt={el.name}
               className={classes.large}
             />

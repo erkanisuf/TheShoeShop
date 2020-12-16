@@ -14,7 +14,16 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const filterList = {
-  colors: ["red", "black", "yellow", "white", "violet", "grey"],
+  colors: [
+    "red",
+    "black",
+    "yellow",
+    "white",
+    "violet",
+    "grey",
+    "pink",
+    "orange",
+  ],
   brands: ["nike", "vans", "adidas", "jordan"],
   category: ["men", "women"],
 };
@@ -98,21 +107,42 @@ const FilterProducts = (props) => {
         <AccordionDetails className={classes.flexAcc}>
           {filterList.colors.map((el, index) => {
             return (
-              <FormControlLabel
+              <div
                 key={index}
-                control={
-                  <Checkbox
-                    checked={props.activeFilter.includes(el)}
-                    value={el}
-                    onChange={() => props.onFilterChange(el)}
-                    name={el}
-                  />
-                }
-                label={`${el} (${
-                  props.products.filter((key) => key.color.toLowerCase() === el)
-                    .length
-                })`}
-              />
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                }}
+              >
+                <FormControlLabel
+                  style={{ width: "100%" }}
+                  control={
+                    <Checkbox
+                      checked={props.activeFilter.includes(el)}
+                      value={el}
+                      onChange={() => props.onFilterChange(el)}
+                      name={el}
+                    />
+                  }
+                  label={`${el} (${
+                    props.products.filter(
+                      (key) => key.color.toLowerCase() === el
+                    ).length
+                  })`}
+                />
+                <div
+                  style={{
+                    width: "2px",
+                    height: "30px",
+
+                    padding: "2px",
+                    backgroundColor: el,
+                    border: el === "white" ? "1px solid grey" : "",
+                    margin: "2px",
+                  }}
+                ></div>
+              </div>
             );
           })}
         </AccordionDetails>

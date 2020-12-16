@@ -41,13 +41,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const headers = {
+  "Content-Type": "application/json",
+  auth_token: `${localStorage.getItem("UserToken")}`,
+};
+
 const MyOrders = () => {
   const classes = useStyles();
   const [orders, setOrders] = useState([]);
-  const headers = {
-    "Content-Type": "application/json",
-    auth_token: `${localStorage.getItem("UserToken")}`,
-  };
+
   useEffect(() => {
     const myOrders = () => {
       axios
@@ -133,7 +135,7 @@ const MyOrders = () => {
                         return (
                           <Avatar
                             alt={key.name}
-                            src={`http://localhost:4000/uploads/${key.image[0].filename}`}
+                            src={`http://localhost:4000/uploads/${key.image[0].location}`}
                           />
                         );
                       })} */}
@@ -143,10 +145,10 @@ const MyOrders = () => {
                               margin: "5px",
                             }}
                             alt={key.name}
-                            src={`http://localhost:4000/uploads/${
+                            src={`${
                               el.cartMongo.find(
                                 (z) => z.id === key.mongoProductID
-                              ).image[0].filename
+                              ).image[0].location
                             }`}
                           />
                           <ListItemText
@@ -166,5 +168,5 @@ const MyOrders = () => {
     </div>
   );
 };
-// image={`http://localhost:4000/uploads/${product.image[0].filename}`}
+// image={`http://localhost:4000/uploads/${product.image[0].location}`}
 export default MyOrders;

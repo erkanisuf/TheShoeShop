@@ -132,7 +132,7 @@ export default function Product({ product }) {
       return (
         <CardMedia
           className={classes.media}
-          image={`http://localhost:4000/uploads/${product.image[1].filename}`}
+          image={`${product.image[1].location}`}
           title="Contemplative Reptile"
         />
       );
@@ -140,7 +140,7 @@ export default function Product({ product }) {
       return (
         <CardMedia
           className={classes.media}
-          image={`http://localhost:4000/uploads/${product.image[0].filename}`}
+          image={`${product.image[0].location}`}
           title="Contemplative Reptile"
         />
       );

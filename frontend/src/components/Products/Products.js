@@ -155,7 +155,7 @@ export const Products = () => {
   );
   ///Pagination
   const [pageCount, setpageCount] = useState(3);
-  const [perPage, setperPage] = useState(6);
+  const [perPage, setperPage] = useState(10);
   const [offset, setoffset] = useState(0);
 
   const handlePageClick = (data) => {
@@ -166,7 +166,7 @@ export const Products = () => {
     setoffset(offset);
   };
   useEffect(() => {
-    setperPage(6);
+    setperPage(10);
     setoffset(0);
   }, [value]);
   useEffect(() => {

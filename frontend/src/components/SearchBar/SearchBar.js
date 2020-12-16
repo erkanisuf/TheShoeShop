@@ -187,7 +187,7 @@ const SearchBar = ({ state }) => {
                           <Avatar
                             style={{ border: "1px solid #9e9e9e" }}
                             alt={el.name}
-                            src={`http://localhost:4000/uploads/${el.image[1].filename}`}
+                            src={`${el.image[1].location}`}
                           />
                         </ListItemAvatar>
                         <ListItemText primary={el.name + "," + el.color} />

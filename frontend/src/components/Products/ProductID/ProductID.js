@@ -128,7 +128,8 @@ const ProductID = () => {
           {product.image.map((item, i) => (
             <Item
               key={i}
-              item={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
+              // item={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
+              item={`${item.location}`}
             />
           ))}
         </Carousel>
@@ -151,7 +152,8 @@ const ProductID = () => {
                 <div key={i}>
                   <img
                     alt={item}
-                    src={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
+                    // src={`http://${window.location.hostname}:4000/uploads/${item.filename}`}
+                    src={`${item.location}`}
                     style={
                       window.innerWidth > 1024
                         ? {

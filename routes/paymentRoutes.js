@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const keyStripe = process.env.KEY_STRIPE;
-const guestToken = process.env.GUEST_TOKEN;
+const gmailacc = process.env.GMAIL_ACC;
+const gmailapasw = process.env.GMAIL_PASW;
 const stripe = require("stripe")(keyStripe);
 const { v4: uuidv4 } = require("uuid");
 const Joi = require("@hapi/joi");
@@ -18,27 +19,8 @@ const calculateOrderAmount = (items) => {
     let childData = childSnapshot;
     resultPrice += childData.price_data.unit_amount * childData.quantity;
   });
-  console.log(resultPrice, "resutl price");
 
   return Number(resultPrice);
-  // console.log('Price is: ' + resultPrice);
-  // // we then return the data, just like we did in the callback-based version!
-  // return resultPrice;
-
-  // const sum = items.reduce((a, b) => {
-  //   return (
-  //     a.price_data.unit_amount * a.quantity +
-  //     b.price_data.unit_amount * b.quantity
-  //   );
-  // });
-
-  // if (items.length > 1) {
-  //   console.log("sum of all items", sum);
-  //   return sum;
-  // } else {
-  //   console.log("sum of one item", items[0].price_data.unit_amount);
-  //   return items[0].price_data.unit_amount;
-  // }
 };
 
 const JoiSchema = Joi.object({
@@ -82,7 +64,7 @@ router.post("/create-payment-intent", async (req, res) => {
     };
     return newObj;
   });
-  console.log(cart);
+
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
@@ -118,13 +100,45 @@ router.post("/create-payment-intent", async (req, res) => {
 
 const Users = require("../models/UserModel");
 const Orders = require("../models/OrdersModel");
-const { array } = require("@hapi/joi");
+const nodemailer = require("nodemailer");
 
+const sendEmailToUser = (param) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: gmailacc,
+      pass: gmailapasw, // naturally, replace both with your real credentials or an application-specific password
+    },
+  });
+
+  const mailOptions = {
+    from: gmailacc,
+    to: param.email,
+    subject: "Your Order has been successfull!",
+    text: `Tracking number: ${param.trackingNumber},
+    Total paid: ${param.amount / 100} euros,
+     Order date: ${param.createdAt} euros,
+    
+    Delivery To Adress: ${param.adress.city},${param.adress.street},${
+      param.adress.postcode
+    },
+    
+    The Shoe Shop Thanks for the order!,
+    
+    `,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
 router.post("/orderstomongo", verify, async (req, res) => {
   const { orders } = req.body;
   const user = await Users.findById({ _id: req.user._id });
-
-  console.log(user);
 
   const neworder = new Orders({ ...orders, user: user });
 
@@ -132,7 +146,9 @@ router.post("/orderstomongo", verify, async (req, res) => {
 
   user.orders = user.orders.concat(savedOrder._id);
   await user.save();
-  console.log(savedOrder);
+
   res.send(savedOrder);
+
+  sendEmailToUser(savedOrder);
 });
 module.exports = router;
