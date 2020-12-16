@@ -9,6 +9,9 @@ const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(cors());
 app.options("*", cors());
+app.options("*", (req, res) => {
+  res.sendStatus(204);
+});
 app.use(cookieParser());
 var bodyParser = require("body-parser");
 app.use(
