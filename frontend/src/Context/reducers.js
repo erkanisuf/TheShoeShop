@@ -48,6 +48,11 @@ const fetchProduct = (dispatch, state) => {
 };
 
 const userLogin = (dispatch, state) => {
+  localStorage.setItem("UserToken", dispatch.token);
+  console.log(
+    "asdddddddddddddddddddddd",
+    localStorage.setItem("UserToken", dispatch.token)
+  );
   return {
     ...state,
     token: dispatch.token,

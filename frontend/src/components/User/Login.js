@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
-import { USER_LOGIN, FETCH_ADRESS } from "../../Context/reducers";
+import { USER_LOGIN } from "../../Context/reducers";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
@@ -14,10 +14,6 @@ import {
   makeStyles,
 } from "@material-ui/core/";
 
-const headers = {
-  "Content-Type": "application/json",
-  auth_token: `${localStorage.getItem("UserToken")}`,
-};
 const useStyles = makeStyles({
   loginbtn: {
     borderRadius: "25px",
@@ -43,15 +39,16 @@ const Login = (props) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const LogIn = (e) => {
+  const LogIn = async (e) => {
     e.preventDefault();
-    axios
+    await axios
       .post(`http://localhost:4000/api/user/login`, user)
 
       .then((res) => {
         if (res.status === 400) {
           console.log("err");
         } else {
+          console.log(res);
           localStorage.setItem("UserToken", res.data.token);
           localStorage.setItem("User", res.data.user);
           localStorage.setItem("UserID", res.data.userID);

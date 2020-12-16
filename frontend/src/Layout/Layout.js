@@ -242,6 +242,12 @@ export default function Layout(props) {
       >
         <MenuItem onClick={handleMenuClose}>UserProfile</MenuItem>
       </Link>
+      <Link
+        to="/forgotpassword"
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <MenuItem onClick={handleMenuClose}>Change Password</MenuItem>
+      </Link>
 
       <MenuItem onClick={signOut}>Sign Out</MenuItem>
     </Menu>

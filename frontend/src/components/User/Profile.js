@@ -107,7 +107,7 @@ const Profile = () => {
         <MyFavorites state={state} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <MyOrders />
+        <MyOrders state={state} />
       </TabPanel>
     </div>
   );

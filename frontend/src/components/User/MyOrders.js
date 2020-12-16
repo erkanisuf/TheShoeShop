@@ -41,19 +41,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const headers = {
-  "Content-Type": "application/json",
-  auth_token: `${localStorage.getItem("UserToken")}`,
-};
-
-const MyOrders = () => {
+const MyOrders = ({ state }) => {
   const classes = useStyles();
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
     const myOrders = () => {
       axios
-        .get(`http://localhost:4000/api/user/userorders`, { headers: headers })
+        .get(`http://localhost:4000/api/user/userorders`, {
+          headers: {
+            "Content-Type": "application/json",
+            auth_token: state.token,
+          },
+        })
 
         .then((res) => {
           if (res.status === 400) {
@@ -68,7 +68,7 @@ const MyOrders = () => {
         });
     };
     myOrders();
-  }, []);
+  }, [state.token]);
   if (orders.length < 1) {
     return <p>No orders made yet....</p>;
   }
