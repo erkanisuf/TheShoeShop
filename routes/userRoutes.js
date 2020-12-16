@@ -264,7 +264,6 @@ const sendEmailToUser = (useremail, token) => {
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
-      res.send("Something went Wrong");
     } else {
       console.log("Email sent: " + info.response);
     }
