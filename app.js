@@ -23,7 +23,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then((result) => app.listen(4000))
+  .then((result) => app.listen(PORT))
   .catch((err) => {
     console.log("error", err);
   });
