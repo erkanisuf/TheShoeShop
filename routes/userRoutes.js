@@ -218,8 +218,12 @@ router.get("/myfavs", verify, async (req, res) => {
   console.log(item);
 
   const findItem = await Users.findById({ _id: req.user._id })
-    .select("favorites")
-    .populate("favorites", {});
+    .select("favorites ")
+    .populate({
+      path: "favorites",
+
+      populate: { path: "reviews", select: "rating" },
+    });
 
   res.send(findItem);
 });

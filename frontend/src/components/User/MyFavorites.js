@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 const MyFavorites = ({ state }) => {
   const classes = useStyles();
   const [myfavs, setmyFavs] = useState([]);
-
+  console.log(myfavs);
   const removeFromFav = useCallback((param) => {
     const headers = {
       "Content-Type": "application/json",
