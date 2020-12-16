@@ -48,7 +48,10 @@ const ChangePassword = () => {
     }
   };
   return (
-    <form onSubmit={changePassword}>
+    <form
+      onSubmit={changePassword}
+      style={{ width: "300px", margin: "0 auto" }}
+    >
       <TextField
         autoFocus
         margin="dense"
@@ -69,7 +72,9 @@ const ChangePassword = () => {
         fullWidth
         onChange={confirmPassword}
       />
-      <Button type="submit">Change password</Button>
+      <Button type="submit" color="secondary" variant="outlined">
+        Change password
+      </Button>
       {error && <div style={{ color: "red" }}>{error}</div>}
       {succs && (
         <div style={{ color: "green" }}>
