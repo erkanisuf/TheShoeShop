@@ -10,7 +10,11 @@ const MostBought = ({ state }) => {
   useEffect(() => {
     const fetchOrders = () => {
       axios
-        .get("http://localhost:4000/api/user/toporders")
+        .get("https://lit-thicket-99427.herokuapp.com/api/user/toporders", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((data) => setData(data.data));
     };
     fetchOrders();

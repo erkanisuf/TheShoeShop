@@ -27,9 +27,11 @@ export const Context = (props) => {
   }, []);
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/api/products/productuser`).then((res) => {
-      dispatch({ type: FETCH_PRODUCT, product: res.data });
-    });
+    axios
+      .get(` https://lit-thicket-99427.herokuapp.com/api/products/productuser`)
+      .then((res) => {
+        dispatch({ type: FETCH_PRODUCT, product: res.data });
+      });
   }, []);
 
   useEffect(() => {
@@ -38,7 +40,9 @@ export const Context = (props) => {
       auth_token: `${localStorage.getItem("UserToken")}`,
     };
     axios
-      .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
+      .get(`https://lit-thicket-99427.herokuapp.com/api/user/useradress`, {
+        headers: headers,
+      })
       .then((res) => {
         if (res.status === 400) {
           console.log("err");

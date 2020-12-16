@@ -44,7 +44,7 @@ const RatingReview = ({ productId, product, user }) => {
   const addReview = () => {
     axios
       .post(
-        `http://localhost:4000/api/products/addreview`,
+        ` https://lit-thicket-99427.herokuapp.com/api/products/addreview`,
 
         review,
         {

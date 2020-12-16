@@ -13,9 +13,12 @@ const Tracker = () => {
   const trackOrder = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:4000/api/products/trackorder", {
-        trackingNumber: trackvalue,
-      })
+      .post(
+        " https://lit-thicket-99427.herokuapp.com/api/products/trackorder",
+        {
+          trackingNumber: trackvalue,
+        }
+      )
       .then((res) => {
         console.log(res.data);
         setData(res.data);

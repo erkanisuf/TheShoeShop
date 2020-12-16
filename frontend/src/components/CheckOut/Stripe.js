@@ -13,7 +13,7 @@ const Stripe = ({ state, dispatch }) => {
         product_data: {
           name: el.name,
           images: el.image.map((element) => {
-            return `http://localhost:4000/uploads/${element.filename}`;
+            return `${element.location}`;
           }),
         },
         unit_amount: el.price * 100,
@@ -38,18 +38,21 @@ const Stripe = ({ state, dispatch }) => {
   console.log(mongoWaiter, "MONGOWAITER");
   useEffect(() => {
     window
-      .fetch("http://localhost:4000/api/payment/create-payment-intent", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          items: sendToStrapiProducts,
-          userinfo: state.user.adress,
-          cart: state.cart,
-          typeUser: state.user,
-        }),
-      })
+      .fetch(
+        "https://lit-thicket-99427.herokuapp.com/api/payment/create-payment-intent",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            items: sendToStrapiProducts,
+            userinfo: state.user.adress,
+            cart: state.cart,
+            typeUser: state.user,
+          }),
+        }
+      )
       .then((res) => {
         return res.json();
       })
@@ -96,7 +99,7 @@ const Stripe = ({ state, dispatch }) => {
       "Content-Type": "application/json",
       auth_token: `${localStorage.getItem("UserToken")}`,
     };
-    fetch("http://localhost:4000/api/payment/orderstomongo", {
+    fetch("https://lit-thicket-99427.herokuapp.com/api/payment/orderstomongo", {
       method: "POST",
       headers: headers,
       body: JSON.stringify({ orders }),

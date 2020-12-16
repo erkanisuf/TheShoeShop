@@ -25,7 +25,7 @@ const AddFavorite = ({ product, state }) => {
   const addToFavorites = () => {
     axios
       .put(
-        `http://localhost:4000/api/user/addfavorites`,
+        ` https://lit-thicket-99427.herokuapp.com/api/user/addfavorites`,
 
         { item: product.id },
         {
@@ -51,7 +51,7 @@ const AddFavorite = ({ product, state }) => {
   useEffect(() => {
     axios
       .get(
-        `http://localhost:4000/api/user/userfavs`,
+        ` https://lit-thicket-99427.herokuapp.com/api/user/userfavs`,
 
         {
           headers: { auth_token: `${localStorage.getItem("UserToken")}` },

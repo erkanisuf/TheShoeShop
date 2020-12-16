@@ -26,7 +26,7 @@ const ChangePassword = () => {
     } else {
       axios
         .put(
-          `http://localhost:4000/api/user/resetpassword/`,
+          ` https://lit-thicket-99427.herokuapp.com/api/user/resetpassword/`,
           { newPassword: password, resetLink: location.id },
           { headers: headers }
         )

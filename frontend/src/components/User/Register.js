@@ -49,7 +49,7 @@ const Register = ({ openRegister, handleCloseRegister }) => {
       setError("Passwords does not match!");
     } else {
       axios
-        .post(`http://localhost:4000/api/user/register`, user)
+        .post(`https://lit-thicket-99427.herokuapp.com/api/user/register`, user)
 
         .then((res) => {
           if (res.status === 400) {

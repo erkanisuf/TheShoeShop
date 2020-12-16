@@ -31,7 +31,7 @@ const MyFavorites = ({ state }) => {
     console.log(param);
     axios
       .put(
-        `http://localhost:4000/api/user/deletefav`,
+        ` https://lit-thicket-99427.herokuapp.com/api/user/deletefav`,
         { item: param },
         { headers: headers }
       )
@@ -50,7 +50,7 @@ const MyFavorites = ({ state }) => {
   const ReFetch = () => {
     axios
       .get(
-        `http://localhost:4000/api/user/myfavs`,
+        ` https://lit-thicket-99427.herokuapp.com/api/user/myfavs`,
 
         {
           headers: { auth_token: `${localStorage.getItem("UserToken")}` },

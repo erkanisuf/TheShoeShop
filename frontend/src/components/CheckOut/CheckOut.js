@@ -41,7 +41,9 @@ const CheckOut = () => {
     };
     if (state.user.name !== null) {
       axios
-        .get(`http://localhost:4000/api/user/useradress`, { headers: headers })
+        .get(` https://lit-thicket-99427.herokuapp.com/api/user/useradress`, {
+          headers: headers,
+        })
         .then((res) => {
           if (res.status === 400) {
             console.log("err");

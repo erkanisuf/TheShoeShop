@@ -106,7 +106,7 @@ const Description = ({ product }) => {
   };
   console.log(value);
   return (
-    <Paper style={{ height: "300px", marginBottom: "25px" }}>
+    <Paper style={{ height: "300px", marginBottom: "500px" }}>
       <Tabs
         value={value}
         classes={{ indicator: classes.indicator }}

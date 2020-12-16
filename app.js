@@ -8,6 +8,7 @@ const dotenv = require("dotenv"); // Hides my DB passw login
 const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(cors());
+app.options("*", cors());
 app.use(cookieParser());
 var bodyParser = require("body-parser");
 app.use(

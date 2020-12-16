@@ -25,16 +25,18 @@ export const UserLogin = () => {
   };
 
   const LogIn = () => {
-    axios.post(`http://localhost:4000/api/user/login`, user).then((res) => {
-      console.log(res);
-      window.localStorage.setItem("UserToken", res.data.token);
-      window.localStorage.setItem("User", res.data.user);
-      dispatch({
-        type: USER_LOGIN,
-        token: res.data.token,
-        user: res.data.user,
+    axios
+      .post(`https://lit-thicket-99427.herokuapp.com/api/user/login`, user)
+      .then((res) => {
+        console.log(res);
+        window.localStorage.setItem("UserToken", res.data.token);
+        window.localStorage.setItem("User", res.data.user);
+        dispatch({
+          type: USER_LOGIN,
+          token: res.data.token,
+          user: res.data.user,
+        });
       });
-    });
   };
 
   //// Basket Test

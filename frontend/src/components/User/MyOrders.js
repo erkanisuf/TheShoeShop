@@ -48,7 +48,7 @@ const MyOrders = ({ state }) => {
   useEffect(() => {
     const myOrders = () => {
       axios
-        .get(`http://localhost:4000/api/user/userorders`, {
+        .get(`https://lit-thicket-99427.herokuapp.com/api/user/userorders`, {
           headers: {
             "Content-Type": "application/json",
             auth_token: state.token,

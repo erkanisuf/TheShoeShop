@@ -2,10 +2,10 @@
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr 1fr;
-      grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 15px;
   width: 80%;
-  margin: 0 auto;
+  margin: 0px auto;
 }
 
 .gridProduct .nameAndRating {

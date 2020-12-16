@@ -42,7 +42,7 @@ const Login = (props) => {
   const LogIn = async (e) => {
     e.preventDefault();
     await axios
-      .post(`http://localhost:4000/api/user/login`, user)
+      .post(` https://lit-thicket-99427.herokuapp.com/api/user/login`, user)
 
       .then((res) => {
         if (res.status === 400) {

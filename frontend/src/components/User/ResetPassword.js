@@ -17,7 +17,7 @@ const ResetPassword = () => {
     e.preventDefault();
     axios
       .put(
-        `http://localhost:4000/api/user/forgotpassword/`,
+        `https://lit-thicket-99427.herokuapp.com/api/user/forgotpassword/`,
         { email: email },
         { headers: headers }
       )

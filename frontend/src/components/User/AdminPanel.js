@@ -51,7 +51,7 @@ const AdminPanel = () => {
   const addNewProduct = () => {
     axios
       .post(
-        `http://localhost:4000/api/products/addproduct`,
+        `https://lit-thicket-99427.herokuapp.com/api/products/addproduct`,
 
         formData,
         {
@@ -72,9 +72,11 @@ const AdminPanel = () => {
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:4000/api/products/productuser`).then((res) => {
-      dispatch({ type: FETCH_PRODUCT, product: res.data });
-    });
+    axios
+      .get(`https://lit-thicket-99427.herokuapp.com/api/products/productuser`)
+      .then((res) => {
+        dispatch({ type: FETCH_PRODUCT, product: res.data });
+      });
   }, []);
   console.log(adminproduct);
   return (

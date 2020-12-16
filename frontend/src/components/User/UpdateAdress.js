@@ -54,7 +54,7 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
   const addAdress = () => {
     axios
       .put(
-        `http://localhost:4000/api/user/update/${localStorage.getItem(
+        `https://lit-thicket-99427.herokuapp.com/api/user/update/${localStorage.getItem(
           "UserID"
         )}`,
         adress,
@@ -76,7 +76,7 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
   };
   const ConfirmAdress = () => {
     axios
-      .post(`http://localhost:4000/api/payment/checkadress`, {
+      .post(`https://lit-thicket-99427.herokuapp.com/api/payment/checkadress`, {
         userinfo: { ...adress.adress },
       })
 

@@ -47,9 +47,12 @@ const GuestAdress = ({ openUpdateAdress, handleCloseAdress, state }) => {
   console.log(adress);
   const ConfirmAdress = () => {
     axios
-      .post(`http://localhost:4000/api/payment/checkadress`, {
-        userinfo: adress,
-      })
+      .post(
+        ` https://lit-thicket-99427.herokuapp.com/api/payment/checkadress`,
+        {
+          userinfo: adress,
+        }
+      )
 
       .then((res) => {
         if (res.status === 400) {
