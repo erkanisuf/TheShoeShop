@@ -13,6 +13,7 @@ const usersSchema = new Schema(
       max: 1500,
       default: "user",
     },
+    resetLink: { type: String },
     favorites: [
       {
         type: mongoose.Schema.Types.ObjectId,

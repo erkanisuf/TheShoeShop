@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { MyContext } from "../../Context/Context";
 import { USER_LOGIN, FETCH_ADRESS } from "../../Context/reducers";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import axios from "axios";
 import {
   Button,
@@ -121,6 +121,18 @@ const Login = (props) => {
           />
         </DialogContent>
         <DialogActions>
+          <Link
+            to="/forgotpassword"
+            onClick={props.handleClose}
+            style={{
+              textDecoration: "none",
+              color: "black",
+              margin: "5px",
+            }}
+            className={classes.forgotpassword}
+          >
+            Forgot Password?
+          </Link>
           <Button onClick={props.handleClose} color="primary">
             Cancel
           </Button>

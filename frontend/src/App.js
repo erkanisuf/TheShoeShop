@@ -19,6 +19,8 @@ import Tracker from "./components/Tracker/Tracker";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import Search from "./components/SearchBar/Search";
+import ResetPassword from "./components/User/ResetPassword";
+import ChangePassword from "./components/User/ChangePassword";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
@@ -79,6 +81,12 @@ function App() {
           </Route>
           <Route path="/trackpackage">
             <Tracker />
+          </Route>
+          <Route path="/forgotpassword">
+            <ResetPassword />
+          </Route>
+          <Route path="/changepassword/:id">
+            <ChangePassword />
           </Route>
         </Switch>
       </div>

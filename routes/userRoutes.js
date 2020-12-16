@@ -164,6 +164,8 @@ router.get("/userorders", verify, async (req, res) => {
     });
   res.send(users);
 });
+
+///Shows Top Orders for Front page
 const Orders = require("../models/OrdersModel");
 router.get("/toporders", async (req, res) => {
   const orders = await Orders.find({})
@@ -237,6 +239,102 @@ router.put("/deletefav", verify, async (req, res) => {
       res.json(data);
     }
   );
+});
+
+const nodemailer = require("nodemailer");
+
+const sendEmailToUser = (useremail, token) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.GMAIL_ACC,
+      pass: process.env.GMAIL_PASW, // naturally, replace both with your real credentials or an application-specific password
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.GMAIL_ACC,
+    to: useremail,
+    subject: "Rest your Password",
+    html: `<h2>Please Click the given link to reset your password </h2>
+    <p>${process.env.RESET_LINK}/${token}</p>`,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      console.log(error);
+      res.send("Something went Wrong");
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
+};
+
+router.put("/forgotpassword", async (req, res) => {
+  const email = req.body.email;
+  console.log(req.body.email);
+
+  const user = Users.findOne({ email }, (err, user) => {
+    if (err || !user) {
+      return res.status(400).json("User does not exists.");
+    }
+    const token = jwt.sign({ _id: user._id }, process.env.RESET_PASS, {
+      expiresIn: "20m",
+    });
+
+    user.updateOne({ resetLink: token }, (err, succ) => {
+      if (err) {
+        return res.status(400).json("reset password error!");
+      } else {
+        sendEmailToUser(email, token);
+        res.send("Email has been send sent! Follow the instructions");
+      }
+    });
+  });
+});
+
+const JoiSnewPassword = Joi.object({
+  newPassword: Joi.string().min(6).required(),
+  resetLink: Joi.string().min(6).required(),
+});
+router.put("/resetpassword", async (req, res) => {
+  const { error } = JoiSnewPassword.validate(req.body);
+
+  if (error) return res.status(400).send(error.details[0].message);
+  const { resetLink, newPassword } = req.body;
+
+  if (resetLink) {
+    jwt.verify(resetLink, process.env.RESET_PASS, function (err, succ) {
+      if (err) {
+        return res.status(401).json({ error: "Expired Token or Wrong Token" });
+      }
+      Users.findOne({ resetLink }, async (err, user) => {
+        if (err || !user) {
+          return res
+            .status(400)
+            .json({ error: "No users found with this token!" });
+        }
+        console.log(user, "user");
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(newPassword, salt);
+        user.password = hashPassword;
+        user.save((err, succ) => {
+          if (err) {
+            res.status(400).send("err couldnt asve");
+          } else {
+            res.status(200).send("Password changed");
+          }
+        });
+      });
+    });
+  } else {
+    return res.status(401).json({ error: "Something Went Wrong!" });
+  }
+});
+
+router.put("/asdf", async (req, res) => {
+  const email = req.body.email;
+  console.log(email);
 });
 
 module.exports = router;
