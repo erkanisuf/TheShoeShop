@@ -8,9 +8,18 @@ const dotenv = require("dotenv"); // Hides my DB passw login
 const cookieParser = require("cookie-parser");
 dotenv.config();
 app.use(cors());
-app.options("*", cors());
-app.options("*", (req, res) => {
-  res.sendStatus(204);
+app.use(function (req, res, next) {
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    "https://lit-thicket-99427.herokuapp.com/"
+  );
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
 });
 app.use(cookieParser());
 var bodyParser = require("body-parser");
