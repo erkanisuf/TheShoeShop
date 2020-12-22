@@ -11,7 +11,7 @@ import Description from "./Description";
 import ColorPicker from "./ColorPicker";
 import ProductPrice from "./ProductPrice";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
+const windowCheck = window.screen.width;
 const ProductID = () => {
   const useStyles = makeStyles((theme) => ({
     sectionDesktop: {
@@ -29,8 +29,8 @@ const ProductID = () => {
       },
     },
     paper: {
-      width: window.innerWidth > 1024 ? "100%" : "375px",
-      height: window.innerWidth > 1024 ? "100%" : "80%",
+      width: windowCheck <= 600 ? "375px" : "100%",
+      height: windowCheck <= 600 ? "80%" : "100%",
       overflow: "scroll",
       position: "relative",
       justifyContent: "center",
@@ -56,8 +56,6 @@ const ProductID = () => {
     setProduct(productFind);
   }, [state.products, id]);
 
-  console.log(id, "FROM PRODUCT ID");
-
   const [open, setOpen] = useState(false);
 
   const handleOpen = (param) => {
@@ -76,8 +74,8 @@ const ProductID = () => {
           style={{
             cursor: "pointer",
             objectFit: "contain",
-            width: window.innerWidth > 1024 ? "100%" : "100%",
-            height: window.innerWidth > 1024 ? "500px" : "200px",
+            width: window.innerWidth > 375 ? "100%" : "100%",
+            height: window.innerWidth > 420 ? "500px" : "200px",
           }}
           alt={props.item}
           src={props.item}

@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import SelectSize from "../components/SelectSize/SelectSize";
 import SearchBar from "../components/SearchBar/SearchBar";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
+
 ////////////
 import {
   USER_LOGOUT,
@@ -39,20 +40,24 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Paper from "@material-ui/core/Paper";
-import MoreIcon from "@material-ui/icons/MoreVert";
+
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClearIcon from "@material-ui/icons/Clear";
 import CancelPresentationIcon from "@material-ui/icons/CancelPresentation";
 ////////////////
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   menuButton: {
+    display: "none",
     marginRight: theme.spacing(2),
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
+    },
   },
   title: {
     display: "none",
@@ -106,6 +111,12 @@ const useStyles = makeStyles((theme) => ({
       width: "250px",
     },
   },
+  cartmobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
+    },
+  },
   sectionMobile: {
     display: "flex",
     [theme.breakpoints.up("md")]: {
@@ -121,7 +132,8 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: "center",
   },
   root: {
-    width: "500px",
+    width: windowCheck <= 1024 ? "100%" : "500px",
+
     flex: "1 1 0px",
   },
   list: {
@@ -226,6 +238,7 @@ export default function Layout(props) {
 
   const menuId = "primary-search-account-menu";
   const cartID = "primary-search-account-menu";
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -255,6 +268,7 @@ export default function Layout(props) {
   const renderCart = (
     <Menu
       anchorEl={anchorElCart}
+      style={{ marginTop: windowCheck <= 1024 ? "50px" : "0" }}
       anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={cartID}
       keepMounted
@@ -278,6 +292,9 @@ export default function Layout(props) {
                 />
                 <SelectSize item={item} />
                 <ListItemText
+                  style={{
+                    width: windowCheck <= 1024 ? "100px" : "",
+                  }}
                   primary={<b>Quantity</b>}
                   secondary={
                     <>
@@ -313,6 +330,8 @@ export default function Layout(props) {
                       style={{
                         fontSize: "30px",
                         display: "inline",
+                        marginRight: windowCheck < 400 ? "-15px" : "",
+                        width: windowCheck < 400 ? "30px" : "",
                       }}
                     />
                   </IconButton>
@@ -332,6 +351,11 @@ export default function Layout(props) {
         }}
       >
         <Button
+          style={{
+            fontSize: windowCheck <= 1024 ? "11px" : "",
+            marginRight: windowCheck <= 1024 ? "5px" : "",
+            height: windowCheck <= 1024 ? "35px" : "",
+          }}
           startIcon={<ShoppingCartIcon />}
           variant="contained"
           color="primary"
@@ -342,13 +366,23 @@ export default function Layout(props) {
           Check Out
         </Button>
         <Button
+          style={{
+            fontSize: windowCheck <= 1024 ? "11px" : "",
+            height: windowCheck <= 1024 ? "35px" : "",
+            marginRight: windowCheck <= 1024 ? "5px" : "",
+          }}
           onClick={() => dispatch({ type: REMOVE_ALL_CART })}
           variant="outlined"
         >
           Clear All
         </Button>
 
-        <Typography variant="button">
+        <Typography
+          style={{
+            fontSize: windowCheck <= 1024 ? "11px" : "",
+          }}
+          variant="button"
+        >
           Total Price:<b>{totalpricevalue}</b>€
         </Typography>
       </div>
@@ -366,15 +400,7 @@ export default function Layout(props) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={cartOpenHandler}>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <ShoppingCartIcon />
-          </Badge>
-        </IconButton>
-        <p>Shopping Cart</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
+      <MenuItem>
         <IconButton
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
@@ -383,8 +409,49 @@ export default function Layout(props) {
         >
           <AccountCircle />
         </IconButton>
-        <Link to="/userprofile">UserProfile</Link>
+
+        <p onClick={() => setopenLogin(true)}>Login</p>
       </MenuItem>
+      <MenuItem>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+
+        <p onClick={() => setopenRegister(true)}>Sign Up</p>
+      </MenuItem>
+    </Menu>
+  );
+
+  const logedOnMobile = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <p style={{ textAlign: "center" }}>{state.user.name}</p>
+      <Link
+        to="/userprofile"
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <MenuItem onClick={handleMenuClose}>UserProfile</MenuItem>
+      </Link>
+      <Link
+        to="/forgotpassword"
+        style={{ color: "black", textDecoration: "none" }}
+      >
+        <MenuItem onClick={handleMenuClose}>Change Password</MenuItem>
+      </Link>
+
+      <MenuItem onClick={signOut}>Sign Out</MenuItem>
     </Menu>
   );
 
@@ -413,6 +480,7 @@ export default function Layout(props) {
                 backgroundColor: "black",
                 borderRadius: "15px",
                 paddingBottom: "10px",
+
                 top: 52,
                 color: "white",
 
@@ -476,7 +544,13 @@ export default function Layout(props) {
                 to={{ pathname: `/trackpackage` }}
                 className={classes.navMenu}
               >
-                <p>
+                <p
+                  style={{
+                    display: "flex",
+                    fontSize: windowCheck <= 1024 ? "12px" : "20px",
+                    flexDirection: "row",
+                  }}
+                >
                   Order Tracking{" "}
                   <Badge>
                     <LocalShippingIcon />
@@ -484,6 +558,21 @@ export default function Layout(props) {
                 </p>
               </Link>{" "}
             </div>
+            <div className={classes.cartmobile}>
+              <IconButton
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={cartID}
+                aria-haspopup="true"
+                onClick={cartOpenHandler}
+                color="inherit"
+              >
+                <Badge badgeContent={state.cart.length} color="secondary">
+                  <ShoppingCartIcon />
+                </Badge>
+              </IconButton>
+            </div>
+
             <div className={classes.sectionDesktop}>
               <IconButton
                 edge="end"
@@ -535,12 +624,14 @@ export default function Layout(props) {
                 onClick={handleMobileMenuOpen}
                 color="inherit"
               >
-                <MoreIcon />
+                {isMobileMenuOpen ? <CancelPresentationIcon /> : <MenuIcon />}
               </IconButton>
             </div>
           </Toolbar>
         </AppBar>
-        {renderMobileMenu}
+
+        {localStorage.getItem("UserToken") ? logedOnMobile : renderMobileMenu}
+
         {renderMenu}
         {state.cart.length !== 0 && <Paper>{renderCart}</Paper>}
         <Login openLogin={openLogin} handleClose={() => setopenLogin(false)} />
@@ -549,6 +640,7 @@ export default function Layout(props) {
           handleCloseRegister={() => setopenRegister(false)}
         />
       </div>
+
       <div className="footermin">{props.children}</div>
 
       <footer>

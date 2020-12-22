@@ -1,7 +1,6 @@
 import React from "react";
 import Rating from "@material-ui/lab/Rating";
 const RatingAll = ({ reviews }) => {
-  console.log(reviews, "revs");
   return (
     <div>
       <h1>Raitings by users.</h1>

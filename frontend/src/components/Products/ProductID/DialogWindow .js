@@ -17,7 +17,7 @@ export const DialogWindow = ({ open, handleClose, product }) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          <span style={{ color: "red" }}> Please first select Shoe Size !</span>
+          <span style={{ color: "red" }}> Please first select Shoe Size!</span>
         </DialogTitle>
         <DialogContent>
           <ProductPrice product={product} />

@@ -88,6 +88,7 @@ const MostBought = ({ state }) => {
           flexDirection: "row",
           flexWrap: "wrap",
           margin: "0 auto",
+          padding: windowCheck < 420 ? "5px" : "0",
           justifyContent: "center",
         }}
       >

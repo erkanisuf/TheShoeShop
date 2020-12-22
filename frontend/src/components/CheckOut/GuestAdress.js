@@ -44,7 +44,7 @@ const GuestAdress = ({ openUpdateAdress, handleCloseAdress, state }) => {
       [e.target.name]: e.target.value,
     });
   };
-  console.log(adress);
+
   const ConfirmAdress = () => {
     axios
       .post(

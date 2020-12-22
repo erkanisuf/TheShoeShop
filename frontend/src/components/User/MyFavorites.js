@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
 const MyFavorites = ({ state }) => {
   const classes = useStyles();
   const [myfavs, setmyFavs] = useState([]);
-  console.log(myfavs);
+
   const removeFromFav = useCallback((param) => {
     const headers = {
       "Content-Type": "application/json",
       auth_token: `${localStorage.getItem("UserToken")}`,
     };
-    console.log(param);
+
     axios
       .put(
         ` https://lit-thicket-99427.herokuapp.com/api/user/deletefav`,
@@ -40,7 +40,6 @@ const MyFavorites = ({ state }) => {
         if (res.status === 400) {
           console.log("err");
         } else {
-          console.log(res);
           ReFetch();
         }
       })
@@ -75,34 +74,42 @@ const MyFavorites = ({ state }) => {
     return <p>No products added yet in wishlist...</p>;
   }
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          flexWrap: "wrap",
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
 
-          flex: "1 1 0",
-          justifyContent: "flex-start",
-          width: "80%",
-          margin: "0 auto",
-        }}
-      >
-        {myfavs.map((item, index) => {
-          return (
-            <div key={index} style={{ position: "relative" }}>
-              <IconButton
-                onClick={() => removeFromFav(item.id)}
-                className={classes.removeStyle}
-              >
-                <ClearIcon size="sm" />
-              </IconButton>
+        justifyContent: "space-evenly",
+        width: "100%",
 
+        margin: "0 auto",
+      }}
+    >
+      {myfavs.map((item, index) => {
+        return (
+          <div
+            key={index}
+            style={{
+              position: "relative",
+              width: "45%",
+              margin: "5px",
+              overflow: "hidden",
+            }}
+          >
+            <IconButton
+              onClick={() => removeFromFav(item.id)}
+              className={classes.removeStyle}
+            >
+              <ClearIcon size="sm" />
+            </IconButton>
+
+            <div style={{ width: "300px" }}>
               <Product product={item} key={index} />
             </div>
-          );
-        })}
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

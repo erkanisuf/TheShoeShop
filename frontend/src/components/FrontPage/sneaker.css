@@ -1,7 +1,7 @@
 .showBG {
   display: flex;
   justify-self: start;
-  left: 55px;
+
   display: flex;
   width: 90%;
 
@@ -68,4 +68,47 @@
   outline: none;
   border: 1px solid grey;
   color: black;
+}
+
+@media only screen and (max-width: 600px) {
+  .showBG {
+    display: flex;
+    justify-self: start;
+
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+
+    position: relative;
+  }
+
+  .imageLogo {
+    width: 100%;
+    margin-top: -120px;
+  }
+  .contText {
+    width: 100%;
+    height: 100px;
+    margin: 100px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .contText h1 {
+    width: 100%;
+    text-align: center;
+    font-size: 35px;
+    font-family: Goldman;
+  }
+  .contText h2 {
+    margin-top: 0px;
+    font-size: 25px;
+    font-family: Goldman;
+  }
 }

@@ -7,7 +7,7 @@ import { useLocation } from "react-router-dom";
 import { Paper, CircularProgress } from "@material-ui/core/";
 import ReactPaginate from "react-paginate";
 import "./paginate.css";
-
+const windowCheck = window.screen.width;
 export const Products = () => {
   const { state } = useContext(MyContext);
   const params = useLocation();
@@ -159,7 +159,6 @@ export const Products = () => {
   const [offset, setoffset] = useState(0);
 
   const handlePageClick = (data) => {
-    console.log(data);
     let selected = data.selected;
     let offset = Math.ceil(selected * perPage);
 
@@ -182,13 +181,26 @@ export const Products = () => {
     );
   }
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+      }}
+    >
       <SortBy
         products={products}
         handleChangeSort={handleChangeSort}
         sort={sort}
       />
-      <div style={{ display: "flex", flexDirection: "row", width: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+
+          flexDirection: windowCheck <= 768 ? "column" : "row",
+          width: "100%",
+        }}
+      >
         <FilterProducts
           onFilterChange={onFilterChange}
           activeFilter={activeFilter}
@@ -196,6 +208,7 @@ export const Products = () => {
           products={numberz}
           value={value}
         />
+
         <div
           style={{
             display: "flex",

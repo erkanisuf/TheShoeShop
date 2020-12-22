@@ -49,7 +49,6 @@ const CheckOut = () => {
             console.log("err");
           } else {
             dispatch({ type: FETCH_ADRESS, adress: res.data[0].adress });
-            console.log(res);
           }
         })
         .catch((error) => {

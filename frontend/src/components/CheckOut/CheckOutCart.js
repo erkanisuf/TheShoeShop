@@ -21,10 +21,11 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ClearIcon from "@material-ui/icons/Clear";
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "800px",
+    width: windowCheck <= 1024 ? "100%" : "800px",
+
     flex: "1 1 0px",
   },
   list: {
@@ -109,6 +110,9 @@ const CheckOutCart = ({ state, dispatch }) => {
 
               <ListItemSecondaryAction>
                 <IconButton
+                  style={{
+                    marginRight: "-10px",
+                  }}
                   onClick={() =>
                     dispatch({ type: REMOVE_PRODUCT, product: item })
                   }

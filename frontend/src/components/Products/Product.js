@@ -56,7 +56,7 @@ const useStyles = makeStyles({
   },
   btncontainer: {
     position: "absolute",
-    bottom: 160,
+    bottom: windowCheck < 1024 ? 80 : 160,
     right: 0,
   },
   addToCart: {

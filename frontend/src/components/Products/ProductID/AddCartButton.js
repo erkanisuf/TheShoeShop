@@ -8,6 +8,7 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import DialogWindow from "./DialogWindow ";
 import AddFavorite from "./AddFavorite";
+const windowCheck = window.screen.width;
 const useStyles = makeStyles({
   addcart: {
     width: "350px",
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
       backgroundColor: "#ffac33",
     },
   },
+  mobileFlex: { display: "flex", flexDirection: "column" },
   greybtn: { backgroundColor: "#e0e0e0", width: "400px" },
   plusminus: { margin: "0 auto ", padding: "0px", color: "black" },
 });
@@ -37,7 +39,6 @@ const AddCartButton = ({ product, selectedSize }) => {
     });
   }, [product]);
 
-  console.log(productID, "ЦАРРРРРРРРРРР");
   const [disable, setDisable] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -93,6 +94,8 @@ const AddCartButton = ({ product, selectedSize }) => {
       style={{
         display: "flex",
         flexDirection: "row",
+        width: windowCheck < 1024 ? "350px" : "",
+        margin: windowCheck < 1024 ? "5px" : "",
       }}
     >
       <TextField

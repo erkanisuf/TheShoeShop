@@ -3,11 +3,12 @@ import React, { useContext, useState, useEffect } from "react";
 import { MyContext } from "../../../Context/Context";
 import { Paper, makeStyles } from "@material-ui/core";
 import AddCartButton from "./AddCartButton";
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles({
   paper: {
     height: "100px",
     marginTop: "15px",
+    width: windowCheck < 420 ? "350px" : "",
     fontSize: "55px",
     display: "flex",
     fontFamily: "Goldman",
@@ -21,6 +22,7 @@ const useStyles = makeStyles({
   },
   paperBoxes: {
     marginTop: "25px",
+    width: windowCheck < 420 ? "350px" : "",
     padding: "15px",
     height: "100%",
     display: "flex",
@@ -67,6 +69,10 @@ const useStyles = makeStyles({
     backgroundColor: "#e0e0e0",
     color: "white",
   },
+  mobileFlex: {
+    display: "flex",
+    flexDirection: "column",
+  },
 });
 const ProductPrice = ({ product }) => {
   const { state } = useContext(MyContext);
@@ -91,7 +97,6 @@ const ProductPrice = ({ product }) => {
   }, [product]);
 
   const handleChange = (e) => {
-    console.log(e.target.innerText);
     const copy = { ...productID, selectedSize: e.target.innerText };
     setproductID(copy);
   };

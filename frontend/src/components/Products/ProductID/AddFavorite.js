@@ -38,7 +38,6 @@ const AddFavorite = ({ product, state }) => {
           console.log("err");
           setDisable(false);
         } else {
-          console.log(res);
           setDisable(true);
         }
       })
@@ -68,7 +67,6 @@ const AddFavorite = ({ product, state }) => {
           } else {
             setDisable(false);
           }
-          console.log(Boolean(findFav));
         }
       })
       .catch((error) => {

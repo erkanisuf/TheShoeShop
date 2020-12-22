@@ -13,6 +13,7 @@ import {
   Chip,
 } from "@material-ui/core/";
 import moment from "moment";
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -59,7 +60,6 @@ const MyOrders = ({ state }) => {
           if (res.status === 400) {
             console.log("err");
           } else {
-            console.log(res.data[0].orders);
             setOrders(res.data[0].orders);
           }
         })
@@ -73,10 +73,9 @@ const MyOrders = ({ state }) => {
     return <p>No orders made yet....</p>;
   }
   return (
-    <div>
+    <div style={{ width: "80%" }}>
       <List className={classes.root} style={{ justifyContent: "center" }}>
         {orders.map((el, index) => {
-          console.log(typeof el.date);
           return (
             <div key={index}>
               <Paper className={classes.mainPaper} elevation={3}>

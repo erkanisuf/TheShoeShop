@@ -45,7 +45,6 @@ const UpdateAdress = ({ openUpdateAdress, handleCloseAdress }) => {
       adress: { ...adress.adress, [e.target.name]: e.target.value },
     });
   };
-  console.log(adress);
 
   const headers = {
     "Content-Type": "application/json",

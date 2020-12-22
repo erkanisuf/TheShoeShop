@@ -10,7 +10,15 @@ import {
   AccordionDetails,
   makeStyles,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  Paper,
 } from "@material-ui/core/";
+
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const filterList = {
@@ -27,6 +35,7 @@ const filterList = {
   brands: ["nike", "vans", "adidas", "jordan"],
   category: ["men", "women"],
 };
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -40,83 +49,333 @@ const useStyles = makeStyles((theme) => ({
 const FilterProducts = (props) => {
   const classes = useStyles();
   const { state } = useContext(MyContext);
+  const [openDialog, setOpenDialog] = useState(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
   const [expanded, setExpanded] = useState({
     category: true,
     colors: true,
     brands: true,
   });
 
-  return (
-    <div style={{ width: "200px", marginTop: "15px" }}>
-      <Accordion
-        expanded={expanded.category}
-        onChange={() =>
-          setExpanded({ ...expanded, category: !expanded.category })
-        }
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Category</Typography>
-        </AccordionSummary>
+  if (windowCheck < 1024) {
+    return (
+      <>
+        <Paper
+          style={{
+            margin: "5px",
+            width: "55%",
+            margin: "5px auto",
+            padding: "5px",
 
-        <AccordionDetails className={classes.flexAcc}>
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            value={props.value}
-            onChange={props.handleChange}
+            textAlign: "center",
+          }}
+        >
+          <Button
+            onClick={() => setOpenDialog(true)}
+            color="primary"
+            variant="outlined"
           >
-            {filterList.category.map((el, index) => {
+            Filters
+          </Button>
+        </Paper>
+
+        <Dialog
+          open={openDialog}
+          onClose={handleCloseDialog}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Reviews</DialogTitle>
+          <DialogContent>
+            <DialogContentText>Please Choose Filters .</DialogContentText>
+            <div
+              style={{
+                width: "200px",
+                marginTop: "15px",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Accordion
+                expanded={expanded.category}
+                onChange={() =>
+                  setExpanded({ ...expanded, category: !expanded.category })
+                }
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>Category</Typography>
+                </AccordionSummary>
+
+                <AccordionDetails className={classes.flexAcc}>
+                  <RadioGroup
+                    aria-label="gender"
+                    name="gender1"
+                    value={props.value}
+                    onChange={props.handleChange}
+                  >
+                    {filterList.category.map((el, index) => {
+                      return (
+                        <FormControlLabel
+                          key={index}
+                          value={el}
+                          control={<Radio />}
+                          label={`${el} (${
+                            state.products.filter(
+                              (key) => key.category.toLowerCase() === el
+                            ).length
+                          })`}
+                        />
+                      );
+                    })}
+                    <FormControlLabel
+                      value="all"
+                      control={<Radio />}
+                      label={`All (${state.products.length})`}
+                    />
+                  </RadioGroup>
+                </AccordionDetails>
+              </Accordion>
+
+              <Accordion
+                expanded={expanded.colors}
+                onChange={() =>
+                  setExpanded({ ...expanded, colors: !expanded.colors })
+                }
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>Colors</Typography>
+                </AccordionSummary>
+
+                <AccordionDetails className={classes.flexAcc}>
+                  {filterList.colors.map((el, index) => {
+                    return (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "flex-start",
+                        }}
+                      >
+                        <FormControlLabel
+                          style={{ width: "100%" }}
+                          control={
+                            <Checkbox
+                              checked={props.activeFilter.includes(el)}
+                              value={el}
+                              onChange={() => props.onFilterChange(el)}
+                              name={el}
+                            />
+                          }
+                          label={`${el} (${
+                            props.products.filter(
+                              (key) => key.color.toLowerCase() === el
+                            ).length
+                          })`}
+                        />
+                        <div
+                          style={{
+                            width: "2px",
+                            height: "30px",
+
+                            padding: "2px",
+                            backgroundColor: el,
+                            border: el === "white" ? "1px solid grey" : "",
+                            margin: "2px",
+                          }}
+                        ></div>
+                      </div>
+                    );
+                  })}
+                </AccordionDetails>
+              </Accordion>
+              <Accordion
+                expanded={expanded.brands}
+                onChange={() =>
+                  setExpanded({ ...expanded, brands: !expanded.brands })
+                }
+              >
+                <AccordionSummary
+                  expandIcon={<ExpandMoreIcon />}
+                  aria-controls="panel1a-content"
+                  id="panel1a-header"
+                >
+                  <Typography className={classes.heading}>Colors</Typography>
+                </AccordionSummary>
+
+                <AccordionDetails className={classes.flexAcc}>
+                  {filterList.brands.map((el, index) => {
+                    return (
+                      <FormControlLabel
+                        key={index}
+                        control={
+                          <Checkbox
+                            checked={props.activeFilter.includes(el)}
+                            value={el}
+                            onChange={() => props.onFilterChange(el)}
+                            name={el}
+                          />
+                        }
+                        label={`${el} (${
+                          props.products.filter(
+                            (key) => key.brand.toLowerCase() === el
+                          ).length
+                        })`}
+                      />
+                    );
+                  })}
+                </AccordionDetails>
+              </Accordion>
+            </div>
+          </DialogContent>
+
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </>
+    );
+  } else
+    return (
+      <div
+        style={{
+          width: "200px",
+          marginTop: "15px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        <Accordion
+          expanded={expanded.category}
+          onChange={() =>
+            setExpanded({ ...expanded, category: !expanded.category })
+          }
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.heading}>Category</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails className={classes.flexAcc}>
+            <RadioGroup
+              aria-label="gender"
+              name="gender1"
+              value={props.value}
+              onChange={props.handleChange}
+            >
+              {filterList.category.map((el, index) => {
+                return (
+                  <FormControlLabel
+                    key={index}
+                    value={el}
+                    control={<Radio />}
+                    label={`${el} (${
+                      state.products.filter(
+                        (key) => key.category.toLowerCase() === el
+                      ).length
+                    })`}
+                  />
+                );
+              })}
+              <FormControlLabel
+                value="all"
+                control={<Radio />}
+                label={`All (${state.products.length})`}
+              />
+            </RadioGroup>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion
+          expanded={expanded.colors}
+          onChange={() =>
+            setExpanded({ ...expanded, colors: !expanded.colors })
+          }
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.heading}>Colors</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails className={classes.flexAcc}>
+            {filterList.colors.map((el, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <FormControlLabel
+                    style={{ width: "100%" }}
+                    control={
+                      <Checkbox
+                        checked={props.activeFilter.includes(el)}
+                        value={el}
+                        onChange={() => props.onFilterChange(el)}
+                        name={el}
+                      />
+                    }
+                    label={`${el} (${
+                      props.products.filter(
+                        (key) => key.color.toLowerCase() === el
+                      ).length
+                    })`}
+                  />
+                  <div
+                    style={{
+                      width: "2px",
+                      height: "30px",
+
+                      padding: "2px",
+                      backgroundColor: el,
+                      border: el === "white" ? "1px solid grey" : "",
+                      margin: "2px",
+                    }}
+                  ></div>
+                </div>
+              );
+            })}
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded.brands}
+          onChange={() =>
+            setExpanded({ ...expanded, brands: !expanded.brands })
+          }
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography className={classes.heading}>Colors</Typography>
+          </AccordionSummary>
+
+          <AccordionDetails className={classes.flexAcc}>
+            {filterList.brands.map((el, index) => {
               return (
                 <FormControlLabel
                   key={index}
-                  value={el}
-                  control={<Radio />}
-                  label={`${el} (${
-                    state.products.filter(
-                      (key) => key.category.toLowerCase() === el
-                    ).length
-                  })`}
-                />
-              );
-            })}
-            <FormControlLabel
-              value="all"
-              control={<Radio />}
-              label={`All (${state.products.length})`}
-            />
-          </RadioGroup>
-        </AccordionDetails>
-      </Accordion>
-
-      <Accordion
-        expanded={expanded.colors}
-        onChange={() => setExpanded({ ...expanded, colors: !expanded.colors })}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Colors</Typography>
-        </AccordionSummary>
-
-        <AccordionDetails className={classes.flexAcc}>
-          {filterList.colors.map((el, index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "flex-start",
-                }}
-              >
-                <FormControlLabel
-                  style={{ width: "100%" }}
                   control={
                     <Checkbox
                       checked={props.activeFilter.includes(el)}
@@ -127,62 +386,16 @@ const FilterProducts = (props) => {
                   }
                   label={`${el} (${
                     props.products.filter(
-                      (key) => key.color.toLowerCase() === el
+                      (key) => key.brand.toLowerCase() === el
                     ).length
                   })`}
                 />
-                <div
-                  style={{
-                    width: "2px",
-                    height: "30px",
-
-                    padding: "2px",
-                    backgroundColor: el,
-                    border: el === "white" ? "1px solid grey" : "",
-                    margin: "2px",
-                  }}
-                ></div>
-              </div>
-            );
-          })}
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        expanded={expanded.brands}
-        onChange={() => setExpanded({ ...expanded, brands: !expanded.brands })}
-      >
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel1a-content"
-          id="panel1a-header"
-        >
-          <Typography className={classes.heading}>Colors</Typography>
-        </AccordionSummary>
-
-        <AccordionDetails className={classes.flexAcc}>
-          {filterList.brands.map((el, index) => {
-            return (
-              <FormControlLabel
-                key={index}
-                control={
-                  <Checkbox
-                    checked={props.activeFilter.includes(el)}
-                    value={el}
-                    onChange={() => props.onFilterChange(el)}
-                    name={el}
-                  />
-                }
-                label={`${el} (${
-                  props.products.filter((key) => key.brand.toLowerCase() === el)
-                    .length
-                })`}
-              />
-            );
-          })}
-        </AccordionDetails>
-      </Accordion>
-    </div>
-  );
+              );
+            })}
+          </AccordionDetails>
+        </Accordion>
+      </div>
+    );
 };
 
 export default FilterProducts;

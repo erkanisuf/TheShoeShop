@@ -35,7 +35,6 @@ const removeProduct = (dispatch, state) => {
   const newProduct = dispatch.product;
   const copyState = [...state.cart];
   const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
-  console.log(findIndex);
 
   copyState.splice(findIndex, 1);
 
@@ -43,16 +42,12 @@ const removeProduct = (dispatch, state) => {
 };
 
 const fetchProduct = (dispatch, state) => {
-  console.log("from redzz", dispatch);
   return { ...state, products: dispatch.product };
 };
 
 const userLogin = (dispatch, state) => {
   localStorage.setItem("UserToken", dispatch.token);
-  console.log(
-    "asdddddddddddddddddddddd",
-    localStorage.setItem("UserToken", dispatch.token)
-  );
+
   return {
     ...state,
     token: dispatch.token,
@@ -110,7 +105,6 @@ const decrement = (dispatch, state) => {
 };
 
 const sizeSelect = (dispatch, state) => {
-  console.log(dispatch, "sizesl", state);
   const newProduct = dispatch.product;
   const copyState = [...state.cart];
   const findIndex = copyState.findIndex((item) => item.id === newProduct.id);
@@ -138,7 +132,6 @@ const cartRefresh = (dispatch, state) => {
 };
 
 const guestAdress = (dispatch, state) => {
-  console.log(dispatch, "adzz");
   return {
     ...state,
     token: null,

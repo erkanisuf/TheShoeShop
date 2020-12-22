@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Adress = ({ state }) => {
-  console.log("state ITSELF", state);
   const classes = useStyles();
   const [openUpdateAdress, setopenUpdateAdress] = useState(false);
   return (

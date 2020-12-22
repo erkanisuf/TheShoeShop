@@ -7,7 +7,7 @@ import {
   MenuItem,
   Paper,
 } from "@material-ui/core/";
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
@@ -32,6 +32,7 @@ const SortBy = (props) => {
         marginTop: "45px",
         display: "flex",
         justifyContent: "center",
+        margin: windowCheck <= 768 ? "0 auto" : "",
       }}
     >
       <Paper elevation={3}>

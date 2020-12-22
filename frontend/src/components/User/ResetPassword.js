@@ -5,6 +5,7 @@ import axios from "axios";
 const headers = {
   "Content-Type": "application/json",
 };
+const windowCheck = window.screen.width;
 const ResetPassword = () => {
   const [email, setEmail] = useState("");
   const [err, setErr] = useState(null);
@@ -26,7 +27,6 @@ const ResetPassword = () => {
         if (res.status === 400) {
           console.log("err");
         } else {
-          console.log(res);
           setSuccs(res.data);
           setEmail("");
         }
@@ -36,13 +36,13 @@ const ResetPassword = () => {
       });
   };
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       {" "}
       <form
         onSubmit={sendEmail}
         style={{
           margin: "25px auto",
-          width: "600px",
+          width: windowCheck <= "600px",
           border: "1px solid grey",
           borderRadius: "10px",
           display: "flex",

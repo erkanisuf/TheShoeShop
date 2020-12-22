@@ -12,6 +12,7 @@ import {
   DialogTitle,
   makeStyles,
 } from "@material-ui/core/";
+
 const useStyles = makeStyles({
   loginbtn: {
     borderRadius: "25px",
@@ -36,7 +37,6 @@ const Register = ({ openRegister, handleCloseRegister }) => {
   const [passwordTwo, setPasswordTwo] = useState("");
   const [error, setError] = useState(null);
   const handleOnChange = (e) => {
-    console.log({ ...user, [e.target.name]: e.target.value });
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 

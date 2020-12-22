@@ -25,7 +25,7 @@ const TopRated = ({ state }) => {
       .reverse();
     setTop(map);
   }, [state]);
-  console.log("top", top);
+
   return (
     <div style={{ margin: "25px auto" }}>
       <Paper

@@ -8,19 +8,7 @@ export const UserLogin = () => {
 
   const [user, setUser] = useState({ name: "", password: "" });
 
-  //   useEffect(() => {
-  //     const getitemfromLocalStorage = localStorage.getItem("UserToken");
-  //     if (getitemfromLocalStorage) {
-  //       console.log("u got token");
-  //       dispatch({ type: USER_LOGIN, token: localStorage.getItem("UserToken") });
-  //     } else {
-  //       console.log("No token");
-  //       dispatch({ type: USER_LOGIN, token: null });
-  //     }
-  //   }, [state]);
-
   const handleOnChange = (e) => {
-    console.log({ ...user, [e.target.name]: e.target.value });
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
@@ -28,7 +16,6 @@ export const UserLogin = () => {
     axios
       .post(`https://lit-thicket-99427.herokuapp.com/api/user/login`, user)
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem("UserToken", res.data.token);
         window.localStorage.setItem("User", res.data.user);
         dispatch({

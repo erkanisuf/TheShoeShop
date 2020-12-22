@@ -13,11 +13,11 @@ import {
   DialogTitle,
   makeStyles,
 } from "@material-ui/core/";
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles({
   loginbtn: {
     borderRadius: "25px",
-    fontSize: "13px",
+    fontSize: windowCheck < 420 ? "10px" : "13px",
     padding: "5px 10px",
     marginRight: "5px",
     backgroundColor: "#ffc107",
@@ -48,7 +48,6 @@ const Login = (props) => {
         if (res.status === 400) {
           console.log("err");
         } else {
-          console.log(res);
           localStorage.setItem("UserToken", res.data.token);
           localStorage.setItem("User", res.data.user);
           localStorage.setItem("UserID", res.data.userID);
@@ -64,7 +63,7 @@ const Login = (props) => {
           });
           setError(null);
           props.handleClose();
-          console.log(location, "location");
+
           if (location.state && location.state.from) {
             history.replace(location.state.from.pathname);
           } else if (location.pathname === "/login") {
@@ -125,6 +124,7 @@ const Login = (props) => {
               textDecoration: "none",
               color: "black",
               margin: "5px",
+              fontSize: windowCheck < 420 ? "11px" : "15px",
             }}
             className={classes.forgotpassword}
           >

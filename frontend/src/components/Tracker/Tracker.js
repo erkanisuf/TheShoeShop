@@ -3,10 +3,11 @@ import { Button, TextField } from "@material-ui/core/";
 import SearchIcon from "@material-ui/icons/Search";
 import axios from "axios";
 import moment from "moment";
+const windowCheck = window.screen.width;
 const Tracker = () => {
   const [trackvalue, setTrackValue] = useState("");
   const [data, setData] = useState({ message: "", data: [] });
-  console.log(trackvalue);
+
   const handleChange = (e) => {
     setTrackValue(e.target.value);
   };
@@ -20,7 +21,6 @@ const Tracker = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
         setTrackValue("");
       })
@@ -31,22 +31,21 @@ const Tracker = () => {
         })
       );
   };
-  console.log(typeof data.data[0]);
-  console.log(Boolean(data.data));
+
   return (
-    <div>
+    <div style={{ width: "100%" }}>
       <form
         onSubmit={trackOrder}
         style={{
           margin: "25px auto",
-          width: "600px",
+          width: windowCheck <= 1024 ? "100%" : "600px",
           border: "1px solid grey",
           borderRadius: "10px",
           display: "flex",
           flexDirection: "row",
           alignContent: "center",
           justifyContent: "center",
-          padding: "15px",
+          padding: windowCheck <= 1024 ? "" : "15px",
         }}
       >
         <TextField

@@ -20,7 +20,7 @@ const Stripe = ({ state, dispatch }) => {
       },
       quantity: el.quantity,
     };
-    console.log(newArr, "toSTRAP");
+
     return newArr;
   });
 
@@ -35,7 +35,6 @@ const Stripe = ({ state, dispatch }) => {
   const [clientSecret, setClientSecret] = useState("");
   const [mongoWaiter, setmongoWaiter] = useState(null);
 
-  console.log(mongoWaiter, "MONGOWAITER");
   useEffect(() => {
     window
       .fetch(
@@ -57,7 +56,6 @@ const Stripe = ({ state, dispatch }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data, "STRIPE_DATA_NOT_SUCC_YET");
         // const waiter = { ...data.cartItems };
         const waiter = {
           ...JSON.parse(data.metadata.cartProducts),
@@ -66,15 +64,15 @@ const Stripe = ({ state, dispatch }) => {
         setmongoWaiter({ ...waiter }); //////////
         setClientSecret(data.clientSecret);
       });
-  }, [state.cart, state.user.adress]);
+  }, [state.cart, state.user.adress, state.user]);
 
   const orderstoMongo = (param) => {
     let array = [];
-    const cartItems = param.cartItems.map((el) => {
-      array.push(el.mongoProductID);
+    param.cartItems.map((el) => {
+      return array.push(el.mongoProductID);
     });
-    const user = param.typeUser.id;
-    console.log(user, "Userr");
+    // const user = param.typeUser.id;
+
     const orders = {
       cart: param.cartItems,
       cartMongo: array,
@@ -93,8 +91,7 @@ const Stripe = ({ state, dispatch }) => {
       amount: param.amount,
       // metadata: param.metadata.cartProducts,
     };
-    console.log(param, "THE PARAMM");
-    console.log(orders, "LASTONE");
+
     const headers = {
       "Content-Type": "application/json",
       auth_token: `${localStorage.getItem("UserToken")}`,
@@ -108,7 +105,6 @@ const Stripe = ({ state, dispatch }) => {
         return res.json();
       })
       .then((data) => {
-        console.log(data, "otorder");
         history.push({
           pathname: "/finishedpaid",
 
@@ -125,7 +121,7 @@ const Stripe = ({ state, dispatch }) => {
         card: elements.getElement(CardElement),
       },
     });
-    console.log(payload, "PAYLOAD_COMES_AFTER_PAYMENT");
+
     if (payload.error) {
       setError(`Payment failed ${payload.error.message}`);
       setProcessing(false);
@@ -139,10 +135,6 @@ const Stripe = ({ state, dispatch }) => {
         orderStatus: { message: "Processing", location: "Hakunila R-Kiosk" },
       }; ///////////This goes to mongo If succes
 
-      console.log(
-        objtoMongoOders,
-        "211111111111111111111111111111111111111111111111111111111111111111"
-      );
       setError(null);
       setProcessing(false);
       setSucceeded(true);
@@ -177,7 +169,6 @@ const Stripe = ({ state, dispatch }) => {
       },
     },
   };
-  console.log(clientSecret, "CLIENT_SECRET_");
 
   return (
     <div>

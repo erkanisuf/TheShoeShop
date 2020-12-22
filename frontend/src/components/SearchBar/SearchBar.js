@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core/";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   searchBox: {
-    width: "100%",
+    width: windowCheck <= 768 ? "300px" : "100%",
     padding: "15px",
     margin: "0 auto",
     height: "500px",
@@ -103,7 +104,6 @@ const SearchBar = ({ state }) => {
       const filter = state.filter((el) => {
         let newobj = { name: el.name, color: el.color };
         let name = newobj.name + " " + newobj.color;
-        console.log(newobj.name + newobj.color);
 
         return name.toLowerCase().includes(searchValue.toLocaleLowerCase());
       });
@@ -113,7 +113,6 @@ const SearchBar = ({ state }) => {
       } else {
         setOpen(false);
       }
-      console.log(filter);
     } else {
       setOpen(false);
     }

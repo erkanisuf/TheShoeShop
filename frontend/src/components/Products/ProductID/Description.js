@@ -10,15 +10,15 @@ import {
   TableBody,
   TableContainer,
 } from "@material-ui/core/";
-
+const windowCheck = window.screen.width;
 const useStyles = makeStyles((theme) => ({
   indicator: {
     backgroundColor: "#ff9800",
     color: "black",
   },
   table: {
-    maxWidth: 400,
-    minWidth: 600,
+    maxWidth: windowCheck < 420 ? 200 : 600,
+    minWidth: 100,
     margin: "0 auto",
   },
 }));
@@ -104,9 +104,15 @@ const Description = ({ product }) => {
         return <h1>err</h1>;
     }
   };
-  console.log(value);
+
   return (
-    <Paper style={{ height: "300px", marginBottom: "500px" }}>
+    <Paper
+      style={{
+        height: "300px",
+        marginBottom: "500px",
+        width: windowCheck <= 375 ? "350px" : "",
+      }}
+    >
       <Tabs
         value={value}
         classes={{ indicator: classes.indicator }}

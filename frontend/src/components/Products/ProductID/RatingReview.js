@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import RateReviewIcon from "@material-ui/icons/RateReview";
 import RatingAll from "./RatingAll";
-import { Link } from "react-router-dom";
 
 const RatingReview = ({ productId, product, user }) => {
   const [open, setOpen] = useState(false);
@@ -31,7 +30,7 @@ const RatingReview = ({ productId, product, user }) => {
   const handleText = (e) => {
     setReview({ ...review, review: e.target.value });
   };
-  console.log(review);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -56,7 +55,6 @@ const RatingReview = ({ productId, product, user }) => {
         if (res.status === 400) {
           console.log("err");
         } else {
-          console.log(res);
           handleClose();
           window.location.reload();
         }

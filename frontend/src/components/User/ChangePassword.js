@@ -18,7 +18,7 @@ const ChangePassword = () => {
   const confirmPassword = (e) => {
     setPasswordTwo(e.target.value);
   };
-  console.log(location.id);
+
   const changePassword = (e) => {
     e.preventDefault();
     if (password !== passwordTwo) {

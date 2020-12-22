@@ -42,11 +42,10 @@ const AdminPanel = () => {
   for (const key of Object.keys(image.file)) {
     formData.append("productImage", image.file[key]);
   }
-  console.log(formData);
+
   const onChangeImage = (e) => {
     setImage({ file: e.target.files });
   };
-  console.log(image.file);
 
   const addNewProduct = () => {
     axios
@@ -78,7 +77,7 @@ const AdminPanel = () => {
         dispatch({ type: FETCH_PRODUCT, product: res.data });
       });
   }, []);
-  console.log(adminproduct);
+
   return (
     <div>
       name

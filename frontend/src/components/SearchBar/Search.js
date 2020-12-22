@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import Product from "../Products/Product";
 const Search = () => {
   const params = useLocation();
-  console.log(params, "search123");
 
   if (params.state.arrayFiltered.length < 1) {
     return (

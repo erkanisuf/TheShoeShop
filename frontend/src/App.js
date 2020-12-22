@@ -21,14 +21,41 @@ import { Elements } from "@stripe/react-stripe-js";
 import Search from "./components/SearchBar/Search";
 import ResetPassword from "./components/User/ResetPassword";
 import ChangePassword from "./components/User/ChangePassword";
+import CircularProgress from "@material-ui/core/CircularProgress";
 const stripePromise = loadStripe(
   "pk_test_51HugH2HIfBlErhlnFlqyz57Nft2p700zznt5h5Fj0Up8rEqQgyahdB2Dw8WNjJPpxKbNngpGAsHjBnv6gIOGjXAb0064AxWTjS"
 );
 
 function App() {
-  const { state } = useContext(MyContext);
+  const { state, loading } = useContext(MyContext);
 
   const [openLogin, setopenLogin] = useState(true);
+  if (!loading) {
+    return (
+      <div
+        style={{
+          color: "orange",
+          width: "100%",
+
+          display: "flex",
+          justifyContent: "space-between",
+          alignContent: "center",
+          margin: "0 auto",
+          flexDirection: "column",
+        }}
+      >
+        <div style={{ color: "grey", margin: "0 auto" }}>
+          <h1>Welcome to Shoe Sho,please wait while fetching....</h1>
+        </div>
+        <div style={{ color: "orange", width: "200px", margin: "0 auto" }}>
+          <CircularProgress
+            color="secondary"
+            style={{ color: "orange", margin: "0 auto" }}
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <Layout>
       <div className="App">
