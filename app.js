@@ -56,4 +56,4 @@ app.use("/api/products", productsRoute);
 app.use("/uploads", express.static("uploads"));
 app.use("/api/payment", paymentRoute);
 
-//http://localhost:4000/uploads/Climbing-the-Rinjani-Volcano.jpg  IMG how to get
+
